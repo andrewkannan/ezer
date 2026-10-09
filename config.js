@@ -8,7 +8,7 @@
 const EZER_CONFIG = {
     // --- Lead capture -------------------------------------------------------
     // WhatsApp number in international format, digits only (e.g. "60123456789").
-    whatsappNumber: "",
+    whatsappNumber: "601160547134",
     // Pre-filled WhatsApp message for the "Chat on WhatsApp" buttons.
     whatsappMessage: "Hi EZER, I'd like a free workflow check for my business.",
     // Public business email shown on the site (optional).
@@ -29,7 +29,7 @@ const EZER_CONFIG = {
     leadMagnetPdfUrl: "",
 
     // --- Optional content (sections stay hidden while these are empty) ------
-    showFaq: false,
+    showFaq: true,
     // Real client results only, e.g. { client: "Clinic in JB", metric: "+35%", description: "More bookings from WhatsApp enquiries." }
     caseStudies: [],
     // Real client logo image URLs only.
