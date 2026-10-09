@@ -194,7 +194,7 @@ h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
 .floating-cta .btn { box-shadow: 0 10px 25px rgba(183, 155, 99, 0.4); background: var(--gold); color: var(--dark); border-color: var(--gold); padding: 16px 28px; font-size: 15px; }
 
 /* Tabs CSS */
-.services-tabs { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; margin-top: 40px; }
+.services-tabs { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; margin-top: 40px; align-items: start; }
 .tab-nav { display: flex; flex-direction: column; gap: 12px; }
 .tab-btn { text-align: left; padding: 20px; background: none; border: 1px solid var(--line); border-radius: 16px; font-size: 18px; font-weight: 600; font-family: 'Playfair Display', serif; cursor: pointer; transition: all 0.3s; color: var(--muted); }
 .tab-btn.active { background: var(--surface); border-color: var(--gold); color: var(--ink); box-shadow: 0 8px 20px rgba(0,0,0,0.03); }
@@ -241,7 +241,7 @@ h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
 </header>
 </div>
 <main id="top">
-<div class_="hero-wrapper"><section class="container hero">
+<div class="hero-wrapper"><section class="container hero">
 <div class="fade-in">
 <div class="eyebrow">Customer Experience · Business Support</div>
 <h1 class="kinetic-text">Your customers are your business.<br/><em>We help you take better care of them.</em></h1>
@@ -517,95 +517,82 @@ h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
   });
 </script>
 <div class="floating-cta" id="floatingCta"><a class="btn primary" href="#contact">Book a Consultation</a></div><script>
-// Original nav logic
-const navWrapper = document.getElementById('nav-wrapper');
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-        navWrapper.classList.add('scrolled');
-        document.getElementById('floatingCta').classList.add('visible');
-    } else {
-        navWrapper.classList.remove('scrolled');
-        document.getElementById('floatingCta').classList.remove('visible');
+document.addEventListener('DOMContentLoaded', () => {
+    // Nav logic
+    const navWrapper = document.getElementById('nav-wrapper');
+    const floatingCta = document.getElementById('floatingCta');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            if (navWrapper) navWrapper.classList.add('scrolled');
+            if (floatingCta) floatingCta.classList.add('visible');
+        } else {
+            if (navWrapper) navWrapper.classList.remove('scrolled');
+            if (floatingCta) floatingCta.classList.remove('visible');
+        }
+    });
+
+    const menuToggle = document.getElementById('menu-toggle');
+    const navLinks = document.getElementById('nav-links');
+    if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
     }
-});
 
-const menuToggle = document.getElementById('menu-toggle');
-const navLinks = document.getElementById('nav-links');
-menuToggle.addEventListener('click', () => {
-    menuToggle.classList.toggle('active');
-    navLinks.classList.toggle('active');
-});
-navLinks.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-        menuToggle.classList.remove('active');
-        navLinks.classList.remove('active');
+    // Tab logic
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabPanes.forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            const target = document.getElementById(btn.getAttribute('data-target'));
+            if (target) target.classList.add('active');
+        });
     });
-});
 
-// Tab logic
-document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById(btn.getAttribute('data-target')).classList.add('active');
-    });
-});
+    // GSAP
+    if (typeof gsap !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
 
-// GSAP Animations
-gsap.registerPlugin(ScrollTrigger);
-
-// Kinetic Text Splitter
-document.querySelectorAll('.kinetic-text').forEach(el => {
-    const text = el.innerText;
-    // Basic word split for animation
-    const html = text.split(' ').map(word => `<span class="split-word"><span class="split-word-inner">${word}</span></span>`).join(' ');
-    el.innerHTML = html.replace(/<br>/g, '</span><br><span class="split-word">'); // rough approximation for br
-});
-
-// Animate Kinetic Text
-gsap.to('.split-word-inner', {
-    y: '0%',
-    opacity: 1,
-    duration: 0.8,
-    stagger: 0.05,
-    ease: 'power3.out',
-    delay: 0.2
-});
-
-// Animate Numbers Counting Up
-const metrics = document.querySelectorAll('.metric b');
-metrics.forEach(metric => {
-    const target = parseInt(metric.innerText.replace(/\D/g,''));
-    if (!isNaN(target)) {
-        metric.innerText = '0';
-        ScrollTrigger.create({
-            trigger: metric,
-            start: "top 85%",
-            onEnter: () => {
-                gsap.to(metric, {
-                    innerHTML: target,
-                    duration: 2,
-                    snap: { innerHTML: 1 },
-                    ease: "power2.out"
+        const metrics = document.querySelectorAll('.metric b');
+        metrics.forEach(metric => {
+            const target = parseInt(metric.innerText.replace(/\D/g,''));
+            if (!isNaN(target)) {
+                metric.innerText = '0';
+                ScrollTrigger.create({
+                    trigger: metric,
+                    start: 'top 85%',
+                    onEnter: () => {
+                        gsap.to(metric, {
+                            innerHTML: target,
+                            duration: 2,
+                            snap: { innerHTML: 1 },
+                            ease: 'power2.out'
+                        });
+                    }
                 });
             }
         });
+
+        gsap.utils.toArray('.journey-cards .card').forEach((card) => {
+            gsap.from(card, {
+                scrollTrigger: { trigger: card, start: 'top 85%' },
+                y: 50,
+                opacity: 0,
+                duration: 0.6,
+                ease: 'power2.out'
+            });
+        });
     }
 });
-
-// Journey Cards fade in sequentially on scroll
-gsap.utils.toArray('.journey-cards .card').forEach((card, i) => {
-    gsap.from(card, {
-        scrollTrigger: {
-            trigger: card,
-            start: "top 85%",
-        },
-        y: 50,
-        opacity: 0,
-        duration: 0.6,
-        ease: "power2.out"
-    });
-});
-</script></body>
-</html>
+</script></body></html>
