@@ -614,14 +614,11 @@ h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
 </div>
 </div>
 </section>
-
 <div id="contact" style="padding-top:100px; margin-top:-100px;"></div>
 <div class="diagnostic-form fade-in" style="background: #fff; padding: 48px; border-radius: 32px; box-shadow: 0 24px 60px rgba(0,0,0,0.05); max-width: 1000px; margin: 80px auto; border: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr; gap: 48px;">
 <div>
 <h2 style="font-family:'Playfair Display'; font-size:36px; margin:0 0 16px;">Let's diagnose your workflow.</h2>
 <p style="color:var(--muted); margin-bottom: 32px;">Fill out this quick 3-step diagnostic to book your 100% free consultation.</p>
-
-
 </div>
 <form id="multiStepForm" onsubmit="event.preventDefault(); alert('Form submitted! We will contact you soon.');">
 <div class="form-step active" id="fstep1">
@@ -650,10 +647,18 @@ h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
 </div>
 </div>
 <div class="form-step" id="fstep3" style="display:none;">
+
 <div style="position:relative; margin-bottom:24px;">
-<textarea class="float-input" id="fchallenge" placeholder=" " required="" rows="4" style="width:100%; padding:16px; border:1px solid var(--line); border-radius:12px; font-size:16px; outline:none; transition:0.3s; background:transparent; resize:none;"></textarea>
-<label for="fchallenge" style="position:absolute; left:16px; top:16px; color:var(--muted); transition:0.3s; pointer-events:none;">What is your biggest operational challenge?</label>
+<h4 style="margin:0 0 16px; font-size:16px; font-weight:600; color:var(--ink);">What is your biggest operational challenge?</h4>
+<div style="display:flex; flex-direction:column; gap:12px;">
+<button class="challenge-btn" onclick="selectChallenge(this, 'I am losing leads because I reply too slowly')" style="text-align:left; padding:16px; background:var(--surface); border:1px solid var(--line); border-radius:12px; cursor:pointer; font-size:15px; transition:0.2s; color:var(--muted);" type="button">"I'm losing leads because I reply too slowly."</button>
+<button class="challenge-btn" onclick="selectChallenge(this, 'I forget to follow up with warm leads')" style="text-align:left; padding:16px; background:var(--surface); border:1px solid var(--line); border-radius:12px; cursor:pointer; font-size:15px; transition:0.2s; color:var(--muted);" type="button">"I keep forgetting to follow up with warm leads."</button>
+<button class="challenge-btn" onclick="selectChallenge(this, 'My client information is a mess')" style="text-align:left; padding:16px; background:var(--surface); border:1px solid var(--line); border-radius:12px; cursor:pointer; font-size:15px; transition:0.2s; color:var(--muted);" type="button">"My client information and CRM is a total mess."</button>
+<button class="challenge-btn" onclick="selectChallenge(this, 'I am doing everything myself and am exhausted')" style="text-align:left; padding:16px; background:var(--surface); border:1px solid var(--line); border-radius:12px; cursor:pointer; font-size:15px; transition:0.2s; color:var(--muted);" type="button">"I am doing everything myself and I'm exhausted."</button>
 </div>
+<input id="fchallenge" required="" type="hidden"/>
+</div>
+
 <div style="display:flex; gap:12px;">
 <button class="btn ghost" onclick="nextFormStep(2)" type="button">← Back</button>
 <button class="btn primary magnetic-btn" onclick="nextFormStep(4)" style="flex-grow:1;" type="button">Complete Diagnostic &amp; Book</button>
@@ -1143,4 +1148,20 @@ document.addEventListener('DOMContentLoaded', () => {
 <span style="color:var(--muted);">just booked a consultation</span>
 </div>
 </div>
-</body></html>
+<script>
+    window.selectChallenge = function(btn, val) {
+        document.querySelectorAll('.challenge-btn').forEach(b => {
+            b.style.borderColor = 'var(--line)';
+            b.style.boxShadow = 'none';
+            b.style.color = 'var(--muted)';
+            b.style.fontWeight = '400';
+            b.style.background = 'var(--surface)';
+        });
+        btn.style.borderColor = 'var(--gold)';
+        btn.style.boxShadow = '0 0 0 1px var(--gold)';
+        btn.style.color = 'var(--dark)';
+        btn.style.fontWeight = '600';
+        btn.style.background = '#fff';
+        document.getElementById('fchallenge').value = val;
+    }
+    </script></body></html>
