@@ -318,7 +318,34 @@ h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
                 @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
                 .ticker-logo { height: 40px; margin: 0 40px; opacity: 0.5; filter: grayscale(100%) invert(100%); transition: 0.3s; }
                 .ticker-logo:hover { opacity: 1; }
-            </style>
+            
+/* Packages Layout Fixes */
+#packages .container { width: min(1350px, 96%) !important; max-width: none !important; }
+.packages { grid-template-columns: repeat(4, 1fr) !important; gap: 24px !important; align-items: stretch !important; margin-top: 48px !important; }
+.package p { min-height: 96px !important; }
+
+.package.featured { 
+    background: rgba(255,253,248,0.95) !important; 
+    color: var(--ink) !important; 
+    border: 2px solid var(--gold) !important; 
+    transform: none !important; 
+    box-shadow: 0 15px 45px rgba(183,155,99,0.15) !important; 
+}
+.package.featured:hover { transform: translateY(-8px) !important; }
+.package.featured h3, .package.featured .price { color: var(--ink) !important; }
+.package.featured p, .package.featured li { color: var(--muted) !important; border-bottom-color: rgba(23,34,31,0.08) !important; }
+.package.featured li { color: var(--ink) !important; }
+.package.featured li.miss-out { color: var(--muted) !important; }
+.package.featured li:before { color: var(--sage) !important; }
+
+@media (max-width: 1100px) {
+    .packages { grid-template-columns: repeat(2, 1fr) !important; }
+    .package p { min-height: auto !important; margin-bottom: 24px !important; }
+}
+@media (max-width: 650px) {
+    .packages { grid-template-columns: 1fr !important; }
+}
+</style>
 </div>
 </div>
 <section class="section alt" id="who-is-this-for">
