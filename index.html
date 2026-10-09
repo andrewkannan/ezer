@@ -94,7 +94,7 @@ h1 em { font-family: 'Lora', Georgia, serif; font-weight: 500; color: var(--sage
 .flow-item span { font-size: 14px; color: var(--muted); line-height: 1.5; }
 
 /* Packages */
-.packages { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: center; }
+.packages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; align-items: center; }
 .package { background: var(--surface); border: 1px solid var(--line); border-radius: 28px; padding: 40px 32px; position: relative; transition: all 0.3s; }
 .package:hover { border-color: var(--sage); box-shadow: 0 16px 40px rgba(113,136,120,.1); }
 .package.featured { border: 2px solid var(--sage); transform: translateY(-12px); box-shadow: 0 20px 50px rgba(113,136,120,.15); background: #fff; z-index: 1; }
@@ -437,7 +437,19 @@ h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
 <button class="curr-btn" data-curr="USD" style="padding: 8px 16px; border-radius: 99px; border:none; background:transparent; color:var(--ink); cursor:pointer; font-weight:600; font-size:14px; transition:0.3s;">USD</button>
 </div>
 </div>
-<div class="packages">
+<div class="packages"><div class="package fade-in" style="animation-delay: 0.05s;">
+<h3>The Trial <span style="color: var(--muted);">Run</span></h3>
+<div class="price">RM300 <small>/ month</small></div>
+<p>A low-risk test package. Perfect for small businesses wanting to experience professional support on a strict budget.</p>
+<ul>
+<li>Up to 20 enquiries / mo</li>
+<li>Standard response time</li>
+<li>WhatsApp &amp; Email support</li>
+<li>End-of-month review</li>
+</ul>
+<div style="flex-grow: 1;"></div>
+<a class="btn ghost" href="#contact">Start Small</a>
+</div>
 <div class="package fade-in" style="animation-delay: 0.1s;">
 <h3>The Lead <span style="color: var(--sage);">Catcher</span></h3>
 <div class="price">RM600 <small>/ month</small></div>
@@ -454,8 +466,8 @@ h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
 </div>
 <div class="package featured fade-in" style="animation-delay: 0.2s;">
 <div style="display:inline-flex; align-items:center; gap:8px; padding:6px 14px; border-radius:99px; border:1px solid rgba(183, 155, 99, 0.3); background: rgba(183, 155, 99, 0.15); position:absolute; top:-16px; left:24px; z-index:2; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); backdrop-filter: blur(4px);">
-  <span style="display:block; width:6px; height:6px; background:#b79b63; border-radius:50%; box-shadow:0 0 0 rgba(183, 155, 99, 0.4); animation: pulse-gold 2s infinite;"></span>
-  <span style="font-size:10px; font-weight:800; letter-spacing:1.2px; color:#b79b63; text-transform:uppercase;">Most Popular</span>
+<span style="display:block; width:6px; height:6px; background:#b79b63; border-radius:50%; box-shadow:0 0 0 rgba(183, 155, 99, 0.4); animation: pulse-gold 2s infinite;"></span>
+<span style="font-size:10px; font-weight:800; letter-spacing:1.2px; color:#b79b63; text-transform:uppercase;">Most Popular</span>
 </div>
 <h3>The Follow-Up <span style="color: var(--gold);">Engine</span></h3>
 <div class="price">RM1,200 <small>/ month</small></div>
@@ -994,7 +1006,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Currency Toggle
         const currBtns = document.querySelectorAll('.curr-btn');
-        const basePrices = [600, 1200, 2000];
+        const basePrices = [300, 600, 1200, 2000];
         const pricesEl = document.querySelectorAll('.package .price');
         currBtns.forEach(btn => {
             btn.addEventListener('click', () => {
