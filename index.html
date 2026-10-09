@@ -204,9 +204,12 @@ h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
 .tab-pane p { font-size: 16px; color: var(--muted); line-height: 1.6; }
 
 @media(max-width: 850px) { 
-    .services-tabs { grid-template-columns: 1fr; } 
-    .tab-nav { flex-direction: row; overflow-x: auto; padding-bottom: 10px; } 
-    .tab-btn { white-space: nowrap; } 
+    .services-tabs { grid-template-columns: 1fr; gap: 24px; } 
+    .tab-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; flex-direction: unset; overflow-x: visible; padding-bottom: 0; } 
+    .tab-btn { white-space: normal; font-size: 15px; padding: 16px 12px; text-align: center; } 
+}
+@media(max-width: 520px) {
+    .tab-nav { grid-template-columns: 1fr; }
 }
 
 /* Kinetic typography word split */
@@ -550,13 +553,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabBtns = document.querySelectorAll('.tab-btn');
     const tabPanes = document.querySelectorAll('.tab-pane');
     tabBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            tabBtns.forEach(b => b.classList.remove('active'));
-            tabPanes.forEach(p => p.classList.remove('active'));
-            btn.classList.add('active');
-            const target = document.getElementById(btn.getAttribute('data-target'));
-            if (target) target.classList.add('active');
+        ['click', 'mouseenter'].forEach(eventType => {
+            btn.addEventListener(eventType, (e) => {
+                if (eventType === 'click') e.preventDefault();
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabPanes.forEach(p => p.classList.remove('active'));
+                btn.classList.add('active');
+                const target = document.getElementById(btn.getAttribute('data-target'));
+                if (target) target.classList.add('active');
+            });
         });
     });
 
