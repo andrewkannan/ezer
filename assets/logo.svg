@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 84" width="440" height="84">
   <defs>
     <linearGradient id="goldArm0" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#FFF8E0" />
@@ -31,11 +31,14 @@
       <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.65" />
     </filter>
 </defs>
-  <rect width="64" height="64" rx="14" fill="#0A0E14" />
-  <g transform="translate(32, 32) scale(0.16)">
+  <!-- Mark on left -->
+  <g transform="translate(42, 42) scale(0.24)" filter="url(#markShadow)">
     <path d="M -34.5,-156.0 L 40.5,-136.0 L 77.5,-30.0 L 34.5,-21.0 L 12.5,-20.0 L -32.5,-152.0 L -54.5,-80.0 L -129.5,-24.0 L -109.5,-97.0 L -35.5,-155.0 Z" fill="url(#goldArm0)" stroke="#FDF0C8" stroke-width="0.75" />
     <path d="M 64.5,-97.0 L 149.5,-82.0 L 154.5,-10.0 L 19.5,92.0 L 15.5,74.0 L 34.5,43.0 L 22.5,8.0 L 60.5,1.0 L 50.5,25.0 L 147.5,-80.0 L 93.5,-62.0 L 64.5,-96.0 Z" fill="url(#goldArm1)" stroke="#FDF0C8" stroke-width="0.75" />
     <path d="M -23.5,-92.0 L -17.5,-76.0 L -36.5,-44.0 L -26.5,-13.0 L -61.5,-4.0 L -52.5,-26.0 L -146.5,76.0 L -144.5,78.0 L -95.5,59.0 L -67.5,96.0 L -149.5,78.0 L -154.5,8.0 L -24.5,-91.0 Z" fill="url(#goldArm2)" stroke="#FDF0C8" stroke-width="0.75" />
     <path d="M -19.5,15.0 L 29.5,153.0 L 49.5,85.0 L 127.5,25.0 L 108.5,100.0 L 30.5,156.0 L -46.5,126.0 L -80.5,26.0 L -20.5,16.0 Z" fill="url(#goldArm3)" stroke="#FDF0C8" stroke-width="0.75" />
   </g>
+  <!-- Typography on right -->
+  <text x="96" y="47" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-weight="800" font-size="34" letter-spacing="0.18em" fill="url(#textGold)">EZER</text>
+  <text x="98" y="68" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-weight="700" font-size="8.8" letter-spacing="0.28em" fill="#C5A059">CUSTOMER EXPERIENCE &amp; BUSINESS SUPPORT</text>
 </svg>

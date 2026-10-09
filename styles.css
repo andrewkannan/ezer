@@ -85,8 +85,10 @@ abbr[title] { text-decoration: underline dotted; cursor: help; }
 .nav { position: fixed; inset: 0 0 auto; z-index: 100; height: var(--nav-h); transition: background .3s, box-shadow .3s, border-color .3s; border-bottom: 1px solid rgba(255,255,255,.08); color: #fff; }
 .nav.is-scrolled { background: rgba(247,244,237,.94); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom-color: rgba(23,34,31,.08); box-shadow: 0 4px 20px rgba(0,0,0,.05); color: var(--ink); }
 .nav__inner { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-.brand { font-family: var(--serif); font-size: 24px; font-weight: 800; letter-spacing: .12em; line-height: 1; }
-.brand small { display: block; margin-top: 5px; font-family: var(--sans); font-size: 9px; letter-spacing: .14em; font-weight: 600; opacity: .7; }
+.brand { display: inline-flex; align-items: center; gap: 12px; font-family: var(--serif); font-size: 24px; font-weight: 800; letter-spacing: .12em; line-height: 1; }
+.brand__mark { width: 34px; height: 34px; flex-shrink: 0; display: block; border-radius: 6px; }
+.brand__text { display: flex; flex-direction: column; }
+.brand small { display: block; margin-top: 4px; font-family: var(--sans); font-size: 8.5px; letter-spacing: .15em; font-weight: 700; opacity: .8; color: var(--gold); }
 .nav__links { display: flex; align-items: center; gap: 28px; font-size: 14px; font-weight: 500; }
 .nav__links a { opacity: .78; transition: opacity .2s; }
 .nav__links a:hover, .nav__links a[aria-current="true"] { opacity: 1; }
@@ -389,6 +391,7 @@ input[type=range]::-moz-range-thumb { width: 22px; height: 22px; border-radius: 
 .floating-cta { position: fixed; right: 24px; bottom: 24px; z-index: 90; opacity: 0; visibility: hidden; translate: 0 16px; transition: opacity .3s, visibility .3s, translate .3s var(--ease); }
 .floating-cta.is-visible { opacity: 1; visibility: visible; translate: 0 0; }
 .floating-cta .btn { box-shadow: 0 12px 28px rgba(183,155,99,.45); }
+.floating-cta .floating-cta__wa { display: none; }
 
 /* ---------- Modals ---------- */
 .modal { position: fixed; inset: 0; z-index: 300; display: grid; place-items: center; padding: 20px; background: rgba(5,10,8,.82); }
@@ -465,8 +468,10 @@ input[type=range]::-moz-range-thumb { width: 22px; height: 22px; border-radius: 
   .journey__list { grid-template-columns: 1fr; }
   .option-grid--2 { grid-template-columns: 1fr; }
   .hero__actions .btn { width: 100%; }
-  .floating-cta { left: 16px; right: 16px; bottom: 16px; }
+  .floating-cta { left: 16px; right: 16px; bottom: 16px; display: flex; gap: 8px; }
   .floating-cta .btn { width: 100%; }
+  .floating-cta .btn--gold { flex: 1 1 auto; min-width: 0; padding-inline: 12px; font-size: 15px; }
+  .floating-cta .floating-cta__wa:not([hidden]) { display: inline-flex; flex: 0 0 auto; width: auto; padding-inline: 14px; gap: 6px; font-size: 15px; box-shadow: 0 12px 28px rgba(31,143,78,.35); }
   .inbox__stat b { font-size: 17px; }
 }
 @media (prefers-reduced-motion: reduce) {
