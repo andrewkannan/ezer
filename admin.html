@@ -1,65 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>EZER Admin Panel</title>
-    <style>
-        body { font-family: 'Inter', sans-serif; background: #f7f4ed; color: #17221f; padding: 40px; }
-        .container { max-width: 600px; margin: 0 auto; background: #fffdf8; padding: 40px; border-radius: 24px; border: 1px solid #ddd8cb; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        h1 { font-family: 'Playfair Display', serif; margin-top: 0; }
-        label { display: block; font-weight: 600; margin-bottom: 8px; margin-top: 24px; }
-        input { width: 100%; padding: 12px; border: 1px solid #ddd8cb; border-radius: 8px; font-size: 15px; box-sizing: border-box; }
-        .btn { display: inline-block; background: #0a120f; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; cursor: pointer; border: none; margin-top: 32px; width: 100%; font-size: 16px; }
-        .btn:hover { background: #17221f; }
-        .note { font-size: 13px; color: #66716c; margin-top: 16px; background: #dfe8df; padding: 12px; border-radius: 8px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>EZER Admin Panel</title>
+<style>
+  body { font-family: 'Inter', system-ui, sans-serif; background: #f7f4ed; color: #17221f; padding: 40px 16px; margin: 0; }
+  .container { max-width: 640px; margin: 0 auto; background: #fffdf8; padding: 40px; border-radius: 24px; border: 1px solid #ddd8cb; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+  h1 { font-family: Georgia, serif; margin-top: 0; }
+  h2 { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: #4b6253; margin: 36px 0 0; padding-top: 20px; border-top: 1px solid #ddd8cb; }
+  label { display: block; font-weight: 600; margin-bottom: 6px; margin-top: 20px; }
+  .hint { display: block; font-size: 13px; color: #5f6a65; font-weight: 400; margin-top: 2px; }
+  input[type=text], input[type=url], input[type=email], input[type=tel] { width: 100%; padding: 12px; border: 1px solid #ddd8cb; border-radius: 8px; font-size: 15px; box-sizing: border-box; }
+  .check { display: flex; gap: 10px; align-items: center; font-weight: 600; margin-top: 20px; }
+  .btn { display: inline-block; background: #0a120f; color: #fff; padding: 14px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; margin-top: 32px; width: 100%; font-size: 16px; }
+  .btn:hover { background: #17221f; }
+  .btn--ghost { background: transparent; color: #17221f; border: 1px solid #ddd8cb; margin-top: 12px; }
+  .note { font-size: 13px; color: #4b5a54; margin-top: 20px; background: #e6ece5; padding: 14px; border-radius: 8px; }
+  .status { margin-top: 16px; padding: 12px; border-radius: 8px; background: #e6ece5; font-weight: 600; }
+  pre { white-space: pre-wrap; word-break: break-all; background: #0a120f; color: #e9eeeb; padding: 14px; border-radius: 8px; font-size: 12px; }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>Admin Control Panel</h1>
-        <p style="color: #66716c;">Update the placeholder links for the live website below. These changes will instantly reflect on your local browser preview.</p>
-        
-        <form id="adminForm">
-            <label>Calendly Booking URL</label>
-            <input type="text" id="calendlyUrl" placeholder="https://calendly.com/your-name">
-            
-            <label>Founder Video Greeting URL (YouTube Embed Link)</label>
-            <input type="text" id="founderVideoUrl" placeholder="https://www.youtube.com/embed/XXXXX">
-            
-            <label>LinkedIn Profile URL</label>
-            <input type="text" id="linkedinUrl" placeholder="https://linkedin.com/in/your-profile">
-            
-            <button type="submit" class="btn">Save & Preview Changes</button>
-        </form>
-        
-        <div class="note">
-            <strong>Note on Publishing:</strong> Because this is a static HTML site without a backend database, saving here updates your <em>local preview</em> via localStorage. To make these changes permanent for everyone, copy the saved URLs into the <code>config.js</code> file in your source code.
-        </div>
-        
-        <div style="text-align: center; margin-top: 24px;">
-            <a href="index.html" style="color: #17221f; font-weight: 600;">&larr; Back to Website</a>
-        </div>
-    </div>
-    
-    <script src="config.js"></script>
-    <script>
-        // Populate inputs with current config
-        document.getElementById('calendlyUrl').value = EZER_CONFIG.calendlyUrl;
-        document.getElementById('founderVideoUrl').value = EZER_CONFIG.founderVideoUrl;
-        document.getElementById('linkedinUrl').value = EZER_CONFIG.linkedinUrl;
-        
-        document.getElementById('adminForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const newConfig = {
-                calendlyUrl: document.getElementById('calendlyUrl').value,
-                founderVideoUrl: document.getElementById('founderVideoUrl').value,
-                linkedinUrl: document.getElementById('linkedinUrl').value
-            };
-            
-            // Save to localStorage
-            localStorage.setItem('ezer_admin_config', JSON.stringify(newConfig));
-            alert('Saved successfully! Click "Back to Website" to see your updates.');
-        });
-    </script>
+<div class="container">
+  <h1>Admin Control Panel</h1>
+  <p style="color:#5f6a65">Preview site settings in your own browser. Empty fields hide the related button or section on the site.</p>
+
+  <form id="adminForm" novalidate>
+    <h2>Lead capture</h2>
+    <label for="whatsappNumber">WhatsApp number <span class="hint">International format, digits only, e.g. 60123456789</span></label>
+    <input type="tel" id="whatsappNumber" placeholder="60123456789">
+    <label for="whatsappMessage">WhatsApp pre-filled message</label>
+    <input type="text" id="whatsappMessage">
+    <label for="contactEmail">Public contact email</label>
+    <input type="email" id="contactEmail" placeholder="hello@yourdomain.com">
+    <label for="web3formsKey">Web3Forms access key <span class="hint">Free at web3forms.com. Form enquiries are emailed to the address you register there.</span></label>
+    <input type="text" id="web3formsKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+
+    <h2>Founder &amp; booking</h2>
+    <label for="calendlyUrl">Calendly booking URL</label>
+    <input type="url" id="calendlyUrl" placeholder="https://calendly.com/your-name/15min">
+    <label for="founderVideoUrl">Founder video greeting <span class="hint">YouTube embed link, e.g. https://www.youtube.com/embed/VIDEO_ID</span></label>
+    <input type="url" id="founderVideoUrl" placeholder="https://www.youtube.com/embed/XXXXX">
+    <label for="linkedinUrl">LinkedIn profile URL</label>
+    <input type="url" id="linkedinUrl" placeholder="https://www.linkedin.com/in/your-profile">
+
+    <h2>Sections</h2>
+    <label class="check"><input type="checkbox" id="showFaq"> Show the FAQ section</label>
+
+    <button type="submit" class="btn">Save &amp; preview</button>
+    <button type="button" class="btn btn--ghost" id="resetBtn">Clear preview overrides</button>
+    <p class="status" id="status" role="status" hidden></p>
+  </form>
+
+  <div class="note">
+    <strong>Publishing:</strong> this site has no database, so saving here only updates <em>your browser's</em> preview. To publish for everyone, copy the snippet below into <code>config.js</code>.
+  </div>
+  <pre id="snippet" aria-label="config.js snippet"></pre>
+
+  <p style="text-align:center;margin-top:24px"><a href="index.html" style="color:#17221f;font-weight:600">&larr; Back to website</a></p>
+</div>
+
+<script src="config.js"></script>
+<script>
+  const FIELDS = ['whatsappNumber', 'whatsappMessage', 'contactEmail', 'web3formsKey', 'calendlyUrl', 'founderVideoUrl', 'linkedinUrl'];
+  const $ = id => document.getElementById(id);
+  const status = $('status');
+
+  const render = () => {
+    FIELDS.forEach(k => { $(k).value = EZER_CONFIG[k] || ''; });
+    $('showFaq').checked = Boolean(EZER_CONFIG.showFaq);
+    const snippet = {};
+    FIELDS.forEach(k => { snippet[k] = EZER_CONFIG[k] || ''; });
+    snippet.showFaq = Boolean(EZER_CONFIG.showFaq);
+    $('snippet').textContent = Object.entries(snippet).map(([k, v]) => `    ${k}: ${JSON.stringify(v)},`).join('\n');
+  };
+
+  const validUrl = (v, host) => { if (!v) return true; try { const u = new URL(v); return u.protocol === 'https:' && u.hostname.endsWith(host); } catch { return false; } };
+
+  $('adminForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const next = {};
+    FIELDS.forEach(k => { next[k] = $(k).value.trim(); });
+    next.whatsappNumber = next.whatsappNumber.replace(/\D/g, '');
+    next.showFaq = $('showFaq').checked;
+
+    const errors = [];
+    if (next.contactEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(next.contactEmail)) errors.push('Contact email looks invalid.');
+    if (!validUrl(next.calendlyUrl, 'calendly.com')) errors.push('Calendly URL must start with https://calendly.com/');
+    if (!validUrl(next.linkedinUrl, 'linkedin.com')) errors.push('LinkedIn URL must be an https://linkedin.com link.');
+    if (next.founderVideoUrl && !/^https:\/\/(www\.)?(youtube\.com|youtube-nocookie\.com|player\.vimeo\.com)\//.test(next.founderVideoUrl)) errors.push('Video must be a YouTube or Vimeo embed link.');
+    if (next.whatsappNumber && next.whatsappNumber.length < 8) errors.push('WhatsApp number looks too short.');
+    if (errors.length) { status.textContent = errors.join(' '); status.style.background = '#fdf3f1'; status.hidden = false; return; }
+
+    let saved = {};
+    try { saved = JSON.parse(localStorage.getItem('ezer_admin_config') || '{}'); } catch { saved = {}; }
+    const merged = Object.assign(saved, next);
+    localStorage.setItem('ezer_admin_config', JSON.stringify(merged));
+    Object.assign(EZER_CONFIG, merged);
+    render();
+    status.textContent = 'Saved. Open the website in this browser to preview.';
+    status.style.background = '#e6ece5';
+    status.hidden = false;
+  });
+
+  $('resetBtn').addEventListener('click', () => {
+    localStorage.removeItem('ezer_admin_config');
+    status.textContent = 'Preview overrides cleared. Reload to see values from config.js.';
+    status.hidden = false;
+  });
+
+  render();
+</script>
 </body>
 </html>

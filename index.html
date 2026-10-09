@@ -1,527 +1,397 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>EZER — Customer Experience &amp; Business Support</title>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,500;0,700;0,800;1,500&amp;display=swap" rel="stylesheet"/>
-<style>
-:root { --bg: #f7f4ed; --surface: #fffdf8; --ink: #17221f; --muted: #66716c; --line: #ddd8cb; --sage: #718878; --sage2: #dfe8df; --gold: #b79b63; --dark: #0a120f; --radius: 24px; --nav-height: 76px; }
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { margin: 0; font-family: 'Inter', system-ui, sans-serif; color: var(--ink); background: var(--bg); line-height: 1.55; overflow-x: hidden; }
-.root { min-height: 100vh; background: var(--bg); display: flex; flex-direction: column; }
-a { color: inherit; text-decoration: none; }
-.container { width: min(1120px, 92%); margin: auto; }
-
-/* Navigation */
-.nav-wrapper { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg); border-bottom: 1px solid rgba(23,34,31,.08); transition: background 0.3s, box-shadow 0.3s; }
-.nav-wrapper.scrolled { background: rgba(247, 244, 237, 0.95); backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-.nav { height: var(--nav-height); display: flex; align-items: center; justify-content: space-between; }
-.brand { font-size: 24px; font-weight: 800; letter-spacing: .12em; z-index: 101; }
-.brand small { display: block; font-size: 9px; letter-spacing: .13em; font-weight: 600; color: var(--muted); margin-top: -4px; }
-.links { display: flex; gap: 28px; font-size: 14px; color: var(--muted); align-items: center; }
-.links a { transition: color 0.2s; font-weight: 500; }
-.links a:hover { color: var(--ink); }
-
-/* Buttons */
-.btn { display: inline-flex; align-items: center; justify-content: center; padding: 13px 24px; border-radius: 999px; border: 1px solid var(--dark); font-weight: 600; font-size: 14px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; text-align: center; }
-.btn.primary { background: var(--dark); color: #fff; }
-.btn.primary:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(28,42,37,.15); }
-.btn.ghost { border-color: var(--line); background: var(--surface); color: var(--ink); }
-.btn.ghost:hover { border-color: var(--dark); }
-
-/* Hamburger Menu */
-.menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; z-index: 101; }
-.menu-toggle span { display: block; width: 24px; height: 2px; background: var(--ink); margin: 5px 0; transition: 0.3s; }
-.menu-toggle.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-.menu-toggle.active span:nth-child(2) { opacity: 0; }
-.menu-toggle.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-/* Layout & Hero */
-main { margin-top: var(--nav-height); flex-grow: 1; }
-.hero { padding: 80px 0 70px; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 70px; align-items: center; }
-.eyebrow { display: inline-flex; gap: 8px; align-items: center; color: var(--sage); font-size: 12px; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; margin-bottom: 16px; }
-.eyebrow:before { content: ""; width: 26px; height: 1px; background: var(--gold); }
-h1 { font-size: clamp(40px, 6vw, 72px); line-height: 1.05; letter-spacing: -.03em; margin: 0 0 24px; font-weight: 800; }
-h1 em { font-family: 'Lora', Georgia, serif; font-weight: 500; color: var(--sage); font-style: italic; }
-.hero p { font-size: 18px; color: var(--muted); max-width: 580px; margin-bottom: 32px; line-height: 1.6; }
-.actions { display: flex; gap: 16px; flex-wrap: wrap; }
-
-/* Dashboard Card */
-.hero-card { background: var(--dark); color: #fff; border-radius: 32px; padding: 32px; box-shadow: 0 24px 70px rgba(28,42,37,.18); position: relative; overflow: hidden; transform: perspective(1000px) rotateY(-5deg) rotateX(2deg); transition: transform 0.5s ease; }
-.hero-card:hover { transform: perspective(1000px) rotateY(0deg) rotateX(0deg); }
-.hero-card:after { content: ""; position: absolute; width: 300px; height: 300px; border-radius: 50%; border: 1px solid rgba(255,255,255,.08); right: -100px; top: -100px; pointer-events: none; }
-.mini-label { font-size: 11px; letter-spacing: .13em; text-transform: uppercase; color: #bfc9c3; font-weight: 600; }
-.dashboard { margin-top: 24px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 20px; padding: 20px; backdrop-filter: blur(10px); }
-.dash-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.dot { width: 8px; height: 8px; border-radius: 50%; background: #b7c9a9; display: inline-block; margin-right: 8px; box-shadow: 0 0 10px rgba(183,201,169,0.5); }
-.metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.metric { background: rgba(255,255,255,.04); padding: 16px; border-radius: 16px; transition: background 0.3s; }
-.metric:hover { background: rgba(255,255,255,.08); }
-.metric b { display: block; font-size: 28px; line-height: 1.2; margin-bottom: 4px; font-weight: 700; }
-.metric span { font-size: 12px; color: #c5cec9; font-weight: 500; }
-.bar { height: 6px; background: rgba(255,255,255,.1); border-radius: 10px; margin-top: 24px; overflow: hidden; }
-.bar i { display: block; width: 74%; height: 100%; background: #b7c9a9; border-radius: 10px; animation: loadBar 1.5s ease-out forwards; transform-origin: left; }
-.note { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 12px; text-align: right; }
-
-@keyframes loadBar { 0% { transform: scaleX(0); } 100% { transform: scaleX(1); } }
-
-/* Sections */
-.section { padding: 96px 0; }
-.section.alt { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.section-head { max-width: 680px; margin-bottom: 56px; }
-.section-head h2 { font-size: clamp(32px, 4vw, 48px); line-height: 1.1; letter-spacing: -.03em; margin: 0 0 20px; font-weight: 800; }
-.section-head p { color: var(--muted); font-size: 18px; line-height: 1.6; margin: 0; }
-
-/* Grid Cards */
-.grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-.card { padding: 32px 24px; background: var(--surface); border: 1px solid var(--line); border-radius: 24px; transition: transform 0.3s, box-shadow 0.3s; height: 100%; display: flex; flex-direction: column; }
-.card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(23,34,31,.06); }
-.alt .card { background: var(--bg); border-color: rgba(23,34,31,.06); }
-.card .num { font-size: 12px; color: var(--gold); font-weight: 800; letter-spacing: .1em; margin-bottom: 16px; display: inline-block; }
-.card h3 { margin: 0 0 12px; font-size: 20px; font-weight: 700; letter-spacing: -.01em; }
-.card p { color: var(--muted); font-size: 15px; margin: 0; line-height: 1.6; flex-grow: 1; }
-
-/* Flow */
-.flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; align-items: stretch; margin-top: 40px; }
-.flow-item { padding: 28px 24px; border-top: 3px solid var(--sage); background: var(--surface); border-radius: 0 0 20px 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); transition: transform 0.3s; }
-.flow-item:hover { transform: translateY(-4px); }
-.flow-item b { display: block; margin-bottom: 12px; font-size: 18px; font-weight: 700; color: var(--ink); }
-.flow-item span { font-size: 14px; color: var(--muted); line-height: 1.5; }
-
-/* About */
-.about { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 80px; align-items: center; }
-.portrait { height: 460px; border-radius: 32px; background: linear-gradient(135deg, #e4e9e0, #f0ebd9); display: flex; align-items: end; justify-content: center; overflow: hidden; position: relative; }
-.portrait .circle { width: 320px; height: 320px; border-radius: 50%; background: rgba(255,255,255,.5); margin-bottom: -100px; backdrop-filter: blur(5px); }
-.values { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px; }
-.value { padding: 24px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); transition: transform 0.3s; }
-.value:hover { transform: translateY(-2px); border-color: var(--sage); }
-.value b { display: block; margin-bottom: 8px; font-size: 16px; font-weight: 700; }
-.value span { font-size: 14px; color: var(--muted); line-height: 1.5; display: block; }
-.about h2 { font-size: clamp(32px, 4vw, 48px); line-height: 1.1; letter-spacing: -.03em; margin: 16px 0 24px; font-weight: 800; }
-.about p { color: var(--muted); font-size: 17px; line-height: 1.7; margin-bottom: 16px; }
-.about p strong { color: var(--ink); font-weight: 600; }
-
-/* CTA */
-.cta-wrapper { max-width: 1000px; margin: 0 auto; }
-.cta { background: var(--dark); color: #fff; border-radius: 36px; padding: 64px; display: flex; align-items: center; justify-content: space-between; gap: 40px; box-shadow: 0 24px 60px rgba(28,42,37,.2); position: relative; overflow: hidden; }
-.cta:before { content: ""; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(113,136,120,0.15) 0%, rgba(0,0,0,0) 70%); top: -300px; right: -200px; pointer-events: none; }
-.cta h2 { font-size: clamp(32px, 4vw, 48px); line-height: 1.1; margin: 0 0 16px; letter-spacing: -.03em; font-weight: 800; }
-.cta p { color: #c5cec9; max-width: 480px; font-size: 18px; margin: 0; line-height: 1.6; }
-.cta .actions { flex-shrink: 0; }
-
-/* Footer */
-.footer { padding: 48px 0; color: var(--muted); font-size: 14px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); flex-wrap: wrap; gap: 16px; }
-
-/* Responsive */
-@media (max-width: 1024px) {
-  .hero { grid-template-columns: 1fr; gap: 56px; padding-top: 40px; text-align: center; }
-  .hero p { margin-left: auto; margin-right: auto; }
-  .actions { justify-content: center; }
-  .hero-card { transform: none; max-width: 600px; margin: 0 auto; }
-  .hero-card:hover { transform: none; }
-  .about { grid-template-columns: 1fr; gap: 48px; }
-  .portrait { height: 400px; max-width: 600px; margin: 0 auto; }
-}
-
-@media (max-width: 850px) {
-  .menu-toggle { display: block; }
-  .links { position: fixed; top: var(--nav-height); left: 0; right: 0; background: var(--surface); flex-direction: column; padding: 32px 24px; gap: 24px; border-bottom: 1px solid var(--line); box-shadow: 0 10px 20px rgba(0,0,0,0.05); transform: translateY(-100%); opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 99; }
-  .links.active { transform: translateY(0); opacity: 1; visibility: visible; }
-  .links a { font-size: 18px; width: 100%; text-align: center; }
-  .links .btn { display: none; }
-  
-  .grid4, .flow { grid-template-columns: repeat(2, 1fr); }
-  .cta { flex-direction: column; align-items: flex-start; padding: 48px 32px; }
-  .cta-wrapper { padding: 0 16px; }
-}
-
-@media (max-width: 520px) {
-  .grid4, .flow, .values, .metrics { grid-template-columns: 1fr; }
-  .section { padding: 64px 0; }
-  .hero { padding-bottom: 40px; }
-  .footer { flex-direction: column; text-align: center; justify-content: center; }
-  .cta h2 { font-size: 32px; }
-}
-
-/* Animations */
-.fade-in { animation: fadeIn 0.8s ease-out forwards; opacity: 0; transform: translateY(20px); }
-@keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
-
-h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
-.hero-wrapper { background: var(--dark); color: #fff; padding-top: var(--nav-height); border-bottom: 1px solid rgba(255,255,255,0.1); }
-.hero-wrapper .eyebrow, .hero-wrapper p { color: #a1b0aa; }
-.hero-wrapper h1 em { color: var(--gold); }
-.nav-wrapper:not(.scrolled) { background: transparent; border-bottom-color: rgba(255,255,255,0.1); color: #fff; }
-.nav-wrapper:not(.scrolled) .brand small { color: rgba(255,255,255,0.6); }
-.nav-wrapper:not(.scrolled) .links a { color: rgba(255,255,255,0.7); }
-.nav-wrapper:not(.scrolled) .links a:hover { color: #fff; }
-.nav-wrapper:not(.scrolled) .btn.primary { background: var(--gold); color: var(--dark); border-color: var(--gold); }
-.nav-wrapper:not(.scrolled) .menu-toggle span { background: #fff; }
-
-.hero-card {
-    background: rgba(255, 255, 255, 0.03) !important;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 30px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1) !important;
-}
-
-.floating-cta { position: fixed; bottom: 30px; right: 30px; z-index: 90; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-.floating-cta.visible { opacity: 1; visibility: visible; transform: translateY(0); }
-.floating-cta .btn { box-shadow: 0 10px 25px rgba(183, 155, 99, 0.4); background: var(--gold); color: var(--dark); border-color: var(--gold); padding: 16px 28px; font-size: 15px; }
-
-/* Tabs CSS */
-.services-tabs { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; margin-top: 40px; align-items: start; }
-.tab-nav { display: flex; flex-direction: column; gap: 12px; }
-.tab-btn { text-align: left; padding: 20px; background: none; border: 1px solid var(--line); border-radius: 16px; font-size: 18px; font-weight: 600; font-family: 'Playfair Display', serif; cursor: pointer; transition: all 0.3s; color: var(--muted); }
-.tab-btn.active { background: var(--surface); border-color: var(--gold); color: var(--ink); box-shadow: 0 8px 20px rgba(0,0,0,0.03); }
-.tab-pane { display: none; padding: 40px; background: var(--surface); border: 1px solid var(--line); border-radius: 24px; height: 100%; animation: fadeIn 0.4s ease; }
-.tab-pane.active { display: block; }
-.tab-pane h3 { font-size: 24px; margin-top: 0; margin-bottom: 16px; color: var(--ink); }
-.tab-pane p { font-size: 16px; color: var(--muted); line-height: 1.6; }
-
-@media(max-width: 850px) { 
-    .services-tabs { grid-template-columns: 1fr; gap: 24px; } 
-    .tab-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; flex-direction: unset; overflow-x: visible; padding-bottom: 0; } 
-    .tab-btn { white-space: normal; font-size: 15px; padding: 16px 12px; text-align: center; } 
-}
-@media(max-width: 520px) {
-    .tab-nav { grid-template-columns: 1fr; }
-}
-
-/* Kinetic typography word split */
-.split-word { display: inline-block; overflow: hidden; vertical-align: bottom; padding-right: 0.25em; margin-right: -0.25em; }
-.split-word-inner { display: inline-block; transform: translateY(100%); opacity: 0; }
-
-/* Sticky Journey */
-.journey-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
-.journey-sticky { position: sticky; top: 120px; }
-.journey-cards { display: flex; flex-direction: column; gap: 24px; }
-@media(max-width: 850px) { .journey-grid { grid-template-columns: 1fr; } .journey-sticky { position: relative; top: 0; } }
-
-    /* Floating Inputs */
-    .float-input:focus, .float-input:not(:placeholder-shown) { border-color: var(--gold) !important; }
-    .float-input:focus + label, .float-input:not(:placeholder-shown) + label { transform: translateY(-24px) scale(0.85); left: 12px !important; background: #fff; padding: 0 4px; color: var(--gold) !important; }
-    /* Quiz Buttons */
-    .quiz-btn:hover { border-color: var(--gold) !important; color: var(--gold); }
-    
-    /* Remove static fade-in animation, GSAP will handle it */
-    .fade-in { opacity: 0; visibility: hidden; animation: none !important; transform: none !important; }
-    
-    /* Sleeker Flow cards */
-    .flow-item { background: transparent; border: 1px solid var(--line); border-radius: 20px; border-top: 1px solid var(--line); box-shadow: none; padding: 32px 24px; position: relative; overflow: hidden; }
-    .flow-item:before { content:''; position:absolute; top:0; left:0; width:100%; height:4px; background: var(--sage); transform: scaleX(0); transform-origin: left; transition: transform 0.4s; }
-    .flow-item:hover:before { transform: scaleX(1); }
-    
-    /* ROI Custom Range Sliders */
-    input[type=range] { -webkit-appearance: none; background: transparent; }
-    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: var(--gold); cursor: pointer; margin-top: -10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: var(--line); border-radius: 4px; }
-    
-    /* General Cleanups to reduce wordiness */
-    .section-head p { max-width: 500px; margin-top: 12px; }
-    
-
-/* ===== Pricing component ===== */
-.pricing-container { width: min(1280px, 94%); }
-.pricing-head { text-align: center; margin-left: auto; margin-right: auto; max-width: 760px; }
-.pricing-head p { margin-left: auto; margin-right: auto; }
-.pricing-toolbar { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 28px; }
-.currency-toggle { display: inline-flex; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 4px; }
-.curr-btn { padding: 8px 18px; border-radius: 999px; border: 0; background: transparent; color: var(--ink); cursor: pointer; font: 600 14px 'Inter', sans-serif; transition: background .25s, color .25s; }
-.curr-btn.active { background: var(--dark); color: #fff; }
-.curr-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-.pricing-anchor { margin: 0; font-size: 14px; color: var(--muted); }
-.pricing-anchor strong { color: var(--ink); }
-
-.pricing-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 20px; row-gap: 0; margin-top: 64px; align-items: stretch; }
-.plan { --accent: var(--sage); position: relative; display: grid; grid-row: span 8; grid-template-rows: subgrid; row-gap: 0;
-  background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 32px 24px 24px;
-  box-shadow: 0 1px 2px rgba(23,34,31,.04), 0 12px 32px rgba(23,34,31,.04);
-  transition: transform .45s cubic-bezier(.16,1,.3,1), box-shadow .45s, border-color .3s; }
-.plan::before { content: ''; position: absolute; inset: 0 24px auto; height: 3px; border-radius: 0 0 4px 4px; background: var(--accent); opacity: .85; }
-.plan:hover { transform: translateY(-6px); border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); box-shadow: 0 2px 4px rgba(23,34,31,.04), 0 24px 48px color-mix(in srgb, var(--accent) 18%, transparent); }
-
-/* Featured: animated gold border + glow */
-@property --plan-angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
-.plan--featured { border: 2px solid transparent;
-  background: linear-gradient(#fffdf8, #fffaf0) padding-box,
-              conic-gradient(from var(--plan-angle), #b79b63, #f1dfb2, #b79b63, #8c7442, #b79b63) border-box;
-  box-shadow: 0 24px 60px rgba(183,155,99,.22); animation: plan-border-spin 6s linear infinite; z-index: 1; }
-.plan--featured::before { display: none; }
-@keyframes plan-border-spin { to { --plan-angle: 360deg; } }
-
-/* Badges */
-.plan-badge { position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%); display: inline-flex; align-items: center; gap: 6px;
-  padding: 7px 14px; border-radius: 999px; font: 800 11px/1 'Inter', sans-serif; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
-.plan-badge--popular { background: linear-gradient(135deg, #c9ad72, #a8894f); color: #fff; box-shadow: 0 8px 20px rgba(183,155,99,.45); }
-.plan-badge--spots { background: #fff1ef; color: #c2410c; border: 1px solid rgba(194,65,12,.2); box-shadow: 0 6px 16px rgba(194,65,12,.12); }
-.plan-badge-dot { width: 7px; height: 7px; border-radius: 50%; background: #dc2626; animation: pulse-live 2s infinite; }
-
-/* Rows */
-.plan-head { display: flex; gap: 14px; align-items: flex-start; padding-bottom: 20px; }
-.plan-icon { flex: none; width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 13%, transparent); }
-.plan-name { margin: 0; font-family: 'Playfair Display', serif; font-size: 21px; line-height: 1.2; font-weight: 700; }
-.plan-name-accent { color: var(--accent); }
-.plan-best { margin: 6px 0 0; font-size: 13px; line-height: 1.4; color: var(--muted); }
-
-.plan-price { display: flex; align-items: baseline; gap: 6px; white-space: nowrap; }
-.plan-amount { font-size: clamp(32px, 2.7vw, 40px); font-weight: 800; letter-spacing: -.03em; line-height: 1; font-variant-numeric: tabular-nums; }
-.plan-period { font-size: 14px; font-weight: 600; color: var(--muted); }
-.plan-perday { justify-self: start; align-self: start; margin: 12px 0 22px; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700;
-  color: color-mix(in srgb, var(--accent) 80%, #000); background: color-mix(in srgb, var(--accent) 12%, transparent); }
-
-.plan-capacity { padding: 16px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.plan-capacity-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; color: var(--muted); margin-bottom: 10px; }
-.plan-capacity-row strong { font-size: 20px; color: var(--ink); font-weight: 800; }
-.plan-capacity-row small { font-size: 12px; color: var(--muted); font-weight: 600; margin-left: 2px; }
-.plan-meter { height: 6px; border-radius: 99px; background: color-mix(in srgb, var(--accent) 12%, #eee9de); overflow: hidden; }
-.plan-meter i { display: block; height: 100%; width: var(--fill); border-radius: inherit; background: var(--accent); transform-origin: left; }
-.plan.is-visible .plan-meter i { animation: plan-meter-grow 1.2s cubic-bezier(.16,1,.3,1) both; }
-@keyframes plan-meter-grow { from { transform: scaleX(0); } }
-
-.plan-desc { margin: 18px 0 0; font-size: 14.5px; line-height: 1.5; color: var(--ink); font-weight: 500; }
-.plan-features { padding-top: 18px; }
-.plan-features-label { margin: 0 0 10px; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
-.plan-features ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.plan-features li { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; line-height: 1.45; color: var(--ink); }
-.plan-features abbr { text-decoration: underline dotted; cursor: help; }
-.plan-check { flex: none; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; color: var(--accent, var(--sage));
-  background: color-mix(in srgb, var(--accent, var(--sage)) 14%, transparent); margin-top: 1px; }
-
-.plan-stops { align-self: stretch; display: flex; gap: 10px; align-items: flex-start; margin-top: 20px; padding: 12px 14px; border-radius: 14px;
-  background: #fdf3f1; color: #7a3328; font-size: 13px; line-height: 1.45; }
-.plan-stops b { color: #b42318; }
-.plan-x { flex: none; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; color: #fff; background: #d9534f; }
-
-.plan-cta { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; padding: 15px 18px; border-radius: 999px;
-  font-weight: 700; font-size: 14.5px; color: var(--ink); background: transparent; border: 1.5px solid var(--ink);
-  transition: background .3s, color .3s, border-color .3s, box-shadow .3s; }
-.plan-cta svg { transition: transform .3s; }
-.plan-cta:hover { background: var(--ink); color: #fff; }
-.plan-cta:hover svg { transform: translateX(4px); }
-.plan-cta--solid { background: linear-gradient(135deg, #c9ad72, #a8894f); border-color: transparent; color: #fff; box-shadow: 0 10px 24px rgba(183,155,99,.4); }
-.plan-cta--solid:hover { background: linear-gradient(135deg, #b79b63, #8c7442); box-shadow: 0 14px 30px rgba(183,155,99,.5); }
-.plan-cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-
-/* Assurance strip */
-.pricing-assurance { margin-top: 48px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 32px;
-  padding: 22px 28px; border-radius: 20px; background: var(--dark); color: #d6ddd9; }
-.pricing-assurance-msg { font-size: 15px; }
-.pricing-assurance-msg strong { color: var(--gold); }
-.pricing-assurance-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 12px 24px; font-size: 14px; font-weight: 600; color: #fff; }
-.pricing-assurance-list li { display: flex; align-items: center; gap: 8px; }
-.pricing-assurance-list .plan-check { --accent: #b79b63; }
-.pricing-assurance-list a svg { vertical-align: -3px; margin-left: 4px; }
-.pricing-assurance-list a { display: inline; color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
-
-/* Fallback for browsers without subgrid */
-@supports not (grid-template-rows: subgrid) {
-  .plan { display: flex; flex-direction: column; }
-  .plan-perday { align-self: flex-start; }
-  .plan-stops { margin-top: auto; }
-}
-
-@media (max-width: 1100px) {
-  .pricing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 20px; }
-  .plan { display: flex; flex-direction: column; }
-  .plan-perday { align-self: flex-start; }
-  .plan-features { flex-grow: 1; }
-}
-@media (max-width: 680px) {
-  .pricing-grid { grid-template-columns: 1fr; gap: 36px; max-width: 480px; margin-left: auto; margin-right: auto; }
-  .plan--featured { order: -1; }
-  .pricing-assurance { padding: 22px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .plan, .plan-cta, .plan-cta svg { transition: none; }
-  .plan:hover { transform: none; }
-  .plan--featured { animation: none; }
-  .plan.is-visible .plan-meter i { animation: none; }
-}
-</style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script><link as_="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,500;0,700;0,800;1,500&amp;display=swap" rel="preload"/><script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "EZER Customer Experience", "description": "Virtual Business Support in Johor, Kuala Lumpur & Singapore", "areaServed": ["Johor", "Kuala Lumpur", "Singapore"]}</script><script src="config.js"></script></head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EZER — Customer Experience &amp; Business Support for SMEs in Johor, KL &amp; Singapore</title>
+<meta name="description" content="EZER is your outsourced front desk and follow-up team. We reply to every enquiry, chase every quote and keep your customer records organised — month-to-month, from RM300.">
+<meta property="og:title" content="EZER — Stop missing enquiries. Start converting them.">
+<meta property="og:description" content="Outsourced enquiry handling, follow-ups and customer support for growing businesses in Johor, Kuala Lumpur and Singapore.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0a120f">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a120f'/%3E%3Ctext x='50%25' y='56%25' text-anchor='middle' dominant-baseline='middle' font-family='Georgia,serif' font-size='38' font-weight='700' fill='%23b79b63'%3EE%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&amp;display=swap">
+<link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.add('js');</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"EZER Customer Experience & Business Support","description":"Outsourced enquiry handling, lead follow-up and customer experience support for small and medium businesses.","areaServed":["Johor","Kuala Lumpur","Singapore"],"priceRange":"RM300 - RM2,000 per month"}</script>
+<script src="config.js" defer></script>
+<script src="main.js" defer></script>
+</head>
 <body>
-<div class="root">
-<div class="nav-wrapper" id="nav-wrapper">
-<header class="container nav">
-<a class="brand" href="#top">EZER<small>CUSTOMER EXPERIENCE &amp; BUSINESS SUPPORT</small></a>
-<nav class="links" id="nav-links">
-<a href="#services">Services</a>
-<a href="#how">How it works</a>
-<a href="#packages">Packages</a>
-<a href="#about">About</a>
-<a class="btn primary mobile-only" href="#contact" style="display: none;">Stop Losing Leads</a>
-</nav>
-<div style="display: flex; align-items: center; gap: 16px;">
-<a class="btn primary desktop-only" href="#contact">Stop Losing Leads</a>
-<button aria-label="Toggle menu" class="menu-toggle" id="menu-toggle">
-<span></span><span></span><span></span>
-</button>
-</div>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ============================== NAV ============================== -->
+<header class="nav" id="nav">
+  <div class="container nav__inner">
+    <a class="brand" href="#top" aria-label="EZER home">EZER<small>CUSTOMER EXPERIENCE &amp; BUSINESS SUPPORT</small></a>
+    <nav class="nav__links" id="navLinks" aria-label="Main">
+      <a href="#what">How it works</a>
+      <a href="#services">Services</a>
+      <a href="#packages">Pricing</a>
+      <a href="#about">About</a>
+      <a href="#faq" data-faq-link hidden>FAQ</a>
+      <a class="btn btn--primary nav__menu-cta" href="#contact">Get my free workflow check</a>
+    </nav>
+    <div class="nav__actions">
+      <a class="btn btn--nav" href="#contact">Free workflow check</a>
+      <button class="nav__toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
+    </div>
+  </div>
 </header>
-</div>
-<main id="top">
-<div class="hero-wrapper"><section class="container hero">
-<div class="fade-in">
-<div class="eyebrow">Customer Experience · Business Support</div>
-<h1 class="kinetic-text">Stop missing enquiries.<br/><em>We help you recover up to 40% of lost leads.</em></h1>
-<p>EZER helps growing businesses manage enquiries, follow-ups and customer relationships through thoughtful service, organised systems and smart technology.</p>
-<div class="actions">
-<a aria-label="Stop Losing Leads - Book Consultation" class="btn primary magnetic-btn" href="#contact">Stop Losing Leads</a>
-<a aria-label="Explore Services" class="btn ghost magnetic-btn" href="#services">Stop Missing Leads</a>
-</div>
-</div>
-<div class="hero-card fade-in" style="animation-delay: 0.2s;">
-<div class="mini-label">EZER Client Snapshot</div>
-<div class="dashboard">
-<div class="dash-head">
-<span><i class="dot"></i>Customer Journey</span>
-<span class="mini-label">Sample</span>
-</div>
-<div class="metrics">
-<div class="metric"><b>86</b><span>New enquiries</span></div>
-<div class="metric"><b>74</b><span>Follow-ups completed</span></div>
-<div class="metric"><b>31</b><span>Appointments</span></div>
-<div class="metric"><b>18</b><span>Customers converted</span></div>
-</div>
-<div class="bar"><i></i></div>
-<div class="note">Sample dashboard · illustrative figures</div>
-</div>
-</div>
+
+<main id="main">
+<!-- ============================== 1. HERO ============================== -->
+<section class="hero" id="top" aria-labelledby="heroTitle">
+  <div class="container hero__grid">
+    <div class="hero__copy">
+      <p class="eyebrow">Customer experience · Business support</p>
+      <h1 id="heroTitle">Stop missing enquiries. <em>Start converting them.</em></h1>
+      <p class="hero__lead">EZER is your outsourced front desk and follow-up team. We reply to every enquiry, chase every quote and keep your customer records tidy, so you can run the business instead of the inbox.</p>
+      <div class="hero__actions">
+        <a class="btn btn--gold" href="#contact">Get my free workflow check <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11m-4-4.5L15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a class="btn btn--ghost-light" href="#what">See how it works</a>
+      </div>
+      <ul class="trust-row" aria-label="Key facts">
+        <li><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Month-to-month</li>
+        <li><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>First 14 days risk-free</li>
+        <li><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Johor · Kuala Lumpur · Singapore</li>
+      </ul>
+    </div>
+
+    <figure class="inbox" aria-label="Illustration: EZER replying to customer enquiries and following up">
+      <div class="inbox__bar">
+        <span class="inbox__title"><i class="inbox__live" aria-hidden="true"></i>Your shared inbox · handled by EZER</span>
+        <span class="inbox__tag">Illustration</span>
+      </div>
+      <div class="inbox__thread" aria-hidden="true">
+        <div class="msg msg--in" style="--t:.3s">Hi, do you have a slot this Saturday for a facial?<small>Aina · WhatsApp · 9:02 PM</small></div>
+        <div class="msg msg--typing" style="--t:1.1s; --t-out:2.1s"><i></i><i></i><i></i></div>
+        <div class="msg msg--out" style="--t:2.2s">Hi Aina! Yes, we have 11:00 AM or 3:00 PM this Saturday. Which suits you better? 😊<small>EZER for Glow Studio · 9:04 PM</small></div>
+        <div class="msg msg--in" style="--t:3.4s">3pm please!<small>Aina · 9:05 PM</small></div>
+        <div class="msg msg--event" style="--t:4.3s">✓ Booked Sat 3:00 PM · reminder set for Friday</div>
+        <div class="msg msg--event" style="--t:5.2s">↻ Day-2 quote follow-up sent to Mr Tan</div>
+      </div>
+      <div class="inbox__stats">
+        <div class="inbox__stat"><b>2 min</b><span>first reply</span></div>
+        <div class="inbox__stat"><b>0</b><span>unanswered</span></div>
+        <div class="inbox__stat"><b>Every</b><span>quote chased</span></div>
+      </div>
+      <figcaption class="inbox__note">Sample conversation for illustration</figcaption>
+    </figure>
+  </div>
 </section>
-<div class="logo-ticker-wrapper" style="background: var(--dark); padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.05); overflow: hidden; white-space: nowrap;">
-<div class="eyebrow" style="text-align:center; display:block; margin-bottom:16px;">Trusted by growing businesses</div>
-<div id="logoTicker" style="display: inline-block; white-space: nowrap; animation: ticker 20s linear infinite;">
-<!-- Populated by JS -->
+
+<div class="logo-strip" id="logoStrip" hidden>
+  <p>Trusted by growing businesses</p>
+  <div class="logo-strip__track"></div>
 </div>
-<style>
-                @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-                .ticker-logo { height: 40px; margin: 0 40px; opacity: 0.5; filter: grayscale(100%) invert(100%); transition: 0.3s; }
-                .ticker-logo:hover { opacity: 1; }
-            
-</style>
-</div>
-</div>
-<section class="section alt" id="who-is-this-for">
-<div class="container" style="text-align: center;">
-<div class="section-head fade-in" style="margin: 0 auto 40px;">
-<div class="eyebrow">Who is this for?</div>
-<h2>Perfect for Coaches, Agencies, and E-commerce.</h2>
-<p>If you have high enquiry volume but struggle to keep up with follow-ups, we are your growth engine.</p>
-</div>
-<div class="hours-saved-wrapper fade-in" style="background: var(--surface); padding: 40px; border-radius: 24px; border: 1px solid var(--line); display: inline-block; min-width: 300px;">
-<div class="metric">
-<b id="hoursSavedCounter" style="font-size: 48px; color: var(--gold); font-family: 'Playfair Display', serif;">14,250</b>
-<span style="font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; color: var(--ink); display: block; margin-top: 8px;">Hours of Admin Saved</span>
-</div>
-</div>
-</div>
+
+<!-- ============================== 2. PAINS ============================== -->
+<section class="section" id="problem" aria-labelledby="problemTitle">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">Sound familiar?</p>
+      <h2 id="problemTitle">You have the demand. <span class="accent">Enquiries are slipping through the cracks.</span></h2>
+      <p>Most growing businesses don't lose customers because of their product. They lose them in the gap between "Hi, how much?" and a reply.</p>
+    </div>
+    <div class="grid-4">
+      <article class="card" data-reveal style="--d:.05s">
+        <div class="card__icon card__icon--danger"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 8v4M12 15.5h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <h3>Missed enquiries</h3>
+        <p>It's 11 PM, you're exhausted, and there are still 14 unread DMs. By morning, half have messaged a competitor.</p>
+      </article>
+      <article class="card" data-reveal style="--d:.12s">
+        <div class="card__icon card__icon--danger"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7.5V12l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <h3>Forgotten follow-ups</h3>
+        <p>You sent the quote. Nobody chased it. A warm lead quietly goes cold.</p>
+      </article>
+      <article class="card" data-reveal style="--d:.19s">
+        <div class="card__icon card__icon--danger"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h10M4 12h16M4 18h7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <h3>Scattered information</h3>
+        <p>Customer details live across WhatsApp, notebooks and three different spreadsheets.</p>
+      </article>
+      <article class="card" data-reveal style="--d:.26s">
+        <div class="card__icon card__icon--danger"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 20c.6-3.6 3.4-6 7-6s6.4 2.4 7 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <h3>Owner overload</h3>
+        <p>You answer the same basic questions every day instead of growing the business.</p>
+      </article>
+    </div>
+
+    <div class="industries" data-reveal>
+      <p class="industries__label">Built for businesses like yours. Tap yours:</p>
+      <div class="chips" role="group" aria-label="Choose your industry">
+        <button class="chip" type="button" aria-pressed="true" data-industry="Patients asking about slots at 10 PM get a reply and a booking, not silence until morning.">Clinics &amp; wellness</button>
+        <button class="chip" type="button" aria-pressed="false" data-industry="Every DM about prices and availability gets answered, and appointment reminders cut no-shows.">Salons &amp; beauty</button>
+        <button class="chip" type="button" aria-pressed="false" data-industry="Every quotation is chased on a schedule until you get a clear yes or no.">Renovation &amp; contractors</button>
+        <button class="chip" type="button" aria-pressed="false" data-industry="Viewing requests are logged, confirmed and followed up while you're on site with another client.">Property agents</button>
+        <button class="chip" type="button" aria-pressed="false" data-industry="Parent enquiries are answered quickly, trial classes booked and renewals reminded.">Tuition &amp; education</button>
+        <button class="chip" type="button" aria-pressed="false" data-industry="Event and catering enquiries are quoted and followed up before they book someone else.">F&amp;B &amp; catering</button>
+        <button class="chip" type="button" aria-pressed="false" data-industry="Order, delivery and product questions are handled quickly so buyers don't drift away.">E-commerce</button>
+        <button class="chip" type="button" aria-pressed="false" data-industry="Client onboarding, document chasing and renewal reminders stay on schedule.">Professional services</button>
+      </div>
+      <p class="industries__example" id="industryExample" aria-live="polite"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4.5 13.5H11L10 22l8.5-11.5H12z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Patients asking about slots at 10 PM get a reply and a booking, not silence until morning.</span></p>
+    </div>
+  </div>
 </section>
-<section class="section alt">
-<div class="container">
-<div class="section-head fade-in">
-<div class="eyebrow">The opportunity</div>
-<h2>Where are your customers falling through the cracks?</h2>
-<p>Growing businesses often have the demand — but not enough time or structure to consistently manage every enquiry.</p>
-</div>
-<div class="grid4">
-<div class="card fade-in" style="animation-delay: 0.1s;">
-<span class="num">01</span>
-<h3>Missed enquiries</h3>
-<p>It's 11 PM, you're exhausted, and you still have 14 DMs to answer.</p>
-</div>
-<div class="card fade-in" style="animation-delay: 0.2s;">
-<span class="num">02</span>
-<h3>Forgotten follow-ups</h3>
-<p>A warm lead slips away because no one remembered to check back in.</p>
-</div>
-<div class="card fade-in" style="animation-delay: 0.3s;">
-<span class="num">03</span>
-<h3>Scattered information</h3>
-<p>Customer details are lost across WhatsApp, random notes, and chaotic sheets.</p>
-</div>
-<div class="card fade-in" style="animation-delay: 0.4s;">
-<span class="num">04</span>
-<h3>Owner overload</h3>
-<p>You're spending 15 hours a week answering the same basic questions.</p>
-</div>
-</div>
-</div>
+
+<!-- ============================== 3. WHAT IS BUSINESS SUPPORT ============================== -->
+<section class="section section--surface" id="what" aria-labelledby="whatTitle">
+  <div class="container">
+    <div class="section-head section-head--center" data-reveal>
+      <p class="eyebrow">Business support, explained</p>
+      <h2 id="whatTitle">Think of EZER as your front desk and follow-up team, <span class="accent">without the hire.</span></h2>
+      <p>You keep running the business. We take care of the conversations and admin that turn enquiries into paying customers.</p>
+    </div>
+    <div class="explain">
+      <article class="explain__col" data-reveal style="--d:.05s">
+        <span class="explain__kicker">We handle</span>
+        <h3>The daily customer admin</h3>
+        <ul class="ticks">
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Replying to WhatsApp and email enquiries</li>
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Booking appointments and sending reminders</li>
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Chasing quotations and warm leads</li>
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Keeping customer records up to date</li>
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Simple reports on what's working</li>
+        </ul>
+      </article>
+      <article class="explain__col" data-reveal style="--d:.12s">
+        <span class="explain__kicker">You keep</span>
+        <h3>Full control of your business</h3>
+        <ul class="ticks">
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>The final say on pricing, deals and exceptions</li>
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Your brand voice. We follow your guidelines</li>
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>The service or product you deliver</li>
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Ownership of your customer data</li>
+        </ul>
+      </article>
+      <article class="explain__col explain__col--feature" data-reveal style="--d:.19s">
+        <span class="explain__kicker">You get back</span>
+        <h3>Time, sales and peace of mind</h3>
+        <ul class="ticks">
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Evenings no longer spent clearing DMs</li>
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Faster replies, so more enquiries become sales</li>
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>A clear view of every lead and where it stands</li>
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>A business that doesn't stop when you step away</li>
+        </ul>
+      </article>
+    </div>
+  </div>
 </section>
-<section class="section alt" id="quiz">
-<div class="container">
-<div class="quiz-container fade-in" style="max-width: 600px; margin: 0 auto; background: #fff; padding: 40px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.04); border: 1px solid var(--line);">
-<div class="eyebrow" style="margin-bottom:24px;">Find Your Bottleneck</div>
-<div class="quiz-step" id="quiz-step-1">
-<h3 style="font-size:24px; margin-top:0;">What's your biggest daily headache?</h3>
-<button class="quiz-btn" onclick="nextQuiz(2, 'foundation')" style="display:block; width:100%; text-align:left; padding:16px; margin-bottom:12px; background:var(--surface); border:1px solid var(--line); border-radius:12px; cursor:pointer; font-size:16px;">Answering the same basic DMs over and over.</button>
-<button class="quiz-btn" onclick="nextQuiz(2, 'scaling')" style="display:block; width:100%; text-align:left; padding:16px; margin-bottom:12px; background:var(--surface); border:1px solid var(--line); border-radius:12px; cursor:pointer; font-size:16px;">Warm leads slipping away because I forgot to follow up.</button>
-<button class="quiz-btn" onclick="nextQuiz(2, 'automator')" style="display:block; width:100%; text-align:left; padding:16px; margin-bottom:12px; background:var(--surface); border:1px solid var(--line); border-radius:12px; cursor:pointer; font-size:16px;">Keeping my chaotic operations and CRM organized.</button>
-</div>
-<div class="quiz-step" id="quiz-step-2" style="display:none;">
-<h3 style="font-size:24px; margin-top:0;">How many enquiries do you get a week?</h3>
-<button class="quiz-btn" onclick="showQuizResult()" style="display:block; width:100%; text-align:left; padding:16px; margin-bottom:12px; background:var(--surface); border:1px solid var(--line); border-radius:12px; cursor:pointer; font-size:16px;">Under 50</button>
-<button class="quiz-btn" onclick="showQuizResult()" style="display:block; width:100%; text-align:left; padding:16px; margin-bottom:12px; background:var(--surface); border:1px solid var(--line); border-radius:12px; cursor:pointer; font-size:16px;">50 to 120</button>
-<button class="quiz-btn" onclick="showQuizResult()" style="display:block; width:100%; text-align:left; padding:16px; margin-bottom:12px; background:var(--surface); border:1px solid var(--line); border-radius:12px; cursor:pointer; font-size:16px;">More than 120</button>
-</div>
-<div id="quiz-result" style="display:none; text-align:center;">
-<h3 style="font-size:28px; margin-top:0; color:var(--gold);">We Found Your Match</h3>
-<p style="font-size:16px; color:var(--muted);">Based on your operations, we recommend <strong><span id="quizRecommendation">The Scaling Engine</span></strong>.</p>
-<a class="btn primary" href="#packages" onclick="document.getElementById('quiz-result').style.display='none'; document.getElementById('quiz-step-1').style.display='block';">View Package Details</a>
-</div>
-</div>
-</div>
+
+<!-- ============================== 4. A DAY WITH EZER ============================== -->
+<section class="section" id="day" aria-labelledby="dayTitle">
+  <div class="container">
+    <div class="section-head section-head--center" data-reveal>
+      <p class="eyebrow">A day with EZER</p>
+      <h2 id="dayTitle">What actually happens <span class="accent">while you run your business.</span></h2>
+      <p>Here's a typical day for a renovation company working with EZER.</p>
+    </div>
+    <div class="day">
+      <span class="day__progress" aria-hidden="true"></span>
+      <ol class="day__list">
+      <li class="day__item" data-reveal><span class="day__time">9:02 AM</span><span class="day__dot" aria-hidden="true"></span><div class="day__card"><h3>New enquiry arrives <span class="day__badge">Respond</span></h3><p>"How much for kitchen cabinets?" We reply within minutes using your approved price guide and ask the right qualifying questions.</p></div></li>
+      <li class="day__item" data-reveal><span class="day__time">10:30 AM</span><span class="day__dot" aria-hidden="true"></span><div class="day__card"><h3>Lead logged <span class="day__badge">Organise</span></h3><p>Name, need, budget and source go into your customer list. Nothing lives only inside a chat any more.</p></div></li>
+      <li class="day__item" data-reveal><span class="day__time">1:15 PM</span><span class="day__dot" aria-hidden="true"></span><div class="day__card"><h3>Site visit booked <span class="day__badge">Convert</span></h3><p>Thursday 10 AM confirmed on your calendar, with a reminder scheduled for the day before.</p></div></li>
+      <li class="day__item" data-reveal><span class="day__time">3:40 PM</span><span class="day__dot" aria-hidden="true"></span><div class="day__card"><h3>Last week's quote chased <span class="day__badge">Follow up</span></h3><p>A friendly day-2 follow-up goes out. The customer replies: "Let's proceed." You get a heads-up to confirm.</p></div></li>
+      <li class="day__item day__item--off" data-reveal><span class="day__time">6:00 PM</span><span class="day__dot" aria-hidden="true"></span><div class="day__card"><h3>You switch off</h3><p>Evening enquiries are captured and queued, so none are lost overnight.</p></div></li>
+      <li class="day__item" data-reveal><span class="day__time">Friday</span><span class="day__dot" aria-hidden="true"></span><div class="day__card"><h3>Your report lands <span class="day__badge">Report</span></h3><p>Enquiries received, replied, booked and won, readable on your phone in two minutes.</p></div></li>
+      </ol>
+    </div>
+    <p class="day__note">Illustrative example. Your workflow is set up around your own business, channels and plan.</p>
+  </div>
 </section>
-<section class="section">
-<div class="container">
-<div class="section-head fade-in">
-<div class="eyebrow">The EZER difference</div>
-<h2>From enquiry to relationship.</h2>
-<p>We bring structure to the customer journey so fewer opportunities are forgotten.</p>
-</div>
-<div class="flow fade-in" style="animation-delay: 0.2s;">
-<div class="flow-item"><b>Enquiry</b><span>Customer reaches out.</span></div>
-<div class="flow-item"><b>Respond</b><span>Professional, timely communication.</span></div>
-<div class="flow-item"><b>Follow up</b><span>Every lead has a next step.</span></div>
-<div class="flow-item"><b>Convert</b><span>Appointments and quotations move forward.</span></div>
-<div class="flow-item"><b>Retain</b><span>Better care after the sale.</span></div>
-</div>
-</div>
+
+<!-- ============================== 5. THE EZER METHOD ============================== -->
+<section class="section section--dark" id="method" aria-labelledby="methodTitle">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">The EZER method</p>
+      <h2 id="methodTitle" style="color:#fff">Five steps from <span class="accent">"Hi, how much?"</span> to a loyal customer.</h2>
+      <p>Each step closes a gap where small businesses typically lose sales. Tap a step to see what we do and why it matters.</p>
+    </div>
+    <div class="stepper" data-tabs data-reveal>
+      <ul class="stepper__list" role="tablist" aria-label="EZER method steps">
+        <li role="presentation"><button class="stepper__btn" role="tab" id="step-tab-1" aria-controls="step-1" aria-selected="true" tabindex="0"><span class="stepper__num">1</span><span>Capture</span></button></li>
+        <li role="presentation"><button class="stepper__btn" role="tab" id="step-tab-2" aria-controls="step-2" aria-selected="false" tabindex="-1"><span class="stepper__num">2</span><span>Respond</span></button></li>
+        <li role="presentation"><button class="stepper__btn" role="tab" id="step-tab-3" aria-controls="step-3" aria-selected="false" tabindex="-1"><span class="stepper__num">3</span><span>Follow up</span></button></li>
+        <li role="presentation"><button class="stepper__btn" role="tab" id="step-tab-4" aria-controls="step-4" aria-selected="false" tabindex="-1"><span class="stepper__num">4</span><span>Convert</span></button></li>
+        <li role="presentation"><button class="stepper__btn" role="tab" id="step-tab-5" aria-controls="step-5" aria-selected="false" tabindex="-1"><span class="stepper__num">5</span><span>Retain</span></button></li>
+      </ul>
+
+      <div class="stepper__panel" role="tabpanel" id="step-1" aria-labelledby="step-tab-1" tabindex="0">
+        <h3>Capture every enquiry</h3>
+        <p>Enquiries arrive through WhatsApp, email and social media. We make sure every single one is seen, logged and owned. No more "I thought you replied to that one."</p>
+        <div class="stepper__cols">
+          <div class="stepper__box"><h4>What we do</h4><ul><li>Monitor your agreed channels</li><li>Log every lead in one tracker</li><li>Tag source, need and urgency</li></ul></div>
+          <div class="stepper__box"><h4>Why it matters</h4><p class="stat-big">7×</p><p class="stat-text">Firms that contacted leads within an hour were nearly 7 times more likely to qualify them than firms that waited longer.</p><p class="stat-src">Source: Harvard Business Review, "The Short Life of Online Sales Leads" (2011)</p></div>
+        </div>
+      </div>
+      <div class="stepper__panel" role="tabpanel" id="step-2" aria-labelledby="step-tab-2" tabindex="0" hidden>
+        <h3>Respond while they're still interested</h3>
+        <p>The first business to reply often wins. We answer quickly and professionally, in your tone, using information you've approved.</p>
+        <div class="stepper__cols">
+          <div class="stepper__box"><h4>What we do</h4><ul><li>Fast, friendly first replies</li><li>Answer common questions</li><li>Ask the right qualifying questions</li></ul></div>
+          <div class="stepper__box"><h4>Why it matters</h4><p class="stat-big">5 min</p><p class="stat-text">In the Lead Response Management Study, the odds of qualifying a lead dropped sharply once the first response took longer than five minutes.</p><p class="stat-src">Source: Lead Response Management Study (Oldroyd, MIT / InsideSales.com, 2007)</p></div>
+        </div>
+      </div>
+      <div class="stepper__panel" role="tabpanel" id="step-3" aria-labelledby="step-tab-3" tabindex="0" hidden>
+        <h3>Follow up until there's a decision</h3>
+        <p>Most customers don't buy on the first message. A polite, scheduled follow-up keeps you in the conversation until they say yes or no.</p>
+        <div class="stepper__cols">
+          <div class="stepper__box"><h4>What we do</h4><ul><li>Scheduled quote follow-ups</li><li>Re-engage quiet leads</li><li>Flag hot leads to you quickly</li></ul></div>
+          <div class="stepper__box"><h4>Why it matters</h4><p class="stat-text" style="margin-top:0">Every quote you send has already cost you time to prepare. A structured follow-up makes sure that effort turns into a decision instead of being forgotten.</p></div>
+        </div>
+      </div>
+      <div class="stepper__panel" role="tabpanel" id="step-4" aria-labelledby="step-tab-4" tabindex="0" hidden>
+        <h3>Convert interest into a date in your calendar</h3>
+        <p>We turn "maybe" into a clear next step: a booked appointment, a confirmed site visit, or a quote accepted, all with reminders.</p>
+        <div class="stepper__cols">
+          <div class="stepper__box"><h4>What we do</h4><ul><li>Appointment coordination</li><li>Reminders to reduce no-shows</li><li>Hand over ready-to-close leads</li></ul></div>
+          <div class="stepper__box"><h4>Why it matters</h4><p class="stat-text" style="margin-top:0">A clear next step, with a time and a reminder, is what turns a conversation into revenue. Without it, interest fades.</p></div>
+        </div>
+      </div>
+      <div class="stepper__panel" role="tabpanel" id="step-5" aria-labelledby="step-tab-5" tabindex="0" hidden>
+        <h3>Retain customers so they come back</h3>
+        <p>Your cheapest sale is to a customer who already trusts you. We help with after-sale care, feedback and renewal reminders.</p>
+        <div class="stepper__cols">
+          <div class="stepper__box"><h4>What we do</h4><ul><li>After-sale check-ins</li><li>Feedback collection</li><li>Renewal and rebooking reminders</li></ul></div>
+          <div class="stepper__box"><h4>Why it matters</h4><p class="stat-big">25–95%</p><p class="stat-text">Increasing customer retention by 5% can increase profits by 25% to 95%.</p><p class="stat-src">Source: Frederick F. Reichheld, Bain &amp; Company</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
-<section class="section alt" id="services">
-<div class="container">
-<div class="section-head fade-in">
-<div class="eyebrow">What we do</div>
-<h2>Human care. Smarter systems.</h2>
-</div>
-<div class="services-tabs fade-in">
-<div class="tab-nav">
-<button class="tab-btn active" data-target="tab-0">Customer Experience</button>
-<button class="tab-btn" data-target="tab-1">Lead &amp; Follow-Up</button>
-<button class="tab-btn" data-target="tab-2">Business Support</button>
-<button class="tab-btn" data-target="tab-3">AI &amp; Automation</button>
-</div>
-<div class="tab-content-container">
-<div class="tab-pane active" id="tab-0"><h3>Customer Experience</h3><p>Enquiry handling, customer communication, appointment coordination and feedback tracking.</p></div>
-<div class="tab-pane" id="tab-1"><h3>Lead &amp; Follow-Up</h3><p>Lead tracking, quotation follow-ups, appointment follow-ups and lost-lead recovery.</p></div>
-<div class="tab-pane" id="tab-2"><h3>Business Support</h3><p><span style="border-bottom:1px dotted var(--muted); cursor:help;" title="Customer Relationship Management software">CRM</span> updates, customer databases, reporting, SOPs and workflow organisation.</p></div>
-<div class="tab-pane" id="tab-3"><h3>AI &amp; Automation</h3><p>AI-assisted responses, reminders, reporting and practical process automation.</p></div>
-</div>
-</div>
-</div>
+
+<!-- ============================== 6. SERVICES ============================== -->
+<section class="section section--surface" id="services" aria-labelledby="servicesTitle">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">What we do</p>
+      <h2 id="servicesTitle">Human care. <span class="accent">Smarter systems.</span></h2>
+      <p>Choose an area to see example tasks, and which plan each one starts from.</p>
+    </div>
+    <div class="tabs" data-tabs data-reveal>
+      <div class="tabs__list" role="tablist" aria-label="Service areas">
+        <button class="tabs__tab" role="tab" id="svc-tab-1" aria-controls="svc-1" aria-selected="true" tabindex="0"><span class="card__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>Customer Experience</button>
+        <button class="tabs__tab" role="tab" id="svc-tab-2" aria-controls="svc-2" aria-selected="false" tabindex="-1"><span class="card__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4v8a3 3 0 0 0 6 0V4h4v8a7 7 0 0 1-14 0zM5 8h4M15 8h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>Lead &amp; Follow-Up</button>
+        <button class="tabs__tab" role="tab" id="svc-tab-3" aria-controls="svc-3" aria-selected="false" tabindex="-1"><span class="card__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 9h8M8 13h8M8 17h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>Business Support</button>
+        <button class="tabs__tab" role="tab" id="svc-tab-4" aria-controls="svc-4" aria-selected="false" tabindex="-1"><span class="card__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4.5 13.5H11L10 22l8.5-11.5H12z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>AI &amp; Automation</button>
+      </div>
+      <div class="tabs__panel" role="tabpanel" id="svc-1" aria-labelledby="svc-tab-1" tabindex="0">
+        <h3>Customer Experience</h3>
+        <p>Every customer gets a prompt, professional and friendly response, the way you would reply if you had the time.</p>
+        <ul class="tasks">
+          <li><span class="tasks__name">WhatsApp &amp; email enquiry replies</span><a class="plan-tag" href="#packages" data-plan-link="trial">From Trial Run</a></li>
+          <li><span class="tasks__name">Same-day replies to every enquiry</span><a class="plan-tag" href="#packages" data-plan-link="catcher">From Lead Catcher</a></li>
+          <li><span class="tasks__name">Appointment coordination &amp; reminders</span><a class="plan-tag" href="#packages" data-plan-link="engine">From Follow-Up Engine</a></li>
+          <li><span class="tasks__name">Customer feedback analysis</span><a class="plan-tag" href="#packages" data-plan-link="team">All-In-One Team</a></li>
+        </ul>
+      </div>
+      <div class="tabs__panel" role="tabpanel" id="svc-2" aria-labelledby="svc-tab-2" tabindex="0" hidden>
+        <h3>Lead &amp; Follow-Up</h3>
+        <p>Every lead is recorded and has a clear next step, so nothing is left to memory.</p>
+        <ul class="tasks">
+          <li><span class="tasks__name">Every lead logged in one tracker</span><a class="plan-tag" href="#packages" data-plan-link="trial">From Trial Run</a></li>
+          <li><span class="tasks__name">Basic follow-up on open enquiries</span><a class="plan-tag" href="#packages" data-plan-link="catcher">From Lead Catcher</a></li>
+          <li><span class="tasks__name">Quotation follow-ups on a schedule</span><a class="plan-tag" href="#packages" data-plan-link="engine">From Follow-Up Engine</a></li>
+          <li><span class="tasks__name">5-minute response target (business hours)</span><a class="plan-tag" href="#packages" data-plan-link="engine">From Follow-Up Engine</a></li>
+        </ul>
+      </div>
+      <div class="tabs__panel" role="tabpanel" id="svc-3" aria-labelledby="svc-tab-3" tabindex="0" hidden>
+        <h3>Business Support</h3>
+        <p>Organised records, clear reports and documented processes, so the business runs consistently.</p>
+        <ul class="tasks">
+          <li><span class="tasks__name">Customer database kept up to date</span><a class="plan-tag" href="#packages" data-plan-link="catcher">From Lead Catcher</a></li>
+          <li><span class="tasks__name"><abbr title="Customer Relationship Management">CRM</abbr> management &amp; weekly report</span><a class="plan-tag" href="#packages" data-plan-link="engine">From Follow-Up Engine</a></li>
+          <li><span class="tasks__name">SOPs written for your business</span><a class="plan-tag" href="#packages" data-plan-link="team">All-In-One Team</a></li>
+          <li><span class="tasks__name">Monthly owner strategy review</span><a class="plan-tag" href="#packages" data-plan-link="team">All-In-One Team</a></li>
+        </ul>
+      </div>
+      <div class="tabs__panel" role="tabpanel" id="svc-4" aria-labelledby="svc-tab-4" tabindex="0" hidden>
+        <h3>AI &amp; Automation</h3>
+        <p>Practical technology that makes replies faster and reminders automatic, always checked by a real person.</p>
+        <ul class="tasks">
+          <li><span class="tasks__name">AI-assisted reply drafting</span><a class="plan-tag" href="#packages" data-plan-link="catcher">From Lead Catcher</a></li>
+          <li><span class="tasks__name">Conversion &amp; feedback analysis</span><a class="plan-tag" href="#packages" data-plan-link="team">All-In-One Team</a></li>
+          <li><span class="tasks__name">Basic automation set up</span><a class="plan-tag" href="#packages" data-plan-link="team">All-In-One Team</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </section>
-<section class="section" id="how"><div class="container"><div class="section-head fade-in"><div class="eyebrow">Why work with me</div><h2>Experience that connects sales and service.</h2><p>EZER brings practical experience across the customer journey, from first enquiry to follow-up and retention.</p></div><div class="grid4"><div class="card fade-in" style="animation-delay: 0.1s;"><span class="num">01</span><h3>Sales &amp; Relationships</h3><p>Experience managing client relationships, renewals, quotations and sales follow-ups.</p></div><div class="card fade-in" style="animation-delay: 0.2s;"><span class="num">02</span><h3>Customer Experience</h3><p>Professional communication, enquiry handling, complaints and customer care.</p></div><div class="card fade-in" style="animation-delay: 0.3s;"><span class="num">03</span><h3><span style="border-bottom:1px dotted var(--muted); cursor:help;" title="Customer Relationship Management software">CRM</span> &amp; Operations</h3><p>Hands-on experience organising customer information, workflows and business systems.</p></div><div class="card fade-in" style="animation-delay: 0.4s;"><span class="num">04</span><h3>Leadership</h3><p>Team leadership experience with a focus on accountability, service quality and results.</p></div></div></div></section><section class="section alt" id="packages">
+
+<!-- ============================== 7. COMPARISON ============================== -->
+<section class="section" id="compare" aria-labelledby="compareTitle">
+  <div class="container">
+    <div class="section-head section-head--center" data-reveal>
+      <p class="eyebrow">Compare your options</p>
+      <h2 id="compareTitle">Doing it yourself, hiring, <span class="accent">or EZER?</span></h2>
+      <p>Every business already pays for customer admin, either with your own time or with a salary. Here's how the options compare.</p>
+    </div>
+    <div class="compare-wrap" data-reveal>
+      <table class="compare">
+        <caption class="visually-hidden">Comparison of doing customer admin yourself, hiring a full-time admin, and using EZER</caption>
+        <thead>
+          <tr><th scope="col"><span class="visually-hidden">Criteria</span></th><th scope="col">Do it yourself</th><th scope="col">Hire full-time admin</th><th scope="col" class="is-ezer"><span>Recommended</span>EZER</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Monthly cost</th><td>"Free", but paid with your evenings and weekends</td><td>Typically RM2,500+ salary, plus EPF &amp; SOCSO</td><td class="is-ezer">From RM300, month-to-month</td></tr>
+          <tr><th scope="row">Getting started</th><td>Today, on top of everything else</td><td>Weeks to recruit, onboard and train</td><td class="is-ezer">A short setup after your free consultation</td></tr>
+          <tr><th scope="row">Process &amp; training</th><td>Whatever you have time for</td><td>You design the process and train them</td><td class="is-ezer">We bring a proven process, you approve it</td></tr>
+          <tr><th scope="row">Follow-ups &amp; reporting</th><td><span class="compare__x">Usually the first thing to slip</span></td><td>Depends on the person</td><td class="is-ezer">Built in, with regular reports</td></tr>
+          <tr><th scope="row">Scaling up or down</th><td>Limited by your hours</td><td>Hiring or letting go is slow and costly</td><td class="is-ezer">Change plans as your volume changes</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="compare-note">Salary figure is a typical market estimate for an admin role and will vary by location and experience.</p>
+  </div>
+</section>
+
+<!-- ============================== 8. ROI ============================== -->
+<section class="section section--surface" id="roi-calculator" aria-labelledby="roiTitle">
+  <div class="container">
+    <div class="section-head section-head--center" data-reveal>
+      <p class="eyebrow">The cost of the problem</p>
+      <h2 id="roiTitle">How much are missed enquiries <span class="accent">costing you?</span></h2>
+      <p>Move the sliders to match your business. We'll show the revenue at stake and the plan that fits.</p>
+    </div>
+    <div class="roi" data-reveal>
+      <div class="roi__inputs">
+        <div class="field-range">
+          <label for="roiLeads">Enquiries you miss or don't follow up each month <output id="roiLeadsOut" for="roiLeads">15</output></label>
+          <input id="roiLeads" type="range" min="1" max="250" step="1" value="15">
+        </div>
+        <div class="field-range">
+          <label for="roiDeal">Average value of one sale <output id="roiDealOut" for="roiDeal">RM500</output></label>
+          <input id="roiDeal" type="range" min="50" max="10000" step="50" value="500">
+        </div>
+        <div class="field-range">
+          <label for="roiRate">Share you could realistically win back <output id="roiRateOut" for="roiRate">30%</output></label>
+          <input id="roiRate" type="range" min="10" max="60" step="5" value="30">
+          <small>An assumption you control. Start conservative.</small>
+        </div>
+      </div>
+      <div class="roi__result" aria-live="polite">
+        <div class="roi__row roi__lost"><span>Revenue at risk each month</span><b id="roiLost">RM7,500</b></div>
+        <div class="roi__row roi__gain"><span>Revenue you could win back</span><b id="roiGain">RM2,250</b></div>
+        <div class="roi__plan">
+          <p>Best fit for your volume: <strong id="roiPlanName">The Trial Run</strong> · <span id="roiPlanPrice">RM300/month</span></p>
+          <span class="roi__multiple" id="roiMultiple"></span><br>
+          <a class="btn btn--gold btn--sm" id="roiPlanBtn" href="#packages" data-plan-link="trial">See this plan <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11m-4-4.5L15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== 9. PRICING ============================== -->
+<section class="section" id="packages" aria-labelledby="pricingTitle">
 <div class="container pricing-container">
-<div class="section-head fade-in pricing-head">
+<div class="section-head pricing-head" data-reveal>
 <div class="eyebrow">Packages</div>
-<h2>An investment in growth, not an expense.</h2>
+<h2 id="pricingTitle">An investment in growth, <span class="accent">not an expense.</span></h2>
 <p>Every missed lead is lost revenue. Pick the plan that matches your enquiry volume &mdash; it pays for itself as you capture more.</p>
 <div class="pricing-toolbar">
 <div class="currency-toggle" role="group" aria-label="Choose currency">
@@ -531,9 +401,33 @@ h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
 </div>
 <p class="pricing-anchor">Every plan costs less than one full-time admin hire &mdash; typically <strong data-rm="2500">RM2,500</strong>+/month before EPF &amp; SOCSO.</p>
 </div>
+
+<div class="finder">
+<button class="btn btn--ghost btn--sm finder__toggle" id="finderToggle" type="button" aria-expanded="false" aria-controls="finderPanel">Not sure which plan? Answer 2 quick questions</button>
+<div class="finder__panel" id="finderPanel" hidden>
+<p class="finder__q">1. What's your biggest daily headache?</p>
+<div class="chips" role="group" aria-label="Biggest headache">
+<button class="chip" type="button" aria-pressed="false" data-finder="pain" data-value="replies">Replying to the same questions</button>
+<button class="chip" type="button" aria-pressed="false" data-finder="pain" data-value="followup">Forgetting follow-ups</button>
+<button class="chip" type="button" aria-pressed="false" data-finder="pain" data-value="records">Messy customer records</button>
+<button class="chip" type="button" aria-pressed="false" data-finder="pain" data-value="everything">Doing everything myself</button>
+</div>
+<p class="finder__q">2. How many enquiries do you get a month?</p>
+<div class="chips" role="group" aria-label="Monthly enquiries">
+<button class="chip" type="button" aria-pressed="false" data-finder="volume" data-value="20">Under 20</button>
+<button class="chip" type="button" aria-pressed="false" data-finder="volume" data-value="50">20&ndash;50</button>
+<button class="chip" type="button" aria-pressed="false" data-finder="volume" data-value="120">50&ndash;120</button>
+<button class="chip" type="button" aria-pressed="false" data-finder="volume" data-value="250">120+</button>
+</div>
+<div class="finder__result" id="finderResult" aria-live="polite" hidden>
+<span>We'd recommend <strong id="finderPlan">The Lead Catcher</strong></span>
+<a class="btn btn--gold btn--sm" id="finderGo" href="#packages" data-plan-link="catcher">Show me this plan</a>
+</div>
+</div>
+</div>
 </div>
 <div class="pricing-grid">
-<article class="plan" style="--accent: #7d8a84;" aria-labelledby="plan-trial-title">
+<article class="plan" data-reveal style="--accent: #7d8a84; --d: 0.00s;" aria-labelledby="plan-trial-title">
   
   <header class="plan-head">
     <span class="plan-icon"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 3h6M10 3v6.2L4.6 18.4A1.7 1.7 0 0 0 6.1 21h11.8a1.7 1.7 0 0 0 1.5-2.6L14 9.2V3M7.5 15h9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -556,7 +450,7 @@ h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
   <div class="plan-stops"><span class="plan-x"><svg viewBox="0 0 20 20" width="10" height="10" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></span><span><b>No more:</b> Enquiries left unanswered overnight</span></div>
   <a class="plan-cta" href="#contact"><span>Start the Trial Run</span><svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M4 10h11m-4-4.5L15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 </article>
-<article class="plan" style="--accent: #718878;" aria-labelledby="plan-catcher-title">
+<article class="plan" data-reveal style="--accent: #718878; --d: 0.08s;" aria-labelledby="plan-catcher-title">
   
   <header class="plan-head">
     <span class="plan-icon"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 4h4v8a3 3 0 0 0 6 0V4h4v8a7 7 0 0 1-14 0zM5 8h4M15 8h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
@@ -579,7 +473,7 @@ h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
   <div class="plan-stops"><span class="plan-x"><svg viewBox="0 0 20 20" width="10" height="10" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></span><span><b>No more:</b> Leads going cold because no one replied</span></div>
   <a class="plan-cta" href="#contact"><span>Catch Every Lead</span><svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M4 10h11m-4-4.5L15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 </article>
-<article class="plan plan--featured" style="--accent: #b79b63;" aria-labelledby="plan-engine-title">
+<article class="plan plan--featured" data-reveal style="--accent: #b79b63; --d: 0.16s;" aria-labelledby="plan-engine-title">
   <div class="plan-badge plan-badge--popular"><svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.7L10 14.8l-5.1 2.7 1-5.7-4.1-4 5.7-.8z" fill="currentColor"/></svg><span>Most Popular</span></div>
   <header class="plan-head">
     <span class="plan-icon"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M13 2L4.5 13.5H11L10 22l8.5-11.5H12z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
@@ -602,7 +496,7 @@ h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
   <div class="plan-stops"><span class="plan-x"><svg viewBox="0 0 20 20" width="10" height="10" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></span><span><b>No more:</b> Quotes sent and never chased</span></div>
   <a class="plan-cta plan-cta--solid" href="#contact"><span>Start Converting More</span><svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M4 10h11m-4-4.5L15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 </article>
-<article class="plan" style="--accent: #b0603f;" aria-labelledby="plan-team-title">
+<article class="plan" data-reveal style="--accent: #b0603f; --d: 0.24s;" aria-labelledby="plan-team-title">
   <div class="plan-badge plan-badge--spots"><i class="plan-badge-dot" aria-hidden="true"></i><span>2 Spots Available</span></div>
   <header class="plan-head">
     <span class="plan-icon"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="9" cy="8" r="3.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5M16 4.8a3.2 3.2 0 0 1 0 6.4M18 14.8c1.9.6 3 2.4 3 5.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
@@ -626,690 +520,221 @@ h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
   <a class="plan-cta" href="#contact"><span>Delegate Everything</span><svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M4 10h11m-4-4.5L15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 </article>
 </div>
-<div class="pricing-assurance fade-in">
+<div class="pricing-assurance" data-reveal>
 <div class="pricing-assurance-msg"><strong>The cost of inaction:</strong> every missed WhatsApp is a sale that went to a competitor.</div>
 <ul class="pricing-assurance-list">
 <li><span class="plan-check"><svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>First 14 days risk-free</li>
 <li><span class="plan-check"><svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Month-to-month, cancel anytime</li>
-<li><a href="#roi-calculator">Not sure which plan? Calculate your lost revenue <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M4 10h11m-4-4.5L15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+<li><a href="#roi-calculator">See what missed leads cost you <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M4 10h11m-4-4.5L15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
 </ul>
 </div>
 </div>
 </section>
-<section class="section" id="roi-calculator">
-<div class="container">
-<div class="section-head fade-in" style="text-align: center; margin: 0 auto 56px;">
-<div class="eyebrow">Calculate Your ROI</div>
-<h2>How much is inaction costing you?</h2>
-</div>
-<div class="roi-widget fade-in" style="max-width: 800px; margin: 0 auto; background: var(--surface); border: 1px solid var(--line); border-radius: 32px; padding: 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;">
-<div class="roi-controls">
-<label style="display:block; font-weight:700; margin-bottom:12px;">Missed Enquiries per Month: <span id="leadsVal" style="color:var(--gold);">15</span></label>
-<input id="leadsSlider" max="100" min="1" style="width:100%; margin-bottom: 32px;" type="range" value="15"/>
-<label style="display:block; font-weight:700; margin-bottom:12px;">Average Deal Size: <span id="dealVal" style="color:var(--gold);">RM 500</span></label>
-<input id="dealSlider" max="5000" min="50" step="50" style="width:100%;" type="range" value="500"/>
-</div>
-<div class="roi-results" style="background: var(--dark); color: white; padding: 32px; border-radius: 24px; text-align: center;">
-<p style="margin:0; color:#a1b0aa; font-size:14px; text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">Potential Lost Revenue</p>
-<div id="lostRev" style="font-size:42px; font-family:'Playfair Display'; font-weight:800; color:#d9534f; margin: 12px 0;">RM 7,500</div>
-<p style="margin:0; color:#a1b0aa; font-size:14px; text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">EZER Can Help Recover Up To</p>
-<div id="recoveredRev" style="font-size:32px; font-family:'Playfair Display'; font-weight:800; color:#4caf50; margin: 12px 0 0;">RM 3,000 / mo</div>
-</div>
-</div>
-</div>
+
+<!-- ============================== 10. HOW WE START ============================== -->
+<section class="section section--surface" id="start" aria-labelledby="startTitle">
+  <div class="container">
+    <div class="section-head section-head--center" data-reveal>
+      <p class="eyebrow">How we start</p>
+      <h2 id="startTitle">Three simple steps. <span class="accent">No long contracts.</span></h2>
+    </div>
+    <ol class="steps">
+      <li data-reveal style="--d:.05s"><h3>Free consultation</h3><p>A short call to understand how enquiries reach you today, and where they're slipping through.</p></li>
+      <li data-reveal style="--d:.12s"><h3>Workflow setup</h3><p>We set up your lead tracker, reply guidelines and follow-up schedule. You approve everything before we go live.</p></li>
+      <li data-reveal style="--d:.19s"><h3>We go live</h3><p>We start handling your enquiries and follow-ups, and you receive regular reports on the results.</p></li>
+    </ol>
+    <div class="steps__cta" data-reveal><a class="btn btn--primary" href="#contact">Book my free consultation <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11m-4-4.5L15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+  </div>
 </section>
-<section class="section" id="about">
-<div class="container about">
-<div class="portrait fade-in"><img alt="Kenisha, Founder of EZER" src="data:image/webp;base64,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" style="width:100%;height:100%;object-fit:cover;object-position:center top"/>
-<div id="founderVidTrigger" style="position: absolute; bottom: 30px; left: 30px; background: var(--surface); padding: 12px 24px; border-radius: 99px; display: flex; align-items: center; gap: 12px; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid var(--line); transition: transform 0.3s;">
-<div style="width: 32px; height: 32px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--dark);">▶</div>
-<b style="font-size: 14px; color: var(--ink);">Watch Greeting</b>
-</div>
-<div id="founderVidModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:9999; align-items:center; justify-content:center;">
-<div style="width:90%; max-width:800px; position:relative;">
-<button onclick="document.getElementById('founderVidModal').style.display='none'" style="position:absolute; top:-40px; right:0; background:none; border:none; color:#fff; font-size:24px; cursor:pointer;">× Close</button>
-<div style="padding-top:56.25%; position:relative;">
-<iframe id="founderIframe" src="" style="position:absolute; top:0; left:0; width:100%; height:100%; border:none; border-radius:16px;"></iframe>
-</div>
-</div>
-</div>
-</div>
-<div class="fade-in" style="animation-delay: 0.2s;">
-<div class="eyebrow">Meet the Founder</div>
-<h2>Hi, I'm Kenisha.</h2><a class="btn ghost" href="#" id="linkedinLink" style="padding: 8px 16px; font-size: 12px; margin-top: 16px;">View LinkedIn Profile ↗</a>
-<p>I’m a <strong>Sales &amp; Customer Experience professional</strong> with experience in relationship management, client care, sales follow-up, <span style="border-bottom:1px dotted var(--muted); cursor:help;" title="Customer Relationship Management software">CRM</span>, compliance services and team leadership.</p>
-<p>My strength is connecting <strong>people, sales and process</strong>, turning enquiries into opportunities, keeping follow-ups moving and creating more organised customer journeys.</p>
-<p><strong>EZER</strong> means help and support, inspired by the Hebrew word <em>ezer</em>. That experience became the foundation for EZER, bringing professional customer care, sales follow-up and operational support to growing businesses.</p>
-<div class="values">
-<div class="value">
-<b>Customer-First</b>
-<span>Service that builds trust and loyalty.</span>
-</div>
-<div class="value">
-<b>Commercial</b>
-<span>Support designed around retention and growth.</span>
-</div>
-<div class="value">
-<b>Operational</b>
-<span>Clear systems for consistent execution.</span>
-</div>
-<div class="value">
-<b>Faith &amp; Integrity</b>
-<span>Faithfulness, honesty and excellence.</span>
-</div>
-</div><a class="btn ghost" href="#journey" style="margin-top:20px">Read My Journey →</a>
-</div>
-</div>
-</section><section class="section alt" id="journey"><div class="container">
-<div class="container journey-grid">
-<div class="journey-sticky">
-<div class="section-head fade-in"><div class="eyebrow">My journey</div><h2>From humble beginnings to building EZER.</h2><p>Every role taught me something about people, resilience, service, sales and leadership.</p></div>
-</div>
-<div class="journey-cards">
-<div class=""><div class="card fade-in" style="animation-delay: 0.1s;"><span class="num">01</span><h3>Where It Started</h3><p>During my STPM years, I worked part-time at a McDonald’s drive-thru, taught at a tuition centre and took on various odd jobs. Those early experiences taught me the value of hard work, discipline and showing up.</p></div><div class="card fade-in" style="animation-delay: 0.2s;"><span class="num">02</span><h3>Education &amp; Growth</h3><p>While working as a Telesales Representative, I pursued my Bachelor’s Degree in Accountancy part-time and graduated with Distinction. Balancing work and study strengthened my discipline, resilience and commitment to growth.</p></div><div class="card fade-in" style="animation-delay: 0.3s;"><span class="num">03</span><h3>Sales to Leadership</h3><p>I began my professional career with a leading Singapore telecommunications company as a Telesales Representative, progressing through Trainer, Team Leader and Team Manager roles.</p></div><div class="card fade-in" style="animation-delay: 0.4s;"><span class="num">04</span><h3>From Service to EZER</h3><p>I later joined a corporate service provider handling corporate secretarial, accounting and tax matters, where I became a Client Care Team Manager. That journey became the foundation for EZER, bringing together sales, customer experience and operational support to help businesses grow.</p></div></div>
-</div>
-</div>
-</div></section>
-<section class="section alt">
-<div class="container">
-<div class="section-head fade-in">
-<div class="eyebrow">Start small</div>
-<h2>Not sure where you're losing customers?</h2>
-<p>Ask EZER to review your current customer journey and identify practical opportunities to improve.</p>
-</div>
-<div class="card fade-in" style="display:flex;align-items:center;justify-content:space-between;gap:25px;flex-wrap:wrap;flex-direction:row;">
-<div>
-<h3 style="margin:0 0 8px;font-size:24px;">Customer Experience Audit</h3>
-<p style="margin:0;color:var(--muted);font-size:16px;">Review enquiries, follow-ups, quotations, booking flow, <span style="border-bottom:1px dotted var(--muted); cursor:help;" title="Customer Relationship Management software">CRM</span> and customer touchpoints.</p>
-</div>
-<a class="btn primary" href="#contact">Starting from RM300</a>
-</div>
-</div>
+
+<!-- ============================== 11. ABOUT ============================== -->
+<section class="section" id="about" aria-labelledby="aboutTitle">
+  <div class="container">
+    <div class="about">
+      <div class="portrait portrait--fallback" data-reveal>
+        <img alt="Kenisha, founder of EZER" width="825" height="1100" loading="lazy" decoding="async" hidden>
+        <button class="video-btn" id="founderVideoBtn" type="button" hidden><span class="video-btn__icon"><svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M6 4l10 6-10 6z" fill="currentColor"/></svg></span>Watch my greeting</button>
+      </div>
+      <div data-reveal style="--d:.1s">
+        <p class="eyebrow">Meet the founder</p>
+        <h2 id="aboutTitle">Hi, I'm Kenisha.</h2>
+        <p>I'm a <strong>sales and customer experience professional</strong> with years of experience in relationship management, client care, sales follow-up, <abbr title="Customer Relationship Management">CRM</abbr>, compliance services and team leadership.</p>
+        <p>My strength is connecting <strong>people, sales and process</strong>: turning enquiries into opportunities, keeping follow-ups moving and creating organised customer journeys.</p>
+        <p><strong>EZER</strong> means "help" and "support", from the Hebrew word <em>ezer</em>. That's exactly what I want to be for growing businesses.</p>
+        <div class="values">
+          <div class="value"><b>Customer-first</b><span>Service that builds trust and loyalty.</span></div>
+          <div class="value"><b>Commercial</b><span>Support designed around retention and growth.</span></div>
+          <div class="value"><b>Operational</b><span>Clear systems for consistent execution.</span></div>
+          <div class="value"><b>Faith &amp; integrity</b><span>Faithfulness, honesty and excellence.</span></div>
+        </div>
+        <div class="about__links">
+          <a class="btn btn--primary" href="#contact">Talk to Kenisha</a>
+          <a class="btn btn--ghost" href="#" data-linkedin target="_blank" rel="noopener" hidden>View LinkedIn profile ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="journey" data-reveal>
+      <h3>My journey to EZER</h3>
+      <ol class="journey__list">
+        <li><b>Where it started</b><p>During my STPM years I worked at a McDonald's drive-thru, taught at a tuition centre and took on odd jobs. It taught me hard work, discipline and showing up.</p></li>
+        <li><b>Education &amp; growth</b><p>While working in telesales, I completed my Bachelor's in Accountancy part-time and graduated with Distinction.</p></li>
+        <li><b>Sales to leadership</b><p>At a leading Singapore telco I progressed from Telesales Representative to Trainer, Team Leader and Team Manager.</p></li>
+        <li><b>From service to EZER</b><p>As Client Care Team Manager at a corporate service provider, I built the foundation for EZER: sales, customer experience and operations in one.</p></li>
+      </ol>
+    </div>
+  </div>
 </section>
-<section class="section" id="contact">
-<section class="section alt" id="case-studies" style="display: none;">
-<div class="container">
-<div class="section-head fade-in">
-<div class="eyebrow">Proven Results</div>
-<h2>Don't just take our word for it.</h2>
-</div>
-<div class="grid4 fade-in" id="casesGrid">
-<!-- Populated by JS -->
-</div>
-</div>
+
+<!-- Results: shown automatically once real case studies are added in config.js -->
+<section class="section section--surface" id="results" aria-labelledby="resultsTitle" hidden>
+  <div class="container">
+    <div class="section-head section-head--center"><p class="eyebrow">Client results</p><h2 id="resultsTitle">Real outcomes for real businesses.</h2></div>
+    <div class="grid-3" id="casesGrid"></div>
+  </div>
 </section>
-<section class="section" id="faq" style="display: none;">
-<div class="container">
-<div class="section-head fade-in">
-<div class="eyebrow">FAQ</div>
-<h2>Common Questions</h2>
-</div>
-<div class="faq-accordion fade-in">
-<details style="margin-bottom: 16px; border-bottom: 1px solid var(--line); padding-bottom: 16px;">
-<summary style="font-weight: 700; font-size: 18px; cursor: pointer; color: var(--ink);">Will my customers know they are talking to an assistant?</summary>
-<p style="color: var(--muted); margin-top: 12px;">No. We adapt perfectly to your brand's voice and tone. To your customers, it feels like they are talking directly to your in-house team.</p>
-</details>
-<details style="margin-bottom: 16px; border-bottom: 1px solid var(--line); padding-bottom: 16px;">
-<summary style="font-weight: 700; font-size: 18px; cursor: pointer; color: var(--ink);">How fast can we get started?</summary>
-<p style="color: var(--muted); margin-top: 12px;">Our onboarding takes less than 3 days. We'll audit your current process, set up the tracking, and begin handling enquiries immediately.</p>
-</details>
-<details style="margin-bottom: 16px; border-bottom: 1px solid var(--line); padding-bottom: 16px;">
-<summary style="font-weight: 700; font-size: 18px; cursor: pointer; color: var(--ink);">Do I need to sign a long-term contract?</summary>
-<p style="color: var(--muted); margin-top: 12px;">Not at all. All our packages are month-to-month, and your first 14 days are completely risk-free.</p>
-</details>
-</div>
-</div>
+
+<!-- ============================== 12. FAQ (toggle with showFaq in config.js) ============================== -->
+<section class="section section--surface" id="faq" aria-labelledby="faqTitle" hidden>
+  <div class="container">
+    <div class="section-head section-head--center"><p class="eyebrow">Questions</p><h2 id="faqTitle">Good questions to ask <span class="accent">before you start.</span></h2></div>
+    <div class="faq">
+      <details><summary>Will my customers know they're talking to EZER?</summary><p>We reply in your business's name and tone, following guidelines you approve. Whether you introduce us as part of your team is entirely your choice.</p></details>
+      <details><summary>Do I need to sign a long-term contract?</summary><p>No. All plans are month-to-month, and your first 14 days are risk-free.</p></details>
+      <details><summary>What do you need from me to get started?</summary><p>Access to the channels you'd like us to cover (for example WhatsApp Business and email), your price list and common questions, and a short consultation call.</p></details>
+      <details><summary>Which channels do you cover?</summary><p>WhatsApp and email as standard. Other channels can be discussed during your consultation.</p></details>
+      <details><summary>Who owns my customer data?</summary><p>You do. We only use your customer information to serve your customers on your behalf.</p></details>
+      <details><summary>What if I get more enquiries than my plan covers?</summary><p>We'll let you know as you approach your limit and recommend whether upgrading makes sense. You stay in control.</p></details>
+      <details><summary>Will EZER replace my sales team?</summary><p>No. We handle the admin around sales (replies, follow-ups and records) so your team can spend more time closing.</p></details>
+    </div>
+  </div>
 </section>
-<div id="contact" style="padding-top:100px; margin-top:-100px;"></div>
-<div class="diagnostic-form fade-in" style="background: #fff; padding: 48px; border-radius: 32px; box-shadow: 0 24px 60px rgba(0,0,0,0.05); max-width: 1000px; margin: 80px auto; border: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr; gap: 48px;">
-<div>
-<h2 style="font-family:'Playfair Display'; font-size:36px; margin:0 0 16px;">Let's diagnose your workflow.</h2>
-<p style="color:var(--muted); margin-bottom: 32px;">Fill out this quick 3-step diagnostic to book your 100% free consultation.</p>
-</div>
-<form id="multiStepForm" onsubmit="event.preventDefault(); alert('Form submitted! We will contact you soon.');">
-<div class="form-step active" id="fstep1">
-<div style="position:relative; margin-bottom:24px;">
-<input class="float-input" id="fname" placeholder=" " required="" style="width:100%; padding:16px; border:1px solid var(--line); border-radius:12px; font-size:16px; outline:none; transition:0.3s; background:transparent;" type="text"/>
-<label for="fname" style="position:absolute; left:16px; top:16px; color:var(--muted); transition:0.3s; pointer-events:none;">Your Name</label>
-</div>
-<div style="position:relative; margin-bottom:24px;">
-<input class="float-input" id="femail" placeholder=" " required="" style="width:100%; padding:16px; border:1px solid var(--line); border-radius:12px; font-size:16px; outline:none; transition:0.3s; background:transparent;" type="email"/>
-<label for="femail" style="position:absolute; left:16px; top:16px; color:var(--muted); transition:0.3s; pointer-events:none;">Email Address</label>
-</div>
-<button class="btn primary" onclick="nextFormStep(2)" style="width:100%;" type="button">Next Step →</button>
-</div>
-<div class="form-step" id="fstep2" style="display:none;">
-<div style="position:relative; margin-bottom:24px;">
-<input class="float-input" id="fcompany" placeholder=" " required="" style="width:100%; padding:16px; border:1px solid var(--line); border-radius:12px; font-size:16px; outline:none; transition:0.3s; background:transparent;" type="text"/>
-<label for="fcompany" style="position:absolute; left:16px; top:16px; color:var(--muted); transition:0.3s; pointer-events:none;">Company Name</label>
-</div>
-<div style="position:relative; margin-bottom:24px;">
-<input class="float-input" id="fphone" placeholder=" " required="" style="width:100%; padding:16px; border:1px solid var(--line); border-radius:12px; font-size:16px; outline:none; transition:0.3s; background:transparent;" type="tel"/>
-<label for="fphone" style="position:absolute; left:16px; top:16px; color:var(--muted); transition:0.3s; pointer-events:none;">Phone Number</label>
-</div>
-<div style="display:flex; gap:12px;">
-<button class="btn ghost" onclick="nextFormStep(1)" type="button">← Back</button>
-<button class="btn primary" onclick="nextFormStep(3)" style="flex-grow:1;" type="button">Next Step →</button>
-</div>
-</div>
-<div class="form-step" id="fstep3" style="display:none;">
-<div style="position:relative; margin-bottom:24px;">
-<h4 style="margin:0 0 16px; font-size:16px; font-weight:600; color:var(--ink);">What is your biggest operational challenge?</h4>
-<div style="display:flex; flex-direction:column; gap:12px;">
-<button class="challenge-btn" onclick="selectChallenge(this, 'I am losing leads because I reply too slowly')" style="text-align:left; padding:16px; background:var(--surface); border:1px solid var(--line); border-radius:12px; cursor:pointer; font-size:15px; transition:0.2s; color:var(--muted);" type="button">"I'm losing leads because I reply too slowly."</button>
-<button class="challenge-btn" onclick="selectChallenge(this, 'I forget to follow up with warm leads')" style="text-align:left; padding:16px; background:var(--surface); border:1px solid var(--line); border-radius:12px; cursor:pointer; font-size:15px; transition:0.2s; color:var(--muted);" type="button">"I keep forgetting to follow up with warm leads."</button>
-<button class="challenge-btn" onclick="selectChallenge(this, 'My client information is a mess')" style="text-align:left; padding:16px; background:var(--surface); border:1px solid var(--line); border-radius:12px; cursor:pointer; font-size:15px; transition:0.2s; color:var(--muted);" type="button">"My client information and CRM is a total mess."</button>
-<button class="challenge-btn" onclick="selectChallenge(this, 'I am doing everything myself and am exhausted')" style="text-align:left; padding:16px; background:var(--surface); border:1px solid var(--line); border-radius:12px; cursor:pointer; font-size:15px; transition:0.2s; color:var(--muted);" type="button">"I am doing everything myself and I'm exhausted."</button>
-</div>
-<input id="fchallenge" required="" type="hidden"/>
-</div>
-<div style="display:flex; gap:12px;">
-<button class="btn ghost" onclick="nextFormStep(2)" type="button">← Back</button>
-<button class="btn primary magnetic-btn" onclick="nextFormStep(4)" style="flex-grow:1;" type="button">Complete Diagnostic &amp; Book</button>
-</div>
-</div>
-<div class="form-step" id="fstep4" style="display:none; text-align:center;">
-<h3 style="font-family:'Playfair Display'; font-size:28px; margin-top:0;">Diagnostic Complete!</h3>
-<p style="color:var(--muted); margin-bottom:24px;">Pick a time below for your free consultation.</p>
-<div id="calendlyEmbed" style="height: 400px; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: var(--bg); display:flex; align-items:center; justify-content:center;">
-<p>Loading Calendar...</p>
-<!-- Calendly iframe injected here via JS -->
-</div>
-</div>
-</form>
-</div>
+
+<!-- ============================== 13. CONTACT ============================== -->
+<section class="section section--dark" id="contact" aria-labelledby="contactTitle">
+  <div class="container contact">
+    <div class="contact__intro" data-reveal>
+      <p class="eyebrow">Free workflow check</p>
+      <h2 id="contactTitle">Let's find where your leads are leaking.</h2>
+      <p>Answer three quick questions. Kenisha will review how enquiries reach you today and show you where you're losing customers. Free, with no obligation.</p>
+      <ul class="contact__list">
+        <li><span class="tick"><svg width="12" height="12" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>A clear picture of where enquiries are being missed</li>
+        <li><span class="tick"><svg width="12" height="12" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Practical quick wins you can use straight away</li>
+        <li><span class="tick"><svg width="12" height="12" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>An honest recommendation, even if that's "not yet"</li>
+      </ul>
+      <div class="contact__alt" data-requires-contact hidden>
+        <p>Prefer to talk directly?</p>
+        <div><a class="btn btn--whatsapp" href="#" data-wa hidden><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.8 8.6c.2-.5.5-.5.8-.5h.5c.2 0 .4 0 .6.5l.7 1.6c.1.2 0 .4-.1.6l-.4.5c-.1.2-.2.3 0 .6.4.7 1.4 1.8 2.6 2.3.3.1.5.1.6-.1l.6-.7c.2-.2.4-.2.6-.1l1.6.8c.2.1.4.2.4.4 0 .7-.4 1.5-1.1 1.8-.7.3-1.6.4-3.4-.4-2.2-1-3.6-3.3-3.8-3.6-.2-.3-.9-1.3-.9-2.4 0-1 .5-1.5.7-1.7z" fill="currentColor"/></svg>Chat on WhatsApp</a></div>
+        <p><a href="#" data-email="text" hidden></a></p>
+      </div>
+    </div>
+
+    <div class="form-card" data-reveal style="--d:.1s">
+      <form id="leadForm" novalidate>
+        <div class="progress" aria-hidden="true"><span></span><span></span><span></span></div>
+        <p class="progress-label" id="progressLabel" aria-live="polite">Step 1 of 3</p>
+        <label class="hp" aria-hidden="true">Leave this empty<input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off"></label>
+
+        <fieldset class="form-step" style="border:0;padding:0;margin:0">
+          <legend><h3>First, who should we contact?</h3></legend>
+          <div class="field"><label for="fName">Your name</label><input id="fName" name="name" type="text" autocomplete="name" required><p class="field__error" role="alert"></p></div>
+          <div class="field"><label for="fEmail">Email address</label><input id="fEmail" name="email" type="email" autocomplete="email" inputmode="email" required><p class="field__error" role="alert"></p></div>
+          <div class="form-actions"><button class="btn btn--primary" type="button" data-next>Next <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11m-4-4.5L15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+        </fieldset>
+
+        <fieldset class="form-step" style="border:0;padding:0;margin:0" hidden>
+          <legend><h3>Tell us about your business</h3></legend>
+          <div class="field"><label for="fCompany">Business name</label><input id="fCompany" name="company" type="text" autocomplete="organization" required><p class="field__error" role="alert"></p></div>
+          <div class="field"><label for="fPhone">Phone / WhatsApp number</label><input id="fPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="e.g. +60 12-345 6789" required><p class="field__error" role="alert"></p></div>
+          <div class="field"><label for="fIndustry">Industry</label>
+            <select id="fIndustry" name="industry" required>
+              <option value="">Choose one</option>
+              <option>Clinic / wellness</option><option>Salon / beauty</option><option>Renovation / contractor</option><option>Property</option><option>Tuition / education</option><option>F&amp;B / catering</option><option>E-commerce</option><option>Professional services</option><option>Other</option>
+            </select><p class="field__error" role="alert"></p></div>
+          <div class="form-actions"><button class="btn btn--ghost" type="button" data-prev>Back</button><button class="btn btn--primary" type="button" data-next>Next <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11m-4-4.5L15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+        </fieldset>
+
+        <fieldset class="form-step" style="border:0;padding:0;margin:0" hidden>
+          <legend><h3>Last step: where does it hurt?</h3></legend>
+          <div class="field" data-radio-required>
+            <p class="label" id="volLabel">Roughly how many enquiries do you get a month?</p>
+            <div class="option-grid option-grid--2" role="radiogroup" aria-labelledby="volLabel">
+              <label class="option"><input type="radio" name="volume" value="Under 20"><span>Under 20</span></label>
+              <label class="option"><input type="radio" name="volume" value="20–50"><span>20–50</span></label>
+              <label class="option"><input type="radio" name="volume" value="50–120"><span>50–120</span></label>
+              <label class="option"><input type="radio" name="volume" value="120+"><span>120+</span></label>
+            </div>
+            <p class="field__error" role="alert">Please choose one.</p>
+          </div>
+          <div class="field" data-radio-required>
+            <p class="label" id="painLabel">What's your biggest challenge right now?</p>
+            <div class="option-grid" role="radiogroup" aria-labelledby="painLabel">
+              <label class="option"><input type="radio" name="challenge" value="Replying too slowly and losing leads"><span>"I'm losing leads because I reply too slowly."</span></label>
+              <label class="option"><input type="radio" name="challenge" value="Forgetting to follow up with warm leads"><span>"I keep forgetting to follow up with warm leads."</span></label>
+              <label class="option"><input type="radio" name="challenge" value="Customer information is a mess"><span>"My customer information is a total mess."</span></label>
+              <label class="option"><input type="radio" name="challenge" value="Doing everything myself and exhausted"><span>"I'm doing everything myself and I'm exhausted."</span></label>
+            </div>
+            <p class="field__error" role="alert">Please choose one.</p>
+          </div>
+          <div class="form-actions"><button class="btn btn--ghost" type="button" data-prev>Back</button><button class="btn btn--gold" type="submit">Send &amp; get my free check</button></div>
+          <p class="form-legal">We'll only use your details to respond to your enquiry, in line with Malaysia's and Singapore's personal data protection laws.</p>
+        </fieldset>
+
+        <p class="form-status form-status--error" id="formStatus" role="alert" hidden></p>
+
+        <div class="form-success" id="formSuccess" tabindex="-1" hidden>
+          <div class="form-success__icon"><svg width="30" height="30" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3>You're all set!</h3>
+          <p id="formSuccessMsg"></p>
+          <div class="calendar-embed" id="calendarEmbed" hidden></div>
+        </div>
+      </form>
+    </div>
+  </div>
 </section>
 </main>
-<footer class="container footer">
-<div>© 2026 EZER. All rights reserved.</div>
-<div style="text-align: right;">
-<strong>Virtual Business Support in Johor, Kuala Lumpur &amp; Singapore.</strong><br/>
-<small style="color: var(--muted);">Providing Customer Experience, <span style="border-bottom:1px dotted var(--muted); cursor:help;" title="Customer Relationship Management software">CRM</span> Management, and Lead Follow-ups.</small>
-</div>
+
+<!-- ============================== FOOTER ============================== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <a class="brand" href="#top">EZER<small>CUSTOMER EXPERIENCE &amp; BUSINESS SUPPORT</small></a>
+        <p>Outsourced enquiry handling, follow-ups and customer support for growing businesses in Johor, Kuala Lumpur and Singapore.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul><li><a href="#what">How it works</a></li><li><a href="#services">Services</a></li><li><a href="#packages">Pricing</a></li><li><a href="#about">About Kenisha</a></li></ul>
+      </div>
+      <div>
+        <h4>Get in touch</h4>
+        <ul>
+          <li><a href="#contact">Free workflow check</a></li>
+          <li><a href="#" data-wa hidden>WhatsApp</a></li>
+          <li><a href="#" data-email="text" hidden></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom"><span>© <span id="year">2026</span> EZER. All rights reserved.</span><span>Johor · Kuala Lumpur · Singapore</span></div>
+  </div>
 </footer>
+
+<div class="floating-cta" id="floatingCta"><a class="btn btn--gold" href="#contact">Get my free workflow check</a></div>
+
+<div class="modal" id="exitModal" role="dialog" aria-modal="true" aria-labelledby="exitTitle" hidden>
+  <div class="modal__box">
+    <button class="modal__close" type="button" data-close aria-label="Close">×</button>
+    <h2 id="exitTitle">Before you go…</h2>
+    <p>How many enquiries slipped through last month? Get a free workflow check and find out where your leads are leaking.</p>
+    <a class="btn btn--gold" href="#contact" data-close>Get my free check</a>
+  </div>
 </div>
-<script>
-  // Mobile Menu Toggle
-  const menuToggle = document.getElementById('menu-toggle');
-  const navLinks = document.getElementById('nav-links');
-  
-  menuToggle.addEventListener('click', () => {
-    menuToggle.classList.toggle('active');
-    navLinks.classList.toggle('active');
-  });
 
-  // Close menu on link click
-  navLinks.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      menuToggle.classList.remove('active');
-      navLinks.classList.remove('active');
-    });
-  });
-
-  // Sticky Nav Shadow on Scroll
-  const navWrapper = document.getElementById('nav-wrapper');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 20) {
-      navWrapper.classList.add('scrolled');
-    } else {
-      navWrapper.classList.remove('scrolled');
-    }
-  });
-
-  // Fade-in Animation Observer
-  const fadeElements = document.querySelectorAll('.fade-in');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.animationPlayState = 'running';
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-
-  fadeElements.forEach(el => {
-    el.style.animationPlayState = 'paused';
-    observer.observe(el);
-  });
-</script>
-<div class="floating-cta" id="floatingCta"><a class="btn primary" href="#contact">Book a Consultation</a></div><script>
-document.addEventListener('DOMContentLoaded', () => {
-    // Nav logic
-    const navWrapper = document.getElementById('nav-wrapper');
-    const floatingCta = document.getElementById('floatingCta');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            if (navWrapper) navWrapper.classList.add('scrolled');
-            if (floatingCta) floatingCta.classList.add('visible');
-        } else {
-            if (navWrapper) navWrapper.classList.remove('scrolled');
-            if (floatingCta) floatingCta.classList.remove('visible');
-        }
-    });
-
-    const menuToggle = document.getElementById('menu-toggle');
-    const navLinks = document.getElementById('nav-links');
-    if (menuToggle && navLinks) {
-        menuToggle.addEventListener('click', () => {
-            menuToggle.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        });
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                menuToggle.classList.remove('active');
-                navLinks.classList.remove('active');
-            });
-        });
-    }
-
-    // Tab logic
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    const tabPanes = document.querySelectorAll('.tab-pane');
-    tabBtns.forEach(btn => {
-        ['click', 'mouseenter'].forEach(eventType => {
-            btn.addEventListener(eventType, (e) => {
-                if (eventType === 'click') e.preventDefault();
-                tabBtns.forEach(b => b.classList.remove('active'));
-                tabPanes.forEach(p => p.classList.remove('active'));
-                btn.classList.add('active');
-                const target = document.getElementById(btn.getAttribute('data-target'));
-                if (target) target.classList.add('active');
-            });
-        });
-    });
-
-    // GSAP
-    if (typeof gsap !== 'undefined') {
-        gsap.registerPlugin(ScrollTrigger);
-
-        const metrics = document.querySelectorAll('.metric b');
-        metrics.forEach(metric => {
-            const target = parseInt(metric.innerText.replace(/\D/g,''));
-            if (!isNaN(target)) {
-                metric.innerText = '0';
-                ScrollTrigger.create({
-                    trigger: metric,
-                    start: 'top 85%',
-                    onEnter: () => {
-                        gsap.to(metric, {
-                            innerHTML: target,
-                            duration: 2,
-                            snap: { innerHTML: 1 },
-                            ease: 'power2.out'
-                        });
-                    }
-                });
-            }
-        });
-
-        gsap.utils.toArray('.journey-cards .card').forEach((card) => {
-            gsap.from(card, {
-                scrollTrigger: { trigger: card, start: 'top 85%' },
-                y: 50,
-                opacity: 0,
-                duration: 0.6,
-                ease: 'power2.out'
-            });
-        });
-    }
-
-    // Magnetic Buttons
-    document.querySelectorAll('.magnetic-btn').forEach(btn => {
-        btn.addEventListener('mousemove', (e) => {
-            const rect = btn.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-            btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
-        });
-        btn.addEventListener('mouseleave', () => {
-            btn.style.transform = `translate(0px, 0px)`;
-        });
-    });
-
-    // Dynamic Context-Aware CTA & Footer Overlap Fix
-    const mainCta = document.querySelector('#floatingCta .btn');
-    const floatingCtaDiv = document.getElementById('floatingCta');
-    if (mainCta && floatingCtaDiv) {
-        window.addEventListener('scroll', () => {
-            const packages = document.getElementById('packages');
-            if (packages && window.scrollY > packages.offsetTop - 500 && window.scrollY < packages.offsetTop + packages.offsetHeight) {
-                mainCta.innerText = "View Pricing Options";
-            } else {
-                mainCta.innerText = "Diagnose My Workflow";
-            }
-            
-            // Hide near bottom so it doesn't overlap footer
-            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
-                floatingCtaDiv.style.opacity = '0';
-                floatingCtaDiv.style.pointerEvents = 'none';
-            } else if (window.scrollY > 50) {
-                floatingCtaDiv.style.opacity = '1';
-                floatingCtaDiv.style.pointerEvents = 'auto';
-            }
-        });
-    }
-
-    // Exit Intent Popup
-    let exitTriggered = false;
-    document.addEventListener('mouseleave', (e) => {
-        if (e.clientY < 0 && !exitTriggered) {
-            exitTriggered = true;
-            const popup = document.getElementById('exitPopup');
-            if (popup) {
-                popup.style.display = 'flex';
-                popup.style.opacity = '0';
-                setTimeout(() => popup.style.opacity = '1', 10);
-            }
-        }
-    });
-    const closeExit = document.getElementById('closeExit');
-    if (closeExit) {
-        closeExit.addEventListener('click', () => {
-            document.getElementById('exitPopup').style.display = 'none';
-        });
-    }
-    const exitCtaBtn = document.getElementById('exitCtaBtn');
-    if (exitCtaBtn) {
-        exitCtaBtn.addEventListener('click', () => {
-            document.getElementById('exitPopup').style.display = 'none';
-        });
-    }
-
-    // Simulated Live Activity
-    setTimeout(() => {
-        const liveActivity = document.getElementById('liveActivity');
-        if (liveActivity) {
-            liveActivity.style.transform = 'translateY(0)';
-            setTimeout(() => {
-                liveActivity.style.transform = 'translateY(150%)';
-            }, 5000);
-        }
-    }, 15000); // Show after 15 seconds
-
-    // Hours Saved Counter
-    if (typeof gsap !== 'undefined') {
-        const hoursCounter = document.getElementById('hoursSavedCounter');
-        if (hoursCounter) {
-            const startVal = 14250;
-            hoursCounter.innerText = "14,250";
-            ScrollTrigger.create({
-                trigger: hoursCounter,
-                start: 'top 85%',
-                onEnter: () => {
-                    gsap.fromTo(hoursCounter, 
-                        { innerHTML: 14000 }, 
-                        {
-                            innerHTML: startVal,
-                            duration: 3,
-                            snap: { innerHTML: 1 },
-                            ease: 'power3.out',
-                            onUpdate: function() {
-                                hoursCounter.innerHTML = Math.round(this.targets()[0].innerHTML).toLocaleString();
-                            }
-                        }
-                    );
-                }
-            });
-        }
-    }
-
-
-
-        // Draggable Dashboard Card
-        const heroCard = document.querySelector('.hero-card');
-        if (heroCard) {
-            let isDown = false, startX, startY, scrollLeft, scrollTop;
-            heroCard.addEventListener('mousedown', (e) => {
-                isDown = true;
-                heroCard.style.cursor = 'grabbing';
-                startX = e.pageX - heroCard.offsetLeft;
-                startY = e.pageY - heroCard.offsetTop;
-            });
-            document.addEventListener('mouseup', () => { isDown = false; heroCard.style.cursor = 'grab'; });
-            document.addEventListener('mousemove', (e) => {
-                if(!isDown) return;
-                e.preventDefault();
-                const x = e.pageX - startX;
-                const y = e.pageY - startY;
-                // Minor drag bounds to just feel tactile
-                if(Math.abs(x) < 50 && Math.abs(y) < 50) {
-                    heroCard.style.transform = `translate(${x}px, ${y}px) perspective(1000px) rotateY(0deg) rotateX(0deg)`;
-                }
-            });
-            heroCard.addEventListener('mouseleave', () => { 
-                if(!isDown) heroCard.style.transform = ''; 
-            });
-        }
-
-        // ROI Calculator
-        const leadsSlider = document.getElementById('leadsSlider');
-        const dealSlider = document.getElementById('dealSlider');
-        const leadsVal = document.getElementById('leadsVal');
-        const dealVal = document.getElementById('dealVal');
-        const lostRev = document.getElementById('lostRev');
-        const recoveredRev = document.getElementById('recoveredRev');
-        
-        function calculateROI() {
-            if(!leadsSlider) return;
-            const leads = parseInt(leadsSlider.value);
-            const deal = parseInt(dealSlider.value);
-            leadsVal.innerText = leads;
-            dealVal.innerText = 'RM ' + deal.toLocaleString();
-            
-            const lost = leads * deal;
-            const recovered = Math.round(lost * 0.4); // Recover 40%
-            
-            lostRev.innerText = 'RM ' + lost.toLocaleString();
-            
-            let recPkg = 'The Lead Catcher (RM 600/mo)';
-            if (lost > 3000) recPkg = 'The Follow-Up Engine (RM 1,200/mo)';
-            if (lost > 10000) recPkg = 'The All-In-One Team (RM 2,000/mo)';
-            recoveredRev.innerHTML = `RM ${recovered.toLocaleString()} / mo<br><span style="font-size:14px; font-weight:500; font-family:'Inter',sans-serif; color:var(--muted); display:block; margin-top:8px; text-transform:none; letter-spacing:0;">Recommended: <strong>${recPkg}</strong></span>`;
-            
-        }
-        if(leadsSlider) {
-            leadsSlider.addEventListener('input', calculateROI);
-            dealSlider.addEventListener('input', calculateROI);
-        }
-
-        // Quiz Logic
-        window.quizRecommendationStr = 'The Scaling Engine';
-        window.nextQuiz = function(step, type) {
-            if (type === 'foundation') window.quizRecommendationStr = 'The Foundation';
-            if (type === 'automator') window.quizRecommendationStr = 'The Automator';
-            document.getElementById('quiz-step-1').style.display = 'none';
-            document.getElementById('quiz-step-2').style.display = 'block';
-        }
-        window.showQuizResult = function() {
-            document.getElementById('quiz-step-2').style.display = 'none';
-            document.getElementById('quizRecommendation').innerText = window.quizRecommendationStr;
-            document.getElementById('quiz-result').style.display = 'block';
-        }
-
-        // Multi-Step Form
-        window.nextFormStep = function(step) {
-            document.querySelectorAll('.form-step').forEach(el => el.style.display = 'none');
-            document.getElementById('fstep' + step).style.display = 'block';
-        }
-
-        // Currency Toggle (prices, per-day figures and anchor all carry data-rm)
-        const currBtns = document.querySelectorAll('.curr-btn');
-        const CURRENCIES = { RM: { rate: 1, symbol: 'RM' }, SGD: { rate: 0.3, symbol: 'S$' }, USD: { rate: 0.22, symbol: 'US$' } };
-        currBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                currBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
-                btn.classList.add('active');
-                btn.setAttribute('aria-pressed', 'true');
-                const { rate, symbol } = CURRENCIES[btn.dataset.curr] || CURRENCIES.RM;
-                document.querySelectorAll('#packages [data-rm]').forEach(el => {
-                    const value = Math.round(Number(el.dataset.rm) * rate);
-                    el.textContent = symbol + value.toLocaleString();
-                });
-            });
-        });
-
-        // Scratch-off Logic
-        const canvas = document.getElementById('scratchCanvas');
-        if (canvas) {
-            const ctx = canvas.getContext('2d');
-            ctx.fillStyle = '#c5cec9';
-            ctx.fillRect(0, 0, 300, 150);
-            
-            // Draw scratch text over it to prompt
-            ctx.fillStyle = '#66716c';
-            ctx.font = 'bold 16px Inter';
-            ctx.textAlign = 'center';
-            ctx.fillText('SCRATCH TO REVEAL', 150, 80);
-
-            let isDrawing = false;
-            function getMousePos(canvas, evt) {
-                const rect = canvas.getBoundingClientRect();
-                return {
-                    x: (evt.clientX || evt.touches[0].clientX) - rect.left,
-                    y: (evt.clientY || evt.touches[0].clientY) - rect.top
-                };
-            }
-
-            function scratch(e) {
-                if (!isDrawing) return;
-                e.preventDefault();
-                const pos = getMousePos(canvas, e);
-                ctx.globalCompositeOperation = 'destination-out';
-                ctx.beginPath();
-                ctx.arc(pos.x, pos.y, 20, 0, Math.PI * 2);
-                ctx.fill();
-            }
-
-            canvas.addEventListener('mousedown', () => isDrawing = true);
-            canvas.addEventListener('touchstart', () => isDrawing = true);
-            document.addEventListener('mouseup', () => isDrawing = false);
-            document.addEventListener('touchend', () => isDrawing = false);
-            canvas.addEventListener('mousemove', scratch);
-            canvas.addEventListener('touchmove', scratch);
-        }
-        
-
-
-        // Populate Data from config.js / localStorage
-        document.addEventListener('DOMContentLoaded', () => {
-            // LinkedIn
-            const li = document.getElementById('linkedinLink');
-            if(li && EZER_CONFIG.linkedinUrl) li.href = EZER_CONFIG.linkedinUrl;
-            
-            // Video Greeting
-            const vidTrigger = document.getElementById('founderVidTrigger');
-            const vidModal = document.getElementById('founderVidModal');
-            const iframe = document.getElementById('founderIframe');
-            if (vidTrigger && vidModal && iframe) {
-                vidTrigger.addEventListener('click', () => {
-                    iframe.src = EZER_CONFIG.founderVideoUrl;
-                    vidModal.style.display = 'flex';
-                });
-            }
-            
-            // Calendly
-            const calDiv = document.getElementById('calendlyEmbed');
-            if (calDiv && EZER_CONFIG.calendlyUrl) {
-                calDiv.innerHTML = `<iframe src="${EZER_CONFIG.calendlyUrl}" width="100%" height="100%" frameborder="0"></iframe>`;
-            }
-            
-            // Logo Ticker
-            const ticker = document.getElementById('logoTicker');
-            if (ticker && EZER_CONFIG.logos) {
-                let imgs = EZER_CONFIG.logos.map(url => `<img src="${url}" class="ticker-logo">`).join('');
-                ticker.innerHTML = imgs + imgs; // double for seamless scrolling
-            }
-            
-            // Case Studies
-            const casesGrid = document.getElementById('casesGrid');
-            if (casesGrid && EZER_CONFIG.caseStudies) {
-                casesGrid.innerHTML = EZER_CONFIG.caseStudies.map(cs => `
-                    <div class="card" style="text-align:center;">
-                        <span class="num">${cs.client}</span>
-                        <div style="font-size:48px; color:var(--gold); font-family:'Playfair Display'; font-weight:800; margin: 16px 0;">${cs.metric}</div>
-                        <p>${cs.description}</p>
-                    </div>
-                `).join('');
-            }
-        });
-        
-
-
-        if (typeof gsap === 'undefined') { document.querySelectorAll('.plan').forEach(p => p.classList.add('is-visible')); }
-        // Master GSAP Animations
-        if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-            gsap.registerPlugin(ScrollTrigger);
-            
-            // Re-animate all .fade-in elements cleanly
-            const fadeElements = document.querySelectorAll('.fade-in');
-            fadeElements.forEach(el => {
-                el.style.opacity = '0';
-                el.style.visibility = 'visible';
-            });
-            
-            ScrollTrigger.batch(".fade-in", {
-                onEnter: batch => gsap.fromTo(batch, 
-                    { opacity: 0, y: 50 }, 
-                    { opacity: 1, y: 0, stagger: 0.15, duration: 1, ease: "power3.out", overwrite: true }
-                ),
-                start: "top 85%"
-            });
-            // Pricing cards: staggered entrance; clearProps keeps CSS hover transforms working
-            const plans = document.querySelectorAll('.plan');
-            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            if (reduceMotion) {
-                plans.forEach(p => p.classList.add('is-visible'));
-            } else {
-                gsap.set(plans, { opacity: 0, y: 40 });
-                ScrollTrigger.batch('.plan', {
-                    start: 'top 88%',
-                    once: true,
-                    onEnter: batch => {
-                        batch.forEach(p => p.classList.add('is-visible'));
-                        gsap.to(batch, { opacity: 1, y: 0, stagger: 0.12, duration: 0.9, ease: 'power3.out', clearProps: 'transform,opacity' });
-                    }
-                });
-            }
-
-
-            // Specific Timeline for Hero
-            const heroTl = gsap.timeline();
-            heroTl.from(".hero h1", {opacity: 0, y: 40, duration: 1.2, ease: "power3.out", delay: 0.2})
-                  .from(".hero p", {opacity: 0, y: 20, duration: 1, ease: "power3.out"}, "-=0.8")
-                  .from(".hero .actions a", {opacity: 0, y: 20, duration: 0.8, stagger: 0.1, ease: "power3.out"}, "-=0.6")
-                  .from(".hero-card", {opacity: 0, x: 50, duration: 1.2, ease: "power4.out"}, "-=1");
-        }
-        
-});</script>
-<div id="exitPopup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; align-items:center; justify-content:center;">
-<div style="background:var(--surface); padding:40px; border-radius:24px; max-width:500px; text-align:center; position:relative;">
-<button id="closeExit" style="position:absolute; right:20px; top:20px; background:none; border:none; font-size:24px; cursor:pointer;">×</button>
-<h2 style="font-family:'Playfair Display'; margin-top:0;">Wait! Don't leave your leads behind.</h2>
-<p style="color:var(--muted);">Book a free 15-minute discovery call before you go, and let's find the bottlenecks in your customer journey.</p>
-<a class="btn primary magnetic-btn" href="#contact" id="exitCtaBtn">Claim Free Call</a>
+<div class="modal" id="videoModal" role="dialog" aria-modal="true" aria-label="Founder video greeting" hidden>
+  <div class="modal__box modal__box--video">
+    <button class="modal__close" type="button" data-close aria-label="Close video">×</button>
+    <div class="ratio"><iframe id="videoFrame" title="Video greeting from Kenisha" src="about:blank" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>
+  </div>
 </div>
-</div>
-<div id="liveActivity" style="position:fixed; bottom:30px; left:30px; background:var(--surface); padding:16px 24px; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,0.1); z-index:90; transform:translateY(150%); transition:transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); display:flex; align-items:center; gap:12px; border:1px solid var(--line);">
-<div style="width:10px; height:10px; background:#4caf50; border-radius:50%; box-shadow:0 0 10px #4caf50;"></div>
-<div style="font-size:13px;">
-<b id="activityName" style="color:var(--ink);">Sarah from Kuala Lumpur</b><br/>
-<span style="color:var(--muted);">just booked a consultation</span>
-</div>
-</div>
-<script>
-    window.selectChallenge = function(btn, val) {
-        document.querySelectorAll('.challenge-btn').forEach(b => {
-            b.style.borderColor = 'var(--line)';
-            b.style.boxShadow = 'none';
-            b.style.color = 'var(--muted)';
-            b.style.fontWeight = '400';
-            b.style.background = 'var(--surface)';
-        });
-        btn.style.borderColor = 'var(--gold)';
-        btn.style.boxShadow = '0 0 0 1px var(--gold)';
-        btn.style.color = 'var(--dark)';
-        btn.style.fontWeight = '600';
-        btn.style.background = '#fff';
-        document.getElementById('fchallenge').value = val;
-    }
-    </script></body></html>
+</body>
+</html>
