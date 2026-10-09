@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EZER Admin Panel</title>
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #f7f4ed; color: #17221f; padding: 40px; }
+        .container { max-width: 600px; margin: 0 auto; background: #fffdf8; padding: 40px; border-radius: 24px; border: 1px solid #ddd8cb; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        h1 { font-family: 'Playfair Display', serif; margin-top: 0; }
+        label { display: block; font-weight: 600; margin-bottom: 8px; margin-top: 24px; }
+        input { width: 100%; padding: 12px; border: 1px solid #ddd8cb; border-radius: 8px; font-size: 15px; box-sizing: border-box; }
+        .btn { display: inline-block; background: #0a120f; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; cursor: pointer; border: none; margin-top: 32px; width: 100%; font-size: 16px; }
+        .btn:hover { background: #17221f; }
+        .note { font-size: 13px; color: #66716c; margin-top: 16px; background: #dfe8df; padding: 12px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Control Panel</h1>
+        <p style="color: #66716c;">Update the placeholder links for the live website below. These changes will instantly reflect on your local browser preview.</p>
+        
+        <form id="adminForm">
+            <label>Calendly Booking URL</label>
+            <input type="text" id="calendlyUrl" placeholder="https://calendly.com/your-name">
+            
+            <label>Founder Video Greeting URL (YouTube Embed Link)</label>
+            <input type="text" id="founderVideoUrl" placeholder="https://www.youtube.com/embed/XXXXX">
+            
+            <label>LinkedIn Profile URL</label>
+            <input type="text" id="linkedinUrl" placeholder="https://linkedin.com/in/your-profile">
+            
+            <button type="submit" class="btn">Save & Preview Changes</button>
+        </form>
+        
+        <div class="note">
+            <strong>Note on Publishing:</strong> Because this is a static HTML site without a backend database, saving here updates your <em>local preview</em> via localStorage. To make these changes permanent for everyone, copy the saved URLs into the <code>config.js</code> file in your source code.
+        </div>
+        
+        <div style="text-align: center; margin-top: 24px;">
+            <a href="index.html" style="color: #17221f; font-weight: 600;">&larr; Back to Website</a>
+        </div>
+    </div>
+    
+    <script src="config.js"></script>
+    <script>
+        // Populate inputs with current config
+        document.getElementById('calendlyUrl').value = EZER_CONFIG.calendlyUrl;
+        document.getElementById('founderVideoUrl').value = EZER_CONFIG.founderVideoUrl;
+        document.getElementById('linkedinUrl').value = EZER_CONFIG.linkedinUrl;
+        
+        document.getElementById('adminForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newConfig = {
+                calendlyUrl: document.getElementById('calendlyUrl').value,
+                founderVideoUrl: document.getElementById('founderVideoUrl').value,
+                linkedinUrl: document.getElementById('linkedinUrl').value
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('ezer_admin_config', JSON.stringify(newConfig));
+            alert('Saved successfully! Click "Back to Website" to see your updates.');
+        });
+    </script>
+</body>
+</html>
