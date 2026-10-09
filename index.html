@@ -93,22 +93,6 @@ h1 em { font-family: 'Lora', Georgia, serif; font-weight: 500; color: var(--sage
 .flow-item b { display: block; margin-bottom: 12px; font-size: 18px; font-weight: 700; color: var(--ink); }
 .flow-item span { font-size: 14px; color: var(--muted); line-height: 1.5; }
 
-/* Packages */
-.packages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; align-items: center; }
-.package { background: var(--surface); border: 1px solid var(--line); border-radius: 28px; padding: 40px 32px; position: relative; transition: all 0.3s; }
-.package:hover { border-color: var(--sage); box-shadow: 0 16px 40px rgba(113,136,120,.1); }
-.package.featured { border: 2px solid var(--sage); transform: translateY(-12px); box-shadow: 0 20px 50px rgba(113,136,120,.15); background: #fff; z-index: 1; }
-.tag { position: absolute; right: 24px; top: 24px; background: var(--sage); color: #fff; font-size: 10px; font-weight: 800; letter-spacing: .12em; padding: 6px 12px; border-radius: 999px; }
-.package h3 { font-size: 22px; margin: 0; font-weight: 700; }
-.price { font-size: 42px; font-weight: 800; margin: 16px 0; letter-spacing: -.02em; }
-.price small { font-size: 14px; color: var(--muted); font-weight: 600; letter-spacing: 0; }
-.package p { color: var(--muted); font-size: 15px; margin: 0 0 24px; line-height: 1.5; min-height: 45px; }
-.package ul { padding: 0; list-style: none; margin: 0 0 32px; }
-.package li { padding: 12px 0; border-bottom: 1px solid #ece8de; font-size: 14px; display: flex; align-items: flex-start; color: var(--ink); font-weight: 500; }
-.package li:last-child { border-bottom: none; }
-.package li:before { content: "✓"; color: var(--sage); font-weight: 800; margin-right: 12px; font-size: 16px; }
-.package .btn { width: 100%; padding: 16px; }
-
 /* About */
 .about { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 80px; align-items: center; }
 .portrait { height: 460px; border-radius: 32px; background: linear-gradient(135deg, #e4e9e0, #f0ebd9); display: flex; align-items: end; justify-content: center; overflow: hidden; position: relative; }
@@ -140,8 +124,6 @@ h1 em { font-family: 'Lora', Georgia, serif; font-weight: 500; color: var(--sage
   .actions { justify-content: center; }
   .hero-card { transform: none; max-width: 600px; margin: 0 auto; }
   .hero-card:hover { transform: none; }
-  .packages { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
-  .package.featured { transform: none; }
   .about { grid-template-columns: 1fr; gap: 48px; }
   .portrait { height: 400px; max-width: 600px; margin: 0 auto; }
 }
@@ -228,17 +210,6 @@ h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
     /* Quiz Buttons */
     .quiz-btn:hover { border-color: var(--gold) !important; color: var(--gold); }
     
-    /* Sleek Packages Override */
-    .packages { gap: 32px; align-items: stretch; margin-top: 48px; }
-    .package { background: rgba(255,253,248,0.7); backdrop-filter: blur(20px); border: 1px solid rgba(23,34,31,0.08); box-shadow: 0 10px 40px rgba(0,0,0,0.02); padding: 48px 32px; display: flex; flex-direction: column; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s; }
-    .package:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(183,155,99,0.1); border-color: var(--gold); }
-    .package.featured { background: var(--dark); color: #fff; border: 1px solid rgba(255,255,255,0.1); transform: scale(1.05); box-shadow: 0 30px 60px rgba(10,18,15,0.3); position: relative; z-index: 10; }
-    .package.featured:hover { transform: scale(1.05) translateY(-8px); border-color: var(--gold); }
-    .package.featured h3, .package.featured .price { color: #fff; }
-    .package.featured p, .package.featured li { color: #c5cec9; border-bottom-color: rgba(255,255,255,0.05); }
-    .package.featured li:before { color: var(--gold); }
-    .package .btn { margin-top: auto; }
-    
     /* Remove static fade-in animation, GSAP will handle it */
     .fade-in { opacity: 0; visibility: hidden; animation: none !important; transform: none !important; }
     
@@ -255,9 +226,125 @@ h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
     /* General Cleanups to reduce wordiness */
     .section-head p { max-width: 500px; margin-top: 12px; }
     
-.price { white-space: nowrap; font-size: 38px !important; }
-.package li.miss-out:before { content: "✗" !important; color: #d9534f !important; font-size: 16px; margin-right: 12px; }
-.package li.miss-out { color: var(--muted); font-style: italic; }
+
+/* ===== Pricing component ===== */
+.pricing-container { width: min(1280px, 94%); }
+.pricing-head { text-align: center; margin-left: auto; margin-right: auto; max-width: 760px; }
+.pricing-head p { margin-left: auto; margin-right: auto; }
+.pricing-toolbar { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 28px; }
+.currency-toggle { display: inline-flex; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 4px; }
+.curr-btn { padding: 8px 18px; border-radius: 999px; border: 0; background: transparent; color: var(--ink); cursor: pointer; font: 600 14px 'Inter', sans-serif; transition: background .25s, color .25s; }
+.curr-btn.active { background: var(--dark); color: #fff; }
+.curr-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.pricing-anchor { margin: 0; font-size: 14px; color: var(--muted); }
+.pricing-anchor strong { color: var(--ink); }
+
+.pricing-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 20px; row-gap: 0; margin-top: 64px; align-items: stretch; }
+.plan { --accent: var(--sage); position: relative; display: grid; grid-row: span 8; grid-template-rows: subgrid; row-gap: 0;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 32px 24px 24px;
+  box-shadow: 0 1px 2px rgba(23,34,31,.04), 0 12px 32px rgba(23,34,31,.04);
+  transition: transform .45s cubic-bezier(.16,1,.3,1), box-shadow .45s, border-color .3s; }
+.plan::before { content: ''; position: absolute; inset: 0 24px auto; height: 3px; border-radius: 0 0 4px 4px; background: var(--accent); opacity: .85; }
+.plan:hover { transform: translateY(-6px); border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); box-shadow: 0 2px 4px rgba(23,34,31,.04), 0 24px 48px color-mix(in srgb, var(--accent) 18%, transparent); }
+
+/* Featured: animated gold border + glow */
+@property --plan-angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+.plan--featured { border: 2px solid transparent;
+  background: linear-gradient(#fffdf8, #fffaf0) padding-box,
+              conic-gradient(from var(--plan-angle), #b79b63, #f1dfb2, #b79b63, #8c7442, #b79b63) border-box;
+  box-shadow: 0 24px 60px rgba(183,155,99,.22); animation: plan-border-spin 6s linear infinite; z-index: 1; }
+.plan--featured::before { display: none; }
+@keyframes plan-border-spin { to { --plan-angle: 360deg; } }
+
+/* Badges */
+.plan-badge { position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%); display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: 999px; font: 800 11px/1 'Inter', sans-serif; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+.plan-badge--popular { background: linear-gradient(135deg, #c9ad72, #a8894f); color: #fff; box-shadow: 0 8px 20px rgba(183,155,99,.45); }
+.plan-badge--spots { background: #fff1ef; color: #c2410c; border: 1px solid rgba(194,65,12,.2); box-shadow: 0 6px 16px rgba(194,65,12,.12); }
+.plan-badge-dot { width: 7px; height: 7px; border-radius: 50%; background: #dc2626; animation: pulse-live 2s infinite; }
+
+/* Rows */
+.plan-head { display: flex; gap: 14px; align-items: flex-start; padding-bottom: 20px; }
+.plan-icon { flex: none; width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 13%, transparent); }
+.plan-name { margin: 0; font-family: 'Playfair Display', serif; font-size: 21px; line-height: 1.2; font-weight: 700; }
+.plan-name-accent { color: var(--accent); }
+.plan-best { margin: 6px 0 0; font-size: 13px; line-height: 1.4; color: var(--muted); }
+
+.plan-price { display: flex; align-items: baseline; gap: 6px; white-space: nowrap; }
+.plan-amount { font-size: clamp(32px, 2.7vw, 40px); font-weight: 800; letter-spacing: -.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+.plan-period { font-size: 14px; font-weight: 600; color: var(--muted); }
+.plan-perday { justify-self: start; align-self: start; margin: 12px 0 22px; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700;
+  color: color-mix(in srgb, var(--accent) 80%, #000); background: color-mix(in srgb, var(--accent) 12%, transparent); }
+
+.plan-capacity { padding: 16px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.plan-capacity-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+.plan-capacity-row strong { font-size: 20px; color: var(--ink); font-weight: 800; }
+.plan-capacity-row small { font-size: 12px; color: var(--muted); font-weight: 600; margin-left: 2px; }
+.plan-meter { height: 6px; border-radius: 99px; background: color-mix(in srgb, var(--accent) 12%, #eee9de); overflow: hidden; }
+.plan-meter i { display: block; height: 100%; width: var(--fill); border-radius: inherit; background: var(--accent); transform-origin: left; }
+.plan.is-visible .plan-meter i { animation: plan-meter-grow 1.2s cubic-bezier(.16,1,.3,1) both; }
+@keyframes plan-meter-grow { from { transform: scaleX(0); } }
+
+.plan-desc { margin: 18px 0 0; font-size: 14.5px; line-height: 1.5; color: var(--ink); font-weight: 500; }
+.plan-features { padding-top: 18px; }
+.plan-features-label { margin: 0 0 10px; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.plan-features ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.plan-features li { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; line-height: 1.45; color: var(--ink); }
+.plan-features abbr { text-decoration: underline dotted; cursor: help; }
+.plan-check { flex: none; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; color: var(--accent, var(--sage));
+  background: color-mix(in srgb, var(--accent, var(--sage)) 14%, transparent); margin-top: 1px; }
+
+.plan-stops { align-self: stretch; display: flex; gap: 10px; align-items: flex-start; margin-top: 20px; padding: 12px 14px; border-radius: 14px;
+  background: #fdf3f1; color: #7a3328; font-size: 13px; line-height: 1.45; }
+.plan-stops b { color: #b42318; }
+.plan-x { flex: none; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; color: #fff; background: #d9534f; }
+
+.plan-cta { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; padding: 15px 18px; border-radius: 999px;
+  font-weight: 700; font-size: 14.5px; color: var(--ink); background: transparent; border: 1.5px solid var(--ink);
+  transition: background .3s, color .3s, border-color .3s, box-shadow .3s; }
+.plan-cta svg { transition: transform .3s; }
+.plan-cta:hover { background: var(--ink); color: #fff; }
+.plan-cta:hover svg { transform: translateX(4px); }
+.plan-cta--solid { background: linear-gradient(135deg, #c9ad72, #a8894f); border-color: transparent; color: #fff; box-shadow: 0 10px 24px rgba(183,155,99,.4); }
+.plan-cta--solid:hover { background: linear-gradient(135deg, #b79b63, #8c7442); box-shadow: 0 14px 30px rgba(183,155,99,.5); }
+.plan-cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* Assurance strip */
+.pricing-assurance { margin-top: 48px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 32px;
+  padding: 22px 28px; border-radius: 20px; background: var(--dark); color: #d6ddd9; }
+.pricing-assurance-msg { font-size: 15px; }
+.pricing-assurance-msg strong { color: var(--gold); }
+.pricing-assurance-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 12px 24px; font-size: 14px; font-weight: 600; color: #fff; }
+.pricing-assurance-list li { display: flex; align-items: center; gap: 8px; }
+.pricing-assurance-list .plan-check { --accent: #b79b63; }
+.pricing-assurance-list a svg { vertical-align: -3px; margin-left: 4px; }
+.pricing-assurance-list a { display: inline; color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+
+/* Fallback for browsers without subgrid */
+@supports not (grid-template-rows: subgrid) {
+  .plan { display: flex; flex-direction: column; }
+  .plan-perday { align-self: flex-start; }
+  .plan-stops { margin-top: auto; }
+}
+
+@media (max-width: 1100px) {
+  .pricing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 20px; }
+  .plan { display: flex; flex-direction: column; }
+  .plan-perday { align-self: flex-start; }
+  .plan-features { flex-grow: 1; }
+}
+@media (max-width: 680px) {
+  .pricing-grid { grid-template-columns: 1fr; gap: 36px; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .plan--featured { order: -1; }
+  .pricing-assurance { padding: 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .plan, .plan-cta, .plan-cta svg { transition: none; }
+  .plan:hover { transform: none; }
+  .plan--featured { animation: none; }
+  .plan.is-visible .plan-meter i { animation: none; }
+}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script><link as_="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,500;0,700;0,800;1,500&amp;display=swap" rel="preload"/><script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "EZER Customer Experience", "description": "Virtual Business Support in Johor, Kuala Lumpur & Singapore", "areaServed": ["Johor", "Kuala Lumpur", "Singapore"]}</script><script src="config.js"></script></head>
 <body>
@@ -319,32 +406,6 @@ h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
                 .ticker-logo { height: 40px; margin: 0 40px; opacity: 0.5; filter: grayscale(100%) invert(100%); transition: 0.3s; }
                 .ticker-logo:hover { opacity: 1; }
             
-/* Packages Layout Fixes */
-#packages .container { width: min(1350px, 96%) !important; max-width: none !important; }
-.packages { grid-template-columns: repeat(4, 1fr) !important; gap: 24px !important; align-items: stretch !important; margin-top: 48px !important; }
-.package p { min-height: 96px !important; }
-
-.package.featured { 
-    background: rgba(255,253,248,0.95) !important; 
-    color: var(--ink) !important; 
-    border: 2px solid var(--gold) !important; 
-    transform: none !important; 
-    box-shadow: 0 15px 45px rgba(183,155,99,0.15) !important; 
-}
-.package.featured:hover { transform: translateY(-8px) !important; }
-.package.featured h3, .package.featured .price { color: var(--ink) !important; }
-.package.featured p, .package.featured li { color: var(--muted) !important; border-bottom-color: rgba(23,34,31,0.08) !important; }
-.package.featured li { color: var(--ink) !important; }
-.package.featured li.miss-out { color: var(--muted) !important; }
-.package.featured li:before { color: var(--sage) !important; }
-
-@media (max-width: 1100px) {
-    .packages { grid-template-columns: repeat(2, 1fr) !important; }
-    .package p { min-height: auto !important; margin-bottom: 24px !important; }
-}
-@media (max-width: 650px) {
-    .packages { grid-template-columns: 1fr !important; }
-}
 </style>
 </div>
 </div>
@@ -457,85 +518,121 @@ h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
 </div>
 </section>
 <section class="section" id="how"><div class="container"><div class="section-head fade-in"><div class="eyebrow">Why work with me</div><h2>Experience that connects sales and service.</h2><p>EZER brings practical experience across the customer journey, from first enquiry to follow-up and retention.</p></div><div class="grid4"><div class="card fade-in" style="animation-delay: 0.1s;"><span class="num">01</span><h3>Sales &amp; Relationships</h3><p>Experience managing client relationships, renewals, quotations and sales follow-ups.</p></div><div class="card fade-in" style="animation-delay: 0.2s;"><span class="num">02</span><h3>Customer Experience</h3><p>Professional communication, enquiry handling, complaints and customer care.</p></div><div class="card fade-in" style="animation-delay: 0.3s;"><span class="num">03</span><h3><span style="border-bottom:1px dotted var(--muted); cursor:help;" title="Customer Relationship Management software">CRM</span> &amp; Operations</h3><p>Hands-on experience organising customer information, workflows and business systems.</p></div><div class="card fade-in" style="animation-delay: 0.4s;"><span class="num">04</span><h3>Leadership</h3><p>Team leadership experience with a focus on accountability, service quality and results.</p></div></div></div></section><section class="section alt" id="packages">
-<div class="container">
-<div class="section-head fade-in fade-in">
+<div class="container pricing-container">
+<div class="section-head fade-in pricing-head">
 <div class="eyebrow">Packages</div>
 <h2>An investment in growth, not an expense.</h2>
-<p>Every missed lead is lost revenue. By securing your customer journey, EZER pays for itself. The more leads you capture, the more revenue comes in.</p>
-<div class="currency-toggle fade-in" style="margin-top: 24px; display: inline-flex; background: var(--surface); border: 1px solid var(--line); border-radius: 99px; padding: 4px;">
-<button class="curr-btn active" data-curr="RM" style="padding: 8px 16px; border-radius: 99px; border:none; background:var(--dark); color:#fff; cursor:pointer; font-weight:600; font-size:14px; transition:0.3s;">RM</button>
-<button class="curr-btn" data-curr="SGD" style="padding: 8px 16px; border-radius: 99px; border:none; background:transparent; color:var(--ink); cursor:pointer; font-weight:600; font-size:14px; transition:0.3s;">SGD</button>
-<button class="curr-btn" data-curr="USD" style="padding: 8px 16px; border-radius: 99px; border:none; background:transparent; color:var(--ink); cursor:pointer; font-weight:600; font-size:14px; transition:0.3s;">USD</button>
+<p>Every missed lead is lost revenue. Pick the plan that matches your enquiry volume &mdash; it pays for itself as you capture more.</p>
+<div class="pricing-toolbar">
+<div class="currency-toggle" role="group" aria-label="Choose currency">
+<button class="curr-btn active" type="button" data-curr="RM" aria-pressed="true">RM</button>
+<button class="curr-btn" type="button" data-curr="SGD" aria-pressed="false">SGD</button>
+<button class="curr-btn" type="button" data-curr="USD" aria-pressed="false">USD</button>
+</div>
+<p class="pricing-anchor">Every plan costs less than one full-time admin hire &mdash; typically <strong data-rm="2500">RM2,500</strong>+/month before EPF &amp; SOCSO.</p>
 </div>
 </div>
-<div class="packages"><div class="package fade-in" style="animation-delay: 0.05s;">
-<h3>The Trial <span style="color: var(--muted);">Run</span></h3>
-<div class="price">RM300 <small>/ month</small></div>
-<p>A low-risk test package. Perfect for small businesses wanting to experience professional support on a strict budget.</p>
-<ul>
-<li>Up to 20 enquiries / mo</li>
-<li>Standard response time</li>
-<li>WhatsApp &amp; Email support</li>
-<li>End-of-month review</li>
-</ul>
-<div style="flex-grow: 1;"></div>
-<a class="btn ghost" href="#contact">Test The Waters</a>
-</div>
-<div class="package fade-in" style="animation-delay: 0.1s;">
-<h3>The Lead <span style="color: var(--sage);">Catcher</span></h3>
-<div class="price">RM600 <small>/ month</small></div>
-<p>Stop the bleeding. For businesses losing money because they can't reply to basic enquiries fast enough.</p>
-<ul>
-<li>Up to 50 enquiries</li>
-<li>Lead recording</li>
-<li>Basic follow-up</li>
-<li>Customer database updates</li>
-<li>Monthly summary</li>
-<li>AI-assisted drafting</li>
-</ul>
-<a class="btn ghost magnetic-btn" href="#contact">Stop Losing Leads</a>
-</div>
-<div class="package featured fade-in" style="animation-delay: 0.2s;">
-<div style="display:inline-flex; align-items:center; gap:8px; padding:8px 18px; border-radius:99px; background: #b79b63; position:absolute; top:-20px; left:24px; z-index:2; box-shadow: 0 10px 24px rgba(183, 155, 99, 0.4);">
-  <span style="display:block; width:6px; height:6px; background:#17221f; border-radius:50%; box-shadow:0 0 0 rgba(23, 34, 31, 0.4); animation: pulse-dark 2s infinite;"></span>
-  <span style="font-size:11px; font-weight:800; letter-spacing:1.5px; color:#17221f; text-transform:uppercase;">Most Popular</span>
+<div class="pricing-grid">
+<article class="plan" style="--accent: #7d8a84;" aria-labelledby="plan-trial-title">
+  
+  <header class="plan-head">
+    <span class="plan-icon"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 3h6M10 3v6.2L4.6 18.4A1.7 1.7 0 0 0 6.1 21h11.8a1.7 1.7 0 0 0 1.5-2.6L14 9.2V3M7.5 15h9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    <div>
+      <h3 class="plan-name" id="plan-trial-title">The Trial <span class="plan-name-accent">Run</span></h3>
+      <p class="plan-best">Best for: Solo owners testing the waters</p>
+    </div>
+  </header>
+  <div class="plan-price"><span class="plan-amount" data-rm="300">RM300</span><span class="plan-period">/ month</span></div>
+  <div class="plan-perday">&asymp; <span data-rm="10">RM10</span> a day</div>
+  <div class="plan-capacity">
+    <div class="plan-capacity-row"><span>Enquiries handled</span><strong>20<small>/mo</small></strong></div>
+    <div class="plan-meter" role="img" aria-label="Up to 20 enquiries per month"><i style="--fill: 8%;"></i></div>
   </div>
-<h3>The Follow-Up <span style="color: var(--gold);">Engine</span></h3>
-<div class="price">RM1,200 <small>/ month</small></div>
-<p>Harvard research shows waiting 10 mins to reply drops conversion by 400%. We ensure you hit the 5-minute golden window.</p>
-<ul>
-<li>Up to 120 enquiries</li>
-<li>Lead &amp; follow-up management</li>
-<li>Appointment coordination</li>
-<li>Quotation follow-up</li>
-<li><span style="border-bottom:1px dotted var(--muted); cursor:help;" title="Customer Relationship Management software">CRM</span> management</li>
-<li>Weekly reporting</li>
-<li>Basic workflow organisation</li>
+  <p class="plan-desc">Professional enquiry handling on a starter budget.</p>
+  <div class="plan-features">
+    <p class="plan-features-label">What you get:</p>
+    <ul><li><span class="plan-check"><svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>WhatsApp &amp; email enquiry replies</span></li><li><span class="plan-check"><svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Every lead logged in one tracker</span></li><li><span class="plan-check"><svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>End-of-month summary</span></li></ul>
+  </div>
+  <div class="plan-stops"><span class="plan-x"><svg viewBox="0 0 20 20" width="10" height="10" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></span><span><b>No more:</b> Enquiries left unanswered overnight</span></div>
+  <a class="plan-cta" href="#contact"><span>Start the Trial Run</span><svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M4 10h11m-4-4.5L15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+</article>
+<article class="plan" style="--accent: #718878;" aria-labelledby="plan-catcher-title">
+  
+  <header class="plan-head">
+    <span class="plan-icon"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 4h4v8a3 3 0 0 0 6 0V4h4v8a7 7 0 0 1-14 0zM5 8h4M15 8h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+    <div>
+      <h3 class="plan-name" id="plan-catcher-title">The Lead <span class="plan-name-accent">Catcher</span></h3>
+      <p class="plan-best">Best for: Shops &amp; services with steady enquiries</p>
+    </div>
+  </header>
+  <div class="plan-price"><span class="plan-amount" data-rm="600">RM600</span><span class="plan-period">/ month</span></div>
+  <div class="plan-perday">&asymp; <span data-rm="20">RM20</span> a day</div>
+  <div class="plan-capacity">
+    <div class="plan-capacity-row"><span>Enquiries handled</span><strong>50<small>/mo</small></strong></div>
+    <div class="plan-meter" role="img" aria-label="Up to 50 enquiries per month"><i style="--fill: 20%;"></i></div>
+  </div>
+  <p class="plan-desc">Never let a paying customer slip through the cracks.</p>
+  <div class="plan-features">
+    <p class="plan-features-label">Everything in Trial Run, plus:</p>
+    <ul><li><span class="plan-check"><svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Same-day replies &amp; basic follow-up</span></li><li><span class="plan-check"><svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Customer database kept up to date</span></li><li><span class="plan-check"><svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>AI-assisted reply drafting</span></li></ul>
+  </div>
+  <div class="plan-stops"><span class="plan-x"><svg viewBox="0 0 20 20" width="10" height="10" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></span><span><b>No more:</b> Leads going cold because no one replied</span></div>
+  <a class="plan-cta" href="#contact"><span>Catch Every Lead</span><svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M4 10h11m-4-4.5L15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+</article>
+<article class="plan plan--featured" style="--accent: #b79b63;" aria-labelledby="plan-engine-title">
+  <div class="plan-badge plan-badge--popular"><svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.7L10 14.8l-5.1 2.7 1-5.7-4.1-4 5.7-.8z" fill="currentColor"/></svg><span>Most Popular</span></div>
+  <header class="plan-head">
+    <span class="plan-icon"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M13 2L4.5 13.5H11L10 22l8.5-11.5H12z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+    <div>
+      <h3 class="plan-name" id="plan-engine-title">The Follow-Up <span class="plan-name-accent">Engine</span></h3>
+      <p class="plan-best">Best for: Growing teams ready to convert more</p>
+    </div>
+  </header>
+  <div class="plan-price"><span class="plan-amount" data-rm="1200">RM1,200</span><span class="plan-period">/ month</span></div>
+  <div class="plan-perday">&asymp; <span data-rm="40">RM40</span> a day</div>
+  <div class="plan-capacity">
+    <div class="plan-capacity-row"><span>Enquiries handled</span><strong>120<small>/mo</small></strong></div>
+    <div class="plan-meter" role="img" aria-label="Up to 120 enquiries per month"><i style="--fill: 48%;"></i></div>
+  </div>
+  <p class="plan-desc">Reply inside the 5-minute window where leads are most likely to buy.</p>
+  <div class="plan-features">
+    <p class="plan-features-label">Everything in Lead Catcher, plus:</p>
+    <ul><li><span class="plan-check"><svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>5-minute response target (business hours)</span></li><li><span class="plan-check"><svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Quotation &amp; appointment follow-ups</span></li><li><span class="plan-check"><svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><abbr title="Customer Relationship Management software">CRM</abbr> management + weekly report</span></li></ul>
+  </div>
+  <div class="plan-stops"><span class="plan-x"><svg viewBox="0 0 20 20" width="10" height="10" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></span><span><b>No more:</b> Quotes sent and never chased</span></div>
+  <a class="plan-cta plan-cta--solid" href="#contact"><span>Start Converting More</span><svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M4 10h11m-4-4.5L15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+</article>
+<article class="plan" style="--accent: #b0603f;" aria-labelledby="plan-team-title">
+  <div class="plan-badge plan-badge--spots"><i class="plan-badge-dot" aria-hidden="true"></i><span>2 Spots Available</span></div>
+  <header class="plan-head">
+    <span class="plan-icon"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="9" cy="8" r="3.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5M16 4.8a3.2 3.2 0 0 1 0 6.4M18 14.8c1.9.6 3 2.4 3 5.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+    <div>
+      <h3 class="plan-name" id="plan-team-title">The All-In-One <span class="plan-name-accent">Team</span></h3>
+      <p class="plan-best">Best for: Owners ready to step out of daily ops</p>
+    </div>
+  </header>
+  <div class="plan-price"><span class="plan-amount" data-rm="2000">RM2,000</span><span class="plan-period">/ month</span></div>
+  <div class="plan-perday">&asymp; <span data-rm="67">RM67</span> a day</div>
+  <div class="plan-capacity">
+    <div class="plan-capacity-row"><span>Enquiries handled</span><strong>250<small>/mo</small></strong></div>
+    <div class="plan-meter" role="img" aria-label="Up to 250 enquiries per month"><i style="--fill: 100%;"></i></div>
+  </div>
+  <p class="plan-desc">Your full customer journey, run for you end to end.</p>
+  <div class="plan-features">
+    <p class="plan-features-label">Everything in Follow-Up Engine, plus:</p>
+    <ul><li><span class="plan-check"><svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>SOPs written for your business</span></li><li><span class="plan-check"><svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Basic automation set up</span></li><li><span class="plan-check"><svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Conversion &amp; feedback analysis</span></li><li><span class="plan-check"><svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Monthly owner strategy review</span></li></ul>
+  </div>
+  <div class="plan-stops"><span class="plan-x"><svg viewBox="0 0 20 20" width="10" height="10" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></span><span><b>No more:</b> You being the bottleneck in your own business</span></div>
+  <a class="plan-cta" href="#contact"><span>Delegate Everything</span><svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M4 10h11m-4-4.5L15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+</article>
+</div>
+<div class="pricing-assurance fade-in">
+<div class="pricing-assurance-msg"><strong>The cost of inaction:</strong> every missed WhatsApp is a sale that went to a competitor.</div>
+<ul class="pricing-assurance-list">
+<li><span class="plan-check"><svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>First 14 days risk-free</li>
+<li><span class="plan-check"><svg viewBox="0 0 20 20" width="12" height="12" aria-hidden="true"><path d="M5 10.5l3.2 3L15 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Month-to-month, cancel anytime</li>
+<li><a href="#roi-calculator">Not sure which plan? Calculate your lost revenue <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M4 10h11m-4-4.5L15.5 10 11 14.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
 </ul>
-<a class="btn primary magnetic-btn" href="#contact">Stop Losing Leads</a>
-</div>
-<div class="package fade-in" style="animation-delay: 0.3s;">
-<div style="display:inline-flex; align-items:center; gap:8px; padding:6px 14px; border-radius:99px; border:1px solid rgba(220, 38, 38, 0.2); background: #fef2f2; position:absolute; top:-16px; left:24px; z-index:2; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.05);">
-<span style="display:block; width:6px; height:6px; background:#dc2626; border-radius:50%; box-shadow:0 0 0 rgba(220, 38, 38, 0.4); animation: pulse-live 2s infinite;"></span>
-<span style="font-size:10px; font-weight:800; letter-spacing:1.2px; color:#dc2626; text-transform:uppercase;">2 Spots Available</span>
-</div><h3>The All-In-One <span style="background: linear-gradient(90deg, #b79b63, #d9534f); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Team</span></h3>
-<div class="price">RM2,000 <small>/ month</small></div>
-<p>Offload your entire cognitive load. Complete delegation of your customer journey so you can focus exclusively on scaling.</p>
-<ul>
-<li>Up to 250 enquiries</li>
-<li>Everything in Growth</li>
-<li>SOP creation</li>
-<li>Basic automation</li>
-<li>Conversion analysis</li>
-<li>Customer feedback analysis</li>
-<li>Monthly owner review</li>
-</ul>
-<a class="btn ghost magnetic-btn" href="#contact">Stop Losing Leads</a>
-</div>
-<div class="coi-banner fade-in" style="grid-column: 1 / -1; background: var(--dark); color: white; padding: 32px; border-radius: 24px; text-align: center; margin-top: 24px;">
-<h3 style="color: var(--gold); margin-bottom: 8px;">The Cost of Inaction</h3>
-<p style="margin:0; font-size: 16px;">Every missed WhatsApp is a lost sale. Stop leaving money on the table.<br/><strong style="color: #fff;">First 14 days risk-free. Cancel anytime.</strong></p>
-</div>
 </div>
 </div>
 </section>
@@ -1035,32 +1132,18 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('fstep' + step).style.display = 'block';
         }
 
-        // Currency Toggle
+        // Currency Toggle (prices, per-day figures and anchor all carry data-rm)
         const currBtns = document.querySelectorAll('.curr-btn');
-        const basePrices = [300, 600, 1200, 2000];
-        const pricesEl = document.querySelectorAll('.package .price');
+        const CURRENCIES = { RM: { rate: 1, symbol: 'RM' }, SGD: { rate: 0.3, symbol: 'S$' }, USD: { rate: 0.22, symbol: 'US$' } };
         currBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                currBtns.forEach(b => {
-                    b.classList.remove('active');
-                    b.style.background = 'transparent';
-                    b.style.color = 'var(--ink)';
-                });
+                currBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
                 btn.classList.add('active');
-                btn.style.background = 'var(--dark)';
-                btn.style.color = '#fff';
-                
-                const curr = btn.getAttribute('data-curr');
-                let multiplier = 1;
-                let symbol = 'RM';
-                if (curr === 'SGD') { multiplier = 0.3; symbol = 'SGD '; }
-                if (curr === 'USD') { multiplier = 0.22; symbol = 'USD '; }
-                
-                pricesEl.forEach((el, index) => {
-                    if (index < basePrices.length) {
-                        const newPrice = Math.round(basePrices[index] * multiplier);
-                        el.innerHTML = `${symbol}${newPrice.toLocaleString()} <small>/ month</small>`;
-                    }
+                btn.setAttribute('aria-pressed', 'true');
+                const { rate, symbol } = CURRENCIES[btn.dataset.curr] || CURRENCIES.RM;
+                document.querySelectorAll('#packages [data-rm]').forEach(el => {
+                    const value = Math.round(Number(el.dataset.rm) * rate);
+                    el.textContent = symbol + value.toLocaleString();
                 });
             });
         });
@@ -1152,6 +1235,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
 
 
+        if (typeof gsap === 'undefined') { document.querySelectorAll('.plan').forEach(p => p.classList.add('is-visible')); }
         // Master GSAP Animations
         if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
             gsap.registerPlugin(ScrollTrigger);
@@ -1170,6 +1254,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 ),
                 start: "top 85%"
             });
+            // Pricing cards: staggered entrance; clearProps keeps CSS hover transforms working
+            const plans = document.querySelectorAll('.plan');
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (reduceMotion) {
+                plans.forEach(p => p.classList.add('is-visible'));
+            } else {
+                gsap.set(plans, { opacity: 0, y: 40 });
+                ScrollTrigger.batch('.plan', {
+                    start: 'top 88%',
+                    once: true,
+                    onEnter: batch => {
+                        batch.forEach(p => p.classList.add('is-visible'));
+                        gsap.to(batch, { opacity: 1, y: 0, stagger: 0.12, duration: 0.9, ease: 'power3.out', clearProps: 'transform,opacity' });
+                    }
+                });
+            }
+
 
             // Specific Timeline for Hero
             const heroTl = gsap.timeline();
