@@ -46,6 +46,12 @@
     <label for="linkedinUrl">LinkedIn profile URL</label>
     <input type="url" id="linkedinUrl" placeholder="https://www.linkedin.com/in/your-profile">
 
+    <h2>Analytics (optional)</h2>
+    <label for="ga4Id">Google Analytics 4 measurement ID <span class="hint">e.g. G-ABC123XYZ. Visitors see a consent bar; tracking starts only after they accept.</span></label>
+    <input type="text" id="ga4Id" placeholder="G-XXXXXXXXXX">
+    <label for="metaPixelId">Meta Pixel ID <span class="hint">Digits only, from Meta Events Manager. Needed for Facebook/Instagram ads.</span></label>
+    <input type="text" id="metaPixelId" inputmode="numeric" placeholder="123456789012345">
+
     <h2>Sections</h2>
     <label class="check"><input type="checkbox" id="showFaq"> Show the FAQ section</label>
 
@@ -64,7 +70,7 @@
 
 <script src="config.js"></script>
 <script>
-  const FIELDS = ['whatsappNumber', 'whatsappMessage', 'contactEmail', 'web3formsKey', 'calendlyUrl', 'founderVideoUrl', 'linkedinUrl'];
+  const FIELDS = ['whatsappNumber', 'whatsappMessage', 'contactEmail', 'web3formsKey', 'calendlyUrl', 'founderVideoUrl', 'linkedinUrl', 'ga4Id', 'metaPixelId'];
   const $ = id => document.getElementById(id);
   const status = $('status');
 
@@ -92,6 +98,9 @@
     if (!validUrl(next.linkedinUrl, 'linkedin.com')) errors.push('LinkedIn URL must be an https://linkedin.com link.');
     if (next.founderVideoUrl && !/^https:\/\/(www\.)?(youtube\.com|youtube-nocookie\.com|player\.vimeo\.com)\//.test(next.founderVideoUrl)) errors.push('Video must be a YouTube or Vimeo embed link.');
     if (next.whatsappNumber && next.whatsappNumber.length < 8) errors.push('WhatsApp number looks too short.');
+    next.ga4Id = next.ga4Id.toUpperCase();
+    if (next.ga4Id && !/^G-[A-Z0-9]{4,12}$/.test(next.ga4Id)) errors.push('GA4 ID should look like G-ABC123XYZ.');
+    if (next.metaPixelId && !/^\d{10,20}$/.test(next.metaPixelId)) errors.push('Meta Pixel ID should be digits only.');
     if (errors.length) { status.textContent = errors.join(' '); status.style.background = '#fdf3f1'; status.hidden = false; return; }
 
     let saved = {};

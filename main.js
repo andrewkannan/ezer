@@ -29,10 +29,112 @@
   const waLink = (text) => waNumber ? `https://wa.me/${waNumber}?text=${encodeURIComponent(text || CONFIG.whatsappMessage || '')}` : '';
   const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(CONFIG.contactEmail || '') ? CONFIG.contactEmail : '';
 
+  /* ------------------------------------------------- Lead source (UTM) */
+  // Remembers where this visit came from (e.g. ?utm_source=instagram) for the
+  // session only, so each lead shows which post or platform produced it.
+  // First-party sessionStorage, no cookies, nothing sent to third parties.
+  const attribution = (() => {
+    const KEY = 'ezer_attribution';
+    const clean = (v) => String(v).replace(/[^\w .\-\/@+]/g, '').slice(0, 80);
+    const params = new URLSearchParams(location.search);
+    const found = {};
+    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach(k => { if (params.get(k)) found[k] = clean(params.get(k)); });
+    if (!found.utm_source && params.has('fbclid')) found.utm_source = 'facebook/instagram';
+    if (!found.utm_source && params.has('gclid')) found.utm_source = 'google-ads';
+    if (!Object.keys(found).length && document.referrer) {
+      try { const h = new URL(document.referrer).hostname; if (h && h !== location.hostname) found.referrer = clean(h); } catch { /* ignore */ }
+    }
+    try {
+      if (Object.keys(found).length) { sessionStorage.setItem(KEY, JSON.stringify(found)); return found; }
+      return JSON.parse(sessionStorage.getItem(KEY) || '{}') || {};
+    } catch { return found; }
+  })();
+  const sourceLabel = () => [attribution.utm_source, attribution.utm_medium, attribution.utm_campaign, attribution.utm_content]
+    .filter(Boolean).join(' / ') || attribution.referrer || '';
+
+  /* --------------------------------------------- Analytics (opt-in only) */
+  // GA4 / Meta Pixel load only if an ID is set in config.js AND the visitor
+  // accepts. Until then track() is a no-op.
+  const GA_ID = /^G-[A-Z0-9]{4,12}$/.test(CONFIG.ga4Id || '') ? CONFIG.ga4Id : '';
+  const PIXEL_ID = /^\d{10,20}$/.test(String(CONFIG.metaPixelId || '')) ? String(CONFIG.metaPixelId) : '';
+  const CONSENT_KEY = 'ezer_analytics_consent';
+  let analyticsOn = false;
+  const META_EVENTS = { generate_lead: 'Lead', whatsapp_click: 'Contact', select_plan: 'ViewContent' };
+  function track(name, params = {}) {
+    if (!analyticsOn) return;
+    try {
+      if (GA_ID && typeof window.gtag === 'function') window.gtag('event', name, params);
+      if (PIXEL_ID && typeof window.fbq === 'function') {
+        if (META_EVENTS[name]) window.fbq('track', META_EVENTS[name], params);
+        else window.fbq('trackCustom', name, params);
+      }
+    } catch (err) { console.warn('EZER analytics error', err); }
+  }
+  function loadAnalytics() {
+    if (analyticsOn) return;
+    analyticsOn = true;
+    if (GA_ID) {
+      const s = document.createElement('script');
+      s.async = true; s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+      document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { window.dataLayer.push(arguments); };
+      window.gtag('js', new Date());
+      window.gtag('config', GA_ID);
+    }
+    if (PIXEL_ID) {
+      /* Standard Meta Pixel bootstrap */
+      !function (f, b, e, v, n, t, s) { if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+        if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = []; t = b.createElement(e); t.async = !0; t.src = v;
+        s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s); }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+      window.fbq('init', PIXEL_ID);
+      window.fbq('track', 'PageView');
+    }
+  }
+  function initAnalytics() {
+    if (!GA_ID && !PIXEL_ID) return;
+    let choice = null;
+    try { choice = localStorage.getItem(CONSENT_KEY); } catch { /* storage blocked */ }
+    if (choice === 'yes') { loadAnalytics(); return; }
+    if (choice === 'no') return;
+    const bar = document.createElement('div');
+    bar.className = 'consent';
+    bar.setAttribute('role', 'region');
+    bar.setAttribute('aria-label', 'Analytics consent');
+    bar.innerHTML = '<p>We use analytics cookies to understand which pages help business owners most. No personal data is sold.</p>'
+      + '<div class="consent__actions"><button type="button" class="btn btn--ghost-light btn--sm" data-consent="no">No thanks</button>'
+      + '<button type="button" class="btn btn--gold btn--sm" data-consent="yes">Accept</button></div>';
+    document.body.appendChild(bar);
+    bar.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-consent]');
+      if (!btn) return;
+      try { localStorage.setItem(CONSENT_KEY, btn.dataset.consent); } catch { /* ignore */ }
+      if (btn.dataset.consent === 'yes') loadAnalytics();
+      bar.remove();
+    });
+  }
+  function initTracking() {
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a, button');
+      if (!a) return;
+      const section = a.closest('section[id], header, footer')?.id || a.closest('footer, header')?.tagName.toLowerCase() || 'page';
+      if (a.matches('a[href*="wa.me"]')) track('whatsapp_click', { location: section });
+      else if (a.matches('.plan-cta')) {
+        const plan = a.closest('.plan')?.querySelector('[id^="plan-"][id$="-title"]')?.textContent.trim() || '';
+        const field = $('#fPlan');
+        if (field && plan) field.value = plan;
+        track('select_plan', { plan, location: section });
+      } else if (a.matches('a[href="#contact"]')) track('cta_click', { location: section, label: a.textContent.trim().slice(0, 60) });
+    });
+    let roiTracked = false;
+    document.addEventListener('input', (e) => { if (!roiTracked && e.target.id && e.target.id.startsWith('roi')) { roiTracked = true; track('roi_calculator_used'); } });
+  }
+
   /* ---------------------------------------------------------- Config bind */
   function applyConfig() {
     $$('[data-wa]').forEach(el => {
-      const link = waLink();
+      const via = attribution.utm_source ? `\n\n(Found EZER via ${attribution.utm_source})` : '';
+      const link = waLink((CONFIG.whatsappMessage || '') + via);
       if (link) { el.href = link; el.target = '_blank'; el.rel = 'noopener'; el.hidden = false; }
       else el.hidden = true;
     });
@@ -373,10 +475,14 @@
     $$('[data-prev]', form).forEach(b => b.addEventListener('click', () => show(current - 1)));
     $$('input, select', form).forEach(f => f.addEventListener('input', () => { if (f.closest('.has-error')) setError(f, ''); f.closest('.field')?.classList.remove('has-error'); }));
 
-    const summary = (d) =>
-      `New EZER enquiry\nName: ${d.name}\nEmail: ${d.email}\nCompany: ${d.company}\nPhone: ${d.phone}\nIndustry: ${d.industry}\nMonthly enquiries: ${d.volume}\nBiggest challenge: ${d.challenge}`;
+    const summary = (d) => [
+      'New EZER enquiry', `Name: ${d.name}`, `Email: ${d.email}`, `Company: ${d.company}`, `Phone: ${d.phone}`,
+      `Industry: ${d.industry}`, `Monthly enquiries: ${d.volume}`, `Biggest challenge: ${d.challenge}`,
+      d.plan && `Interested in: ${d.plan}`, d.source && `Found EZER via: ${d.source}`
+    ].filter(Boolean).join('\n');
 
-    const succeed = (msg) => {
+    const succeed = (msg, method) => {
+      track('generate_lead', { method });
       steps.forEach(s => { s.hidden = true; });
       $('.progress', form).hidden = true;
       label.hidden = true;
@@ -399,7 +505,8 @@
       if (!validateStep(current)) return;
       if ($('[name="botcheck"]', form).checked) return; // spam honeypot
       const fd = new FormData(form);
-      const data = Object.fromEntries(['name', 'email', 'company', 'phone', 'industry', 'volume', 'challenge'].map(k => [k, String(fd.get(k) || '').trim()]));
+      const data = Object.fromEntries(['name', 'email', 'company', 'phone', 'industry', 'volume', 'challenge', 'plan'].map(k => [k, String(fd.get(k) || '').trim()]));
+      data.source = sourceLabel();
       const submit = $('button[type=submit]', form);
       status.hidden = true;
 
@@ -417,7 +524,7 @@
           });
           const json = await res.json().catch(() => ({}));
           if (!res.ok || !json.success) throw new Error(json.message || 'Submission failed');
-          succeed(`Thanks, ${data.name.split(' ')[0]}! Your details are with Kenisha and she’ll be in touch to arrange your free workflow check.`);
+          succeed(`Thanks, ${data.name.split(' ')[0]}! Your details are with Kenisha and she’ll be in touch to arrange your free workflow check.`, 'web3forms');
           return;
         } catch (err) {
           console.error('EZER form error', err);
@@ -436,10 +543,10 @@
       // Fallbacks while no form service is connected.
       if (waNumber) {
         window.open(waLink(summary(data)), '_blank', 'noopener');
-        succeed('We’ve opened WhatsApp with your details filled in — just press send.');
+        succeed('We’ve opened WhatsApp with your details filled in — just press send.', 'whatsapp');
       } else if (email) {
         window.location.href = `mailto:${email}?subject=${encodeURIComponent('Free workflow check')}&body=${encodeURIComponent(summary(data))}`;
-        succeed('Your email app should open with your details — just press send.');
+        succeed('Your email app should open with your details — just press send.', 'email');
       } else {
         status.textContent = 'Online enquiries are being set up. Please check back shortly.';
         status.hidden = false;
@@ -447,6 +554,14 @@
     });
 
     show(0);
+  }
+
+  // The featured card's spinning gold border restyles the card every frame, so
+  // only animate it while it is actually on screen.
+  function initFeaturedPlanMotion() {
+    const card = $('.plan--featured');
+    if (!card || reduceMotion || !('IntersectionObserver' in window)) return;
+    new IntersectionObserver(([entry]) => card.classList.toggle('is-onscreen', entry.isIntersecting)).observe(card);
   }
 
   /* -------------------------------------------------------------- Init */
@@ -463,6 +578,9 @@
     initModals();
     initFloatingCta();
     initForm();
+    initFeaturedPlanMotion();
+    initTracking();
+    initAnalytics();
     const year = $('#year');
     if (year) year.textContent = new Date().getFullYear();
     initPortrait();

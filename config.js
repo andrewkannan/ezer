@@ -28,6 +28,14 @@ const EZER_CONFIG = {
     founderVideoUrl: "",
     leadMagnetPdfUrl: "",
 
+    // --- Analytics (optional) ---------------------------------------------
+    // Leave empty to keep the site analytics-free. When set, visitors see a
+    // short consent bar and tracking starts only after they press Accept.
+    // Google Analytics 4 measurement ID, e.g. "G-ABC123XYZ"
+    ga4Id: "",
+    // Meta (Facebook/Instagram) Pixel ID, digits only
+    metaPixelId: "",
+
     // --- Optional content (sections stay hidden while these are empty) ------
     showFaq: true,
     // Real client results only, e.g. { client: "Clinic in JB", metric: "+35%", description: "More bookings from WhatsApp enquiries." }
