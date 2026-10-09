@@ -227,6 +227,33 @@ h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
     .float-input:focus + label, .float-input:not(:placeholder-shown) + label { transform: translateY(-24px) scale(0.85); left: 12px !important; background: #fff; padding: 0 4px; color: var(--gold) !important; }
     /* Quiz Buttons */
     .quiz-btn:hover { border-color: var(--gold) !important; color: var(--gold); }
+    
+    /* Sleek Packages Override */
+    .packages { gap: 32px; align-items: stretch; margin-top: 48px; }
+    .package { background: rgba(255,253,248,0.7); backdrop-filter: blur(20px); border: 1px solid rgba(23,34,31,0.08); box-shadow: 0 10px 40px rgba(0,0,0,0.02); padding: 48px 32px; display: flex; flex-direction: column; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s; }
+    .package:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(183,155,99,0.1); border-color: var(--gold); }
+    .package.featured { background: var(--dark); color: #fff; border: 1px solid rgba(255,255,255,0.1); transform: scale(1.05); box-shadow: 0 30px 60px rgba(10,18,15,0.3); position: relative; z-index: 10; }
+    .package.featured:hover { transform: scale(1.05) translateY(-8px); border-color: var(--gold); }
+    .package.featured h3, .package.featured .price { color: #fff; }
+    .package.featured p, .package.featured li { color: #c5cec9; border-bottom-color: rgba(255,255,255,0.05); }
+    .package.featured li:before { color: var(--gold); }
+    .package .btn { margin-top: auto; }
+    
+    /* Remove static fade-in animation, GSAP will handle it */
+    .fade-in { opacity: 0; visibility: hidden; animation: none !important; transform: none !important; }
+    
+    /* Sleeker Flow cards */
+    .flow-item { background: transparent; border: 1px solid var(--line); border-radius: 20px; border-top: 1px solid var(--line); box-shadow: none; padding: 32px 24px; position: relative; overflow: hidden; }
+    .flow-item:before { content:''; position:absolute; top:0; left:0; width:100%; height:4px; background: var(--sage); transform: scaleX(0); transform-origin: left; transition: transform 0.4s; }
+    .flow-item:hover:before { transform: scaleX(1); }
+    
+    /* ROI Custom Range Sliders */
+    input[type=range] { -webkit-appearance: none; background: transparent; }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: var(--gold); cursor: pointer; margin-top: -10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: var(--line); border-radius: 4px; }
+    
+    /* General Cleanups to reduce wordiness */
+    .section-head p { max-width: 500px; margin-top: 12px; }
     </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script><link as_="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,500;0,700;0,800;1,500&amp;display=swap" rel="preload"/><script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "EZER Customer Experience", "description": "Virtual Business Support in Johor, Kuala Lumpur & Singapore", "areaServed": ["Johor", "Kuala Lumpur", "Singapore"]}</script><script src="config.js"></script></head>
 <body>
@@ -554,7 +581,6 @@ h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
 </div>
 </section>
 <section class="section" id="contact">
-
 <section class="section alt" id="case-studies">
 <div class="container">
 <div class="section-head fade-in">
@@ -650,7 +676,6 @@ h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
 <button class="btn primary magnetic-btn" onclick="nextFormStep(4)" style="flex-grow:1;" type="button">Complete Diagnostic &amp; Book</button>
 </div>
 </div>
-
 <div class="form-step" id="fstep4" style="display:none; text-align:center;">
 <h3 style="font-family:'Playfair Display'; font-size:28px; margin-top:0;">Diagnostic Complete!</h3>
 <p style="color:var(--muted); margin-bottom:24px;">Pick a time below for your free consultation.</p>
@@ -1074,6 +1099,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 `).join('');
             }
         });
+        
+
+
+        // Master GSAP Animations
+        if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Re-animate all .fade-in elements cleanly
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach(el => {
+                el.style.opacity = '0';
+                el.style.visibility = 'visible';
+            });
+            
+            ScrollTrigger.batch(".fade-in", {
+                onEnter: batch => gsap.fromTo(batch, 
+                    { opacity: 0, y: 50 }, 
+                    { opacity: 1, y: 0, stagger: 0.15, duration: 1, ease: "power3.out", overwrite: true }
+                ),
+                start: "top 85%"
+            });
+
+            // Specific Timeline for Hero
+            const heroTl = gsap.timeline();
+            heroTl.from(".hero h1", {opacity: 0, y: 40, duration: 1.2, ease: "power3.out", delay: 0.2})
+                  .from(".hero p", {opacity: 0, y: 20, duration: 1, ease: "power3.out"}, "-=0.8")
+                  .from(".hero .actions a", {opacity: 0, y: 20, duration: 0.8, stagger: 0.1, ease: "power3.out"}, "-=0.6")
+                  .from(".hero-card", {opacity: 0, x: 50, duration: 1.2, ease: "power4.out"}, "-=1");
+        }
         
 });</script>
 <div id="exitPopup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; align-items:center; justify-content:center;">
