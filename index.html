@@ -439,7 +439,7 @@ h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
 </div>
 <div class="packages">
 <div class="package fade-in" style="animation-delay: 0.1s;">
-<h3>The Leak Fixer</h3>
+<h3>The Lead <span style="color: var(--sage);">Catcher</span></h3>
 <div class="price">RM600 <small>/ month</small></div>
 <p>Stop the bleeding. For businesses losing money because they can't reply to basic enquiries fast enough.</p>
 <ul>
@@ -457,7 +457,7 @@ h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
   <span style="display:block; width:6px; height:6px; background:#b79b63; border-radius:50%; box-shadow:0 0 0 rgba(183, 155, 99, 0.4); animation: pulse-gold 2s infinite;"></span>
   <span style="font-size:10px; font-weight:800; letter-spacing:1.2px; color:#b79b63; text-transform:uppercase;">Most Popular</span>
 </div>
-<h3>The 5-Minute Engine</h3>
+<h3>The Follow-Up <span style="color: var(--gold);">Engine</span></h3>
 <div class="price">RM1,200 <small>/ month</small></div>
 <p>Harvard research shows waiting 10 mins to reply drops conversion by 400%. We ensure you hit the 5-minute golden window.</p>
 <ul>
@@ -475,7 +475,7 @@ h1, h2, h3, .brand { font-family: 'Playfair Display', serif; }
 <div style="display:inline-flex; align-items:center; gap:8px; padding:6px 14px; border-radius:99px; border:1px solid rgba(220, 38, 38, 0.2); background: #fef2f2; position:absolute; top:-16px; left:24px; z-index:2; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.05);">
 <span style="display:block; width:6px; height:6px; background:#dc2626; border-radius:50%; box-shadow:0 0 0 rgba(220, 38, 38, 0.4); animation: pulse-live 2s infinite;"></span>
 <span style="font-size:10px; font-weight:800; letter-spacing:1.2px; color:#dc2626; text-transform:uppercase;">2 Spots Available</span>
-</div><h3>The Fractional CXO</h3>
+</div><h3>The All-In-One <span style="background: linear-gradient(90deg, #b79b63, #d9534f); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Team</span></h3>
 <div class="price">RM2,000 <small>/ month</small></div>
 <p>Offload your entire cognitive load. Complete delegation of your customer journey so you can focus exclusively on scaling.</p>
 <ul>
@@ -961,9 +961,9 @@ document.addEventListener('DOMContentLoaded', () => {
             
             lostRev.innerText = 'RM ' + lost.toLocaleString();
             
-            let recPkg = 'The Leak Fixer (RM 600/mo)';
-            if (lost > 3000) recPkg = 'The 5-Minute Engine (RM 1,200/mo)';
-            if (lost > 10000) recPkg = 'The Fractional CXO (RM 2,000/mo)';
+            let recPkg = 'The Lead Catcher (RM 600/mo)';
+            if (lost > 3000) recPkg = 'The Follow-Up Engine (RM 1,200/mo)';
+            if (lost > 10000) recPkg = 'The All-In-One Team (RM 2,000/mo)';
             recoveredRev.innerHTML = `RM ${recovered.toLocaleString()} / mo<br><span style="font-size:14px; font-weight:500; font-family:'Inter',sans-serif; color:var(--muted); display:block; margin-top:8px; text-transform:none; letter-spacing:0;">Recommended: <strong>${recPkg}</strong></span>`;
             
         }
