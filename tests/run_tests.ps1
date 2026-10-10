@@ -9,7 +9,7 @@ try {
     Start-Sleep -Seconds 2
     $env:EZER_TEST_URL = "http://localhost:$port/"
     $failed = 0
-    foreach ($suite in 'test_page.py', 'test_seo.py') {
+    foreach ($suite in 'test_page.py', 'test_seo.py', 'test_founder.py') {
         Write-Host "`n=== $suite ===" -ForegroundColor Cyan
         python (Join-Path $PSScriptRoot $suite)
         if ($LASTEXITCODE -ne 0) { $failed++ }
