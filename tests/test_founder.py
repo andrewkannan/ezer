@@ -27,9 +27,10 @@ with sync_playwright() as p:
     check('og:image is set', bool(og_img), og_img)
 
     check('founder name visible', page.is_visible('.founder-name') and 'Kenisha' in page.inner_text('.founder-name'))
-    check('live status badge visible', page.is_visible('.status-pill') and 'Malaysia' in page.inner_text('.status-pill'))
+    check('blinking status badge removed', not page.is_visible('.status-pill') and not page.is_visible('.status-dot'))
+    check('direct call button present', page.is_visible('a[href^="tel:+601160547134"]'))
     
-    wa_href = page.get_attribute('a.link-card--primary', 'href')
+    wa_href = page.get_attribute('a[href*="wa.me/601160547134"]', 'href')
     check('whatsapp button has phone & greeting', '601160547134' in wa_href and 'scanned' in wa_href.lower(), wa_href)
     
     vcf_href = page.get_attribute('#saveContactBtn', 'href')
@@ -37,6 +38,8 @@ with sync_playwright() as p:
     
     vcf_file = ROOT / 'assets' / 'kenisha-ezer.vcf'
     check('vcard file exists on disk', vcf_file.exists() and 'BEGIN:VCARD' in vcf_file.read_text(encoding='utf-8'))
+    
+    check('growth workflow card present', page.is_visible('.card--featured'))
     
     check('qr modal hidden initially', not page.is_visible('#qrModal.is-active'))
     page.click('#openQrBtn')
