@@ -439,6 +439,9 @@ input[type=range]::-moz-range-thumb { width: 22px; height: 22px; border-radius: 
   .contact { grid-template-columns: 1fr; }
 }
 @media (max-width: 860px) {
+  .nav .brand { gap: 10px; font-size: 22px; }
+  .nav .brand__mark { width: 36px; height: 36px; }
+  .nav .brand small { display: none; }
   .nav__toggle { display: block; }
   .nav__links { position: fixed; top: var(--nav-h); left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 4px; padding: 16px 20px 24px; background: var(--surface); color: var(--ink); border-bottom: 1px solid var(--line); box-shadow: 0 20px 40px rgba(0,0,0,.08); opacity: 0; visibility: hidden; translate: 0 -12px; transition: opacity .25s, visibility .25s, translate .25s var(--ease); }
   .nav__links.is-open { opacity: 1; visibility: visible; translate: 0 0; }
